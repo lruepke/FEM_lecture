@@ -161,8 +161,6 @@ latex_elements = {
     'utf8extra': '',
     'inputenc': '',
     'babel': r'''\usepackage[english]{babel}''',
-    'preamble': r'''\setmainfont{Arial}
-    ''',
 }
 master_doc = 'index'
 latex_documents = [
