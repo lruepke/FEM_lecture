@@ -118,12 +118,12 @@ html_context = {
         ),
     ],
     'project':project,
-    'downloads_url':'hydrothermal-openfoam.gitlab.io/saltwatereos/manual/downloads',
+    'downloads_url':'https://lruepke.github.io/FEM_lecture/downloads',
     'latex_main':  latex_name, #pdf file name
     'pdf_versions': [
         (
             'latest',
-            'https://hydrothermal-openfoam.gitlab.io/saltwatereos/downloads'  #pdf path
+            'https://lruepke.github.io/FEM_lecture/downloads'  #pdf path
         ),
         (
             '2.0',
