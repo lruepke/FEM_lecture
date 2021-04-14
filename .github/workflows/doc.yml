@@ -27,7 +27,7 @@ jobs:
         run: |
           cd sphinx
           make html
-          mkdir html/downloads
+          mkdir build/html/downloads
 
           make latex
           cd build/latex && make && cp LectureNote.pdf ../html/downloads && cd ../..
