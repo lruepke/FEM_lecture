@@ -166,7 +166,7 @@ latex_elements = {
 }
 master_doc = 'index'
 latex_documents = [
-    (master_doc, latex_name+'.tex', project, author, ''),
+    (master_doc, latex_name+'.tex', project, author, 'manual'),
 ]
 # ====================================================================
 # new defined cite style
