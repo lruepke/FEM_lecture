@@ -23,6 +23,7 @@ jobs:
       # could also generate latex/pdf here
       - name: Generate sphinx pages
         run: |
+          cd sphinx
           make html
           
       
@@ -36,7 +37,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/html
+          publish_dir: ./sphinx/build/html
 
       # - name: Deploy to GitHub Pages
       #   if: success()
