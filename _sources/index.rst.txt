@@ -7,7 +7,7 @@ Welcome to the website for the course Numerical Fluid Dynamics I (flow in porous
         
 
 Course content
-------------------
+------------------     
 These are the main topics:
 
 1. Introduction to computational fluids dynamics /  Navier-Stokes, Stokes, Darcy
