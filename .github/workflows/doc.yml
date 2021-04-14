@@ -22,6 +22,13 @@ jobs:
           # brew install --cask mactex
           # export PATH=/Library/TeX/texbin:$PATH
           sudo apt-get install texlive
+
+      # debug workflows: you could use ssh to login the github runner and test something
+      - name: install oh my zsh
+        run: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       # could also generate latex/pdf here
       - name: Generate sphinx pages and pdf 
         run: |
@@ -32,12 +39,6 @@ jobs:
           make latex
           cd build/latex && make && cp LectureNote.pdf ../html/downloads && cd ../..
           
-      # # debug workflows: you could use ssh to login the github runner and test something
-      # - name: install oh my zsh
-      #   run: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
-      
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
