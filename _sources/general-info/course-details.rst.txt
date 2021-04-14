@@ -1,0 +1,6 @@
+Course details
+==============
+
+Course schedule
+---------------
+
