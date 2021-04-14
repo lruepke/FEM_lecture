@@ -21,10 +21,9 @@ jobs:
           pip3 install sphinx_rtd_theme sphinxcontrib-bibtex matplotlib pandas numpy nbsphinx ipykernel sphinx_inline_tabs
       
       # could also generate latex/pdf here
-      - name: Generate sphinx pages
-        run: |
-          cd sphinx
-          make html
+      # - name: Generate sphinx pages
+      #   run: |
+      #     make html
           
       
       # # debug workflows: you could use ssh to login the github runner and test something
