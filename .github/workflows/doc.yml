@@ -19,22 +19,27 @@ jobs:
         run: |
           pip3 install sphinx
           pip3 install sphinx_rtd_theme sphinxcontrib-bibtex matplotlib pandas numpy nbsphinx ipykernel sphinx_inline_tabs
-          
+      
+      # could also generate latex/pdf here
       - name: Generate sphinx pages
         run: |
           cd sphinx
           make html
+          cd ..
+          mv sphinx/build/html docs
           
-      - name: install oh my zsh
-        run: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      
+      # # debug workflows: you could use ssh to login the github runner and test something
+      # - name: install oh my zsh
+      #   run: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
 
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
-          build_dir: sphinx/build/html
+          build_dir: docs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
