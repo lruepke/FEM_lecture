@@ -1,18 +1,6 @@
 {# Import the theme's layout. #}
 {% extends "!layout.html" %}
 
-{%- block extrahead %} 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJ32EEFYRN"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-EJ32EEFYRN');
-    </script>   
-{% endblock %}
-
 {% block menu %}
     {{ super() }}
 
@@ -27,3 +15,35 @@
         </ul>
     {% endif %}
 {% endblock %}
+
+{#
+
+    This template exists as a way to implement a version menu without changing what
+    the theme normally renders the menu on local builds and on builds on Read the
+    Docs. This is for local testing purposes only.
+    
+    #}
+    
+    {% block footer %}
+      {% if not READTHEDOCS %}
+        <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+          <span class="rst-current-version" data-toggle="rst-current-version">
+            <span class="fa fa-book"> {{ project }}</span>
+            v: latest
+            <span class="fa fa-caret-down"></span>
+          </span>
+          <div class="rst-other-versions">
+            <dl>
+              {% if pdf_versions %}
+                {% for version, link in pdf_versions %}
+                <dd><a href="{{ link }}/{{ latex_main }}_en.pdf">{{ version }}</a></dd>
+                {% endfor %}
+              {% else %}
+                <dd><a href="#">latest</a></dd>
+                <dd><a href="#">1.0</a></dd>
+                <dd><a href="#">1.1</a></dd>
+              {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endblock %}

@@ -17,6 +17,7 @@ sys.path.append(os.path.abspath('_extensions'))
 # -- Project information -----------------------------------------------------
 
 project = 'HydrothermalFoam Lecture'
+latex_name='LectureNote'
 copyright = '2020, Lars Ruepke and Zhikui Guo'
 author = 'Lars Ruepke'
 
@@ -116,6 +117,19 @@ html_context = {
             "https://lms.uni-kiel.de/url/RepositoryEntry/3664576582",
         ),
     ],
+    'project':project,
+    'downloads_url':'hydrothermal-openfoam.gitlab.io/saltwatereos/manual/downloads',
+    'latex_main':  latex_name, #pdf file name
+    'pdf_versions': [
+        (
+            'latest',
+            'https://hydrothermal-openfoam.gitlab.io/saltwatereos/downloads'  #pdf path
+        ),
+        (
+            '2.0',
+            '#'
+        ),
+        ]
 }
 
 
@@ -150,9 +164,10 @@ latex_elements = {
     'preamble': r'''\setmainfont{Arial}
     ''',
 }
-
-
-
+master_doc = 'index'
+latex_documents = [
+    (master_doc, latex_name+'.tex', project, author, ''),
+]
 # ====================================================================
 # new defined cite style
 from pybtex.style.formatting.unsrt import Style as UnsrtStyle
@@ -208,9 +223,9 @@ class APALabelStyle(BaseLabelStyle):
             return "{}, n.d.".format(label)
 
     def format_author_or_editor_names(self, persons):
-        if len(persons) is 1:
+        if (len(persons) == 1):
             return _strip_nonalnum(persons[0].last_names)
-        elif len(persons) is 2:
+        elif (len(persons) == 2):
             return "{} & {}".format(
                 _strip_nonalnum(persons[0].last_names),
                 _strip_nonalnum(persons[1].last_names))
