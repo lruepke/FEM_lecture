@@ -1,6 +1,11 @@
 Introduction Finite Differences
 ===============================
 
+.. admonition:: Credits!
+
+    - I believe Boris Kaus initially developed some of this material for course at Oslo University
+    - Ria Fischer helped to compile some of this material for previous lecture  
+
 Before progressing towards finite element modeling, we will learn about the Finite Difference Method (FDM, which is a somewhat easier method to solve partial differential equations. We will do so by looking at how heat conduction "works".
 
 Background on conductive heat transport
