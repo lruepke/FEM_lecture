@@ -46,7 +46,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example 1: Cooling dike" href="cooling_dike.html" />
+    <link rel="next" title="References" href="../refs.html" />
     <link rel="prev" title="Installation guide" href="installation.html" /> 
 </head>
 
@@ -107,9 +107,17 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction Finite Differences</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#background-on-conductive-heat-transport">Background on conductive heat transport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-finite-differences-method">The Finite Differences Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-1-cooling-dike">Example 1: Cooling dike</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#excercises">Excercises</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cooling_dike.html">Example 1: Cooling dike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#appendix">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#taylor-series-expansions">Taylor-series expansions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#finite-difference-approximations">Finite difference approximations</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -279,7 +287,7 @@ k
 <div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-d1">
 <span class="eqno">(5)<a class="headerlink" href="#equation-eq-fd-heat-flow-d1" title="Permalink to this equation">¶</a></span>\[\frac{\partial T}{\partial x} =
 \lim_{\Delta x \rightarrow 0} \frac{T(x + \Delta x) - T(x)}{\Delta x}\]</div>
-<p>In our case, the above derivative describes the change in temperature with x (our space coordinate). In numerics, we always deal with discrete functions (as opposed to continuous functions), which only exist at grid points <a class="reference internal" href="cooling_dike.html#dike-setup"><span class="std std-numref">Fig. 2</span></a>. We can therefore translate the above equation into computer readable form:</p>
+<p>In our case, the above derivative describes the change in temperature with x (our space coordinate). In numerics, we always deal with discrete functions (as opposed to continuous functions), which only exist at grid points <a class="reference internal" href="#dike-setup"><span class="std std-numref">Fig. 2</span></a>. We can therefore translate the above equation into computer readable form:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-d2">
 <span class="eqno">(6)<a class="headerlink" href="#equation-eq-fd-heat-flow-d2" title="Permalink to this equation">¶</a></span>\[\frac{\partial T}{\partial x} \approx
 \frac{T(i + 1) - T(i)}{x(i+1) - x(i)} =
@@ -303,6 +311,129 @@ k
 <span class="eqno">(11)<a class="headerlink" href="#equation-eq-fd-heat-flow-explicit-solution" title="Permalink to this equation">¶</a></span>\[T_i^{n+1} = \frac{\kappa \Delta t}{\Delta x^2} \left( T_{i+1}^n - 2 T_i^n + T_{i-1}^n\right) + T_i^n\]</div>
 <p>We have now translated the heat conduction equation <a class="reference internal" href="#equation-eq-1d-heat-flow">equation (2)</a> into a computer readable finite differences form.</p>
 </div>
+<div class="section" id="example-1-cooling-dike">
+<h2>Example 1: Cooling dike<a class="headerlink" href="#example-1-cooling-dike" title="Permalink to this headline">¶</a></h2>
+<p>As a first example, we will use the finite differences form of the heat diffusion equation <a class="reference internal" href="#equation-eq-1d-heat-flow">equation (2)</a> to explore the cooling of a dike. We will look at a  <span class="math notranslate nohighlight">\(2m\)</span> wide dike that intruded with a temperature of  <span class="math notranslate nohighlight">\(1200°C\)</span> into  <span class="math notranslate nohighlight">\(300°C\)</span> warm country rock. The initial conditions can then be written like this:</p>
+<div class="math notranslate nohighlight" id="equation-eq-dike-ic">
+<span class="eqno">(12)<a class="headerlink" href="#equation-eq-dike-ic" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
+T(x&lt;-1 \mid x&gt;1) = 300\\
+T(x&gt;-1 \&amp; x&lt;1) = 1200
+\end{split}
+\end{align}\end{split}\]</div>
+<p>In addition, we assume that the temperature far away from the dike center (at <span class="math notranslate nohighlight">\(\lvert L/2 \rvert\)</span>) remains at a constant temperature. The boundary conditions are thus:</p>
+<div class="math notranslate nohighlight" id="equation-eq-dike-bc">
+<span class="eqno">(13)<a class="headerlink" href="#equation-eq-dike-bc" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
+T(x=-\frac{L}{2}) = 300\\
+T(x=\frac{L}{2}) = 300
+\end{split}
+\end{align}\end{split}\]</div>
+<div class="figure align-center" id="dike-setup" style="width: 100%">
+<img alt="../_images/1D_dike_example_stencil.png" src="../_images/1D_dike_example_stencil.png" />
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Setup of the model considered here (A). A hot basaltic dike intrudes into colder country rock. Only variations in x-direction are considered; properties in the other directions are assumed to be constant. The initial temperature distribution <span class="math notranslate nohighlight">\(T(x,0)\)</span> has a step-like perturbation. B) Finite difference discretization of the 1D heat equation. The finite difference method approximates the temperature at given grid points, with spacing <span class="math notranslate nohighlight">\(\Delta x\)</span>. The time-evolution is also computed at given times with timestep <span class="math notranslate nohighlight">\(\Delta t\)</span>.</span><a class="headerlink" href="#dike-setup" title="Permalink to this image">¶</a></p>
+</div>
+<p><a class="reference internal" href="#dike-setup"><span class="std std-numref">Fig. 2</span></a> summarizes the setup of the cooling dike problem.</p>
+<div class="section" id="excercises">
+<h3>Excercises<a class="headerlink" href="#excercises" title="Permalink to this headline">¶</a></h3>
+<p>Open MATLAB and an editor and type the Matlab script in an empty file. Save the file under the name ”heat1Dexplicit.m”. Fill in the question marks and run the file by typing heat1Dexplicit in the MATLAB command window (make sure you’re in the correct directory).
+Vary the parameters (e.g. use more gridpoints, a larger timestep). Note that if the timestep is increased beyond a certain value (what does this value depend on?), the numerical method becomes unstable. This is a major drawback of explicit finite difference codes such as the one presented here. In the next lesson we will learn methods that do not have these limitations.
+Go through the rest of the handout and see how one derives finite difference approximations.
+Record and plot the temperature evolution versus time at a distance of $5 unt{m}$ from the dike/country rock contact. What is the maximum temperature the country rock experiences at this location and when is it reached?
+Bonus question: Derive a finite-difference approximation for variable $k$ and variable $Delta x$.</p>
+</div>
+</div>
+<div class="section" id="appendix">
+<h2>Appendix<a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="taylor-series-expansions">
+<h3>Taylor-series expansions<a class="headerlink" href="#taylor-series-expansions" title="Permalink to this headline">¶</a></h3>
+<p>Finite difference approximations can be derived through the use of Taylor-series expansions. Suppose we have a function <span class="math notranslate nohighlight">\(f(x)\)</span>, which is continuous and differentiable over the range of interest. Let’s also assume we know the value <span class="math notranslate nohighlight">\(f(x_0)\)</span> and all the derivatives at <span class="math notranslate nohighlight">\(x = x_0\)</span>. The forward Taylor-series expansion for <span class="math notranslate nohighlight">\(f(x_0+\Delta x)\)</span> about <span class="math notranslate nohighlight">\(x_0\)</span> gives</p>
+<div class="math notranslate nohighlight" id="equation-eq-taylor-series-expansion">
+<span class="eqno">(14)<a class="headerlink" href="#equation-eq-taylor-series-expansion" title="Permalink to this equation">¶</a></span>\[f(x_0+\Delta x) =
+f(x_0)+
+\frac{\partial f(x_0)}{\partial x} \Delta x +
+\frac{\partial^2 f(x_0)}{\partial x^2} \frac{(\Delta x)^2}{2!} +
+\frac{\partial^3 f(x_0)}{\partial x^3} \frac{(\Delta x)^3}{3!} +
+\frac{\partial^n f(x_0)}{\partial x^n} \frac{(\Delta x)^n}{n!} +
+O(\Delta x)^{n+1}\]</div>
+<p>We can compute the first derivative by rearranging equation ref{eqs:Taylor_series_expansion}</p>
+<div class="math notranslate nohighlight" id="equation-eq-taylor-series-expansion-rearranged">
+<span class="eqno">(15)<a class="headerlink" href="#equation-eq-taylor-series-expansion-rearranged" title="Permalink to this equation">¶</a></span>\[\frac{\partial f(x_0)}{\partial x} =
+\frac{f(x_0+\Delta x)− f(x_0)}{\Delta x} −
+\frac{\partial^2 f(x_0)}{\partial x^2} \frac{(\Delta x)}{2!} −
+\frac{\partial^3 f(x_0)}{\partial x^3} \frac{(\Delta x)^2}{3!} ...\]</div>
+<p>This can also be written in discretized notation as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-taylor-series-expansion-rearranged-2">
+<span class="eqno">(16)<a class="headerlink" href="#equation-eq-taylor-series-expansion-rearranged-2" title="Permalink to this equation">¶</a></span>\[\frac{\partial f(x_i)}{\partial x} = \frac{f_{i+1}−f_i}{\Delta x} + O(\Delta x)\]</div>
+<p>here <span class="math notranslate nohighlight">\(O(\Delta x)\)</span> is called the <em>truncation error</em>, which means that if the distance <span class="math notranslate nohighlight">\(\Delta x\)</span> is made smaller and smaller, the (numerical approximation) error decreases with <span class="math notranslate nohighlight">\(\Delta x\)</span>. This derivative is also called first order accurate.</p>
+<p>We can also expand the Taylor series backward</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-backward">
+<span class="eqno">(17)<a class="headerlink" href="#equation-eq-tayler-series-expansion-backward" title="Permalink to this equation">¶</a></span>\[f(x_0−\Delta x) =
+f(x_0)− \frac{\partial f(x_0)}{\partial x} \Delta x+
+\frac{\partial^2 f(x_0)}{\partial x^2} \frac{(\Delta x)^2}{2!} −
+\frac{\partial^3 f(x_0)}{\partial x^3} \frac{(\Delta x)^3}{3!} + \cdots\]</div>
+<p>In this case, the first (backward) derivative can be written as</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-backward-fist-derivativ">
+<span class="eqno">(18)<a class="headerlink" href="#equation-eq-tayler-series-expansion-backward-fist-derivativ" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{\partial f (x0)}{\partial x} =
+\frac{f(x_0)− f(x_0−\Delta x)}{\Delta x} +
+\frac{\partial^2 f(x_0)}{\partial x^2} \frac{(\Delta x)}{2!} −
+\frac{\partial^3 f(x_0)}{\partial x^3} \frac{(\Delta x)^2}{3!} \cdots\\
+\frac{\partial f(x_i)}{\partial x} = \frac{f_i− f_{i−1}}{\Delta x} + O(\Delta x)\end{split}\]</div>
+<p>By adding <a class="reference internal" href="#equation-eq-taylor-series-expansion-rearranged">equation (15)</a> and <a class="reference internal" href="#equation-eq-tayler-series-expansion-backward-fist-derivativ">equation (18)</a> and dividing by two, a second order accurate first order derivative is obtained</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy1">
+<span class="eqno">(19)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy1" title="Permalink to this equation">¶</a></span>\[\frac{\partial f(x_i)}{\partial x} = \frac{f_{i+1} − f_{i−1}}{2\Delta x} + O(\Delta x)^2\]</div>
+<p>By adding equations <a class="reference internal" href="#equation-eq-taylor-series-expansion-rearranged">equation (15)</a> and <a class="reference internal" href="#equation-eq-tayler-series-expansion-backward">equation (17)</a> an approximation of the second derivative is obtained</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy2">
+<span class="eqno">(20)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy2" title="Permalink to this equation">¶</a></span>\[\frac{\partial f^2(x_i)}{\partial x^2} = \frac{f_{i+1}−2 f_i+ f_{i−1}}{(\Delta x)^2} +O(\Delta x)^2\]</div>
+<p>With this approach we can basically derive all possible finite difference approximations. A different way to derive the second derivative is by computing the first derivative at <span class="math notranslate nohighlight">\(i+\frac{1}{2}\)</span> and at <span class="math notranslate nohighlight">\(i-\frac{1}{2}\)</span> and computing the second derivative at $i$ by using those two first derivatives:</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy3">
+<span class="eqno">(21)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\frac{\partial f(x_{i+1/2})}{\partial x} = \frac{f_{i+1}−f_i}{x_{i+1}−x_i}\\
+\frac{\partial f(x_{i−1/2})}{\partial x} = \frac{f_i−f_{i−1}}{x_i−x_{i−1}}\\
+\frac{\partial f^2(x_i)}{\partial x^2} = \frac{\frac{\partial f(x_{i+1/2})}{\partial x} − \frac{\partial f(x_{i−1/2})}{\partial x}}{x_{i+1/2}−x_{i−1/2}} =
+\frac{ \frac{f_{i+1}−f_i}{x_{i+1}−x_i} − \frac{f_i−f_{i−1}}{x_i−x_{i−1}}}{0.5(x_{i+1}−x_{i−1})}
+\end{align}\end{split}\]</div>
+<p>Similarly we can derive higher order derivatives. Note that the highest order derivative that usually occurs in geodynamics is the <span class="math notranslate nohighlight">\(4^th\)</span>-order derivative.</p>
+</div>
+<div class="section" id="finite-difference-approximations">
+<h3>Finite difference approximations<a class="headerlink" href="#finite-difference-approximations" title="Permalink to this headline">¶</a></h3>
+<p>The following equations are common finite difference approximations of derivatives. If you, in the future, need to write a finite difference approximation, come back here.</p>
+<p>Left-sided first derivative, first order</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy4">
+<span class="eqno">(22)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy4" title="Permalink to this equation">¶</a></span>\[\left| \frac{\partial u}{\partial x}\right|_{i−1/2} = \frac{u_i−u_{i−1}}{\Delta x} +O(\Delta x)\]</div>
+<p>Right-sided first derivative, first order</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy5">
+<span class="eqno">(23)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy5" title="Permalink to this equation">¶</a></span>\[\left| \frac{\partial u}{\partial x}\right|_{i+1/2} = \frac{u_{i+1}−u_i}{\Delta x} +O(\Delta x)\]</div>
+<p>Central first derivative, second order</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy6">
+<span class="eqno">(24)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy6" title="Permalink to this equation">¶</a></span>\[\left| \frac{\partial u}{\partial x}\right|_i = \frac{u_{i+1}−u_{i−1}}{2\Delta x} +O(\Delta x)^2\]</div>
+<p>Central first derivative, fourth order</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy7">
+<span class="eqno">(25)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy7" title="Permalink to this equation">¶</a></span>\[\left| \frac{\partial u}{\partial x}\right|_i = \frac{−u_{i+2}+8u_{i+1}−8u_{i−1}+u_{i−2}}{12\Delta x} +O(\Delta x)^4\]</div>
+<p>Central second derivative, second order</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy8">
+<span class="eqno">(26)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy8" title="Permalink to this equation">¶</a></span>\[\left| \frac{\partial^2 u}{\partial x^2}\right|_i = \frac{u_{i+1}−2u_i+u_{i−1}}{\Delta x^2} +O(\Delta x)^2\]</div>
+<p>Central second derivative, fourth order</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy9">
+<span class="eqno">(27)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy9" title="Permalink to this equation">¶</a></span>\[\left|\frac{\partial^2 u}{\partial x^2} \right|_i = \frac{−u_{i+2}+16u_{i+1}−30u_i+16u_{i−1}−u_{i−2}}{12\Delta x^2} +O(\Delta x)^4\]</div>
+<p>Central third derivative, second order</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy10">
+<span class="eqno">(28)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy10" title="Permalink to this equation">¶</a></span>\[\left|\frac{\partial^3 u}{\partial x^3}\right|_i = \frac{u_{i+2}−2u_{i+1}+2u_{i−1}−u_{i−2}}{2\Delta x^3} +O(\Delta x)^2\]</div>
+<p>Central third derivative, fourth order</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy11">
+<span class="eqno">(29)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy11" title="Permalink to this equation">¶</a></span>\[\left| \frac{\partial^3 u}{\partial x^3}\right|_i = \frac{−u_{i+3}+8u_{i+2}−13u_{i+1}+13u_{i−1}−8u_{i−2}+u_{i−3}}{8\Delta x^3} +O(\Delta x)^4\]</div>
+<p>Central fourth derivative</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy12">
+<span class="eqno">(30)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy12" title="Permalink to this equation">¶</a></span>\[\left| \frac{\partial^4 u}{\partial x^4}\right|_i =\frac{u_{i+2}−4u_{i+1}+6u_i−4u_{i−1}+u_{i−2}}{\Delta x^4} +O(\Delta x)2\]</div>
+<p>Note that the higher the order of the finite difference scheme, the more adjacent points are required. It is also important to note that derivatives of the following form</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy13">
+<span class="eqno">(31)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy13" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}\left(k\frac{\partial u}{\partial x}\right)\]</div>
+<p>should be formed as follows</p>
+<div class="math notranslate nohighlight" id="equation-eq-tayler-series-expansion-dummy14">
+<span class="eqno">(32)<a class="headerlink" href="#equation-eq-tayler-series-expansion-dummy14" title="Permalink to this equation">¶</a></span>\[\left| \frac{\partial}{\partial x}\left(k\frac{\partial u}{\partial x} \right)\right|_i =
+\frac{k_{i+1/2} \frac{u_{i+1}−u_i}{\Delta x} − k_{i−1/2} \frac{u_i−u_{i−1}}{\Delta x}}{\Delta x} +O(\Delta x)^2\]</div>
+</div>
+</div>
 </div>
 
 
@@ -311,7 +442,7 @@ k
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="cooling_dike.html" class="btn btn-neutral float-right" title="Example 1: Cooling dike" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../refs.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
