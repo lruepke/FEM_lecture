@@ -1,0 +1,376 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Introduction Finite Differences &mdash; Finite Element Modeling in Geodynamics  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/tabs.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 1: Cooling dike" href="cooling_dike.html" />
+    <link rel="prev" title="Installation guide" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Finite Element Modeling in Geodynamics
+          
+
+          
+            
+            <img src="../_static/htf_picto2.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Course information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general-info/course-details.html">Course details</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 1</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Lecture overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction Finite Differences</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#background-on-conductive-heat-transport">Background on conductive heat transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-finite-differences-method">The Finite Differences Method</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cooling_dike.html">Example 1: Cooling dike</a></li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../refs.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">Getting help</span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="mailto:lruepke@geomar.de"><i class="fa fa-envelope fa-fw"></i> Prof. Lars Ruepke</a></li>
+            
+                <li class="toctree-l1"><a href="mailto:zguo@geomar.de"><i class="fa fa-envelope fa-fw"></i> Dr. Zhikui Guo</a></li>
+            
+                <li class="toctree-l1"><a href="https://lruepke.github.io/FEM_lecture/"><i class="fa fa-home fa-fw"></i> Public site</a></li>
+            
+                <li class="toctree-l1"><a href="https://lms.uni-kiel.de/url/RepositoryEntry/3664576582"><i class="fa fa-home fa-fw"></i> University site</a></li>
+            
+        </ul>
+    
+
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Finite Element Modeling in Geodynamics</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Introduction Finite Differences</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/lruepke/HTF_lecture/blob/main//source/lecture1/fdm_intro.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="introduction-finite-differences">
+<h1>Introduction Finite Differences<a class="headerlink" href="#introduction-finite-differences" title="Permalink to this headline">¶</a></h1>
+<p>Before progressing towards finite element modeling, we will learn about the Finite Difference Method (FDM, which is a somewhat easier method to solve partial differential equations. We will do so by looking at how heat conduction “works”.</p>
+<div class="section" id="background-on-conductive-heat-transport">
+<h2>Background on conductive heat transport<a class="headerlink" href="#background-on-conductive-heat-transport" title="Permalink to this headline">¶</a></h2>
+<p>Temperature is one of the key parameters that control and affect the geological processes that we are exploring during this class. Mantle melting, rock rheology, and metamorphism are all functions of temperature. It is therefore essential that we understand how rocks exchange heat and change their temperature.</p>
+<p>One fundamental equation in the analysis of heat transfer is Fourier’s law for heat flow:</p>
+<div class="math notranslate nohighlight" id="equation-eq-heat-flow">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq-heat-flow" title="Permalink to this equation">¶</a></span>\[\begin{split}\vec{q} = -k \nabla T = -k
+\begin{bmatrix}
+\frac{\partial T}{\partial x} \\
+\frac{\partial T}{\partial y} \\
+\frac{\partial T}{\partial z}
+\end{bmatrix}\end{split}\]</div>
+<p>It states that heat flow is directed from high to low temperatures (that’s where the minus sign comes from) and is proportional to the geothermal gradient. The proportionality constant, k, is the thermal conductivity which has units of W/m/K and describes how well a rock transfers heat. k is a typically a complex function of rock type, porosity, and temperature yet is often simplified to a constant value.</p>
+<p>In most cases, we are interested in temperature and not heat flow so that we would like to have an equation that describes the temperature evolution in a rock. We can get this by deriving a conservation law for heat.</p>
+<div class="figure align-center" id="heat-flux-box" style="width: 100%">
+<img alt="../_images/3D_cube_heat_flow.png" src="../_images/3D_cube_heat_flow.png" />
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Derivation of the energy equation. Change in internal energy is related to changes in heat fluxes into and out of the box (and a lot of other terms (e.g. advection) that are neglected here).</span><a class="headerlink" href="#heat-flux-box" title="Permalink to this image">¶</a></p>
+</div>
+<p>For simple incompressible cases, changes in internal energy can be expressed as changes in temperature timesdue density and specific heat. The change in internal energy with time can now be written as <span class="math notranslate nohighlight">\(\rho c_p \frac{\partial}{\partial t} T \Delta x \Delta y \Delta z\)</span> (<span class="math notranslate nohighlight">\(\rho\)</span> is density, <span class="math notranslate nohighlight">\(c_p\)</span> specific heat, and <span class="math notranslate nohighlight">\(T\)</span> temperature), has units of (<span class="math notranslate nohighlight">\(J/s\)</span>), and must be equal to the difference between the heat flow into the box <span class="math notranslate nohighlight">\(q_{in} \Delta y \Delta z \left( \frac{W}{m K}\frac{K}{m}m^2 = \frac{J}{s}\right)\)</span> and the heat flow out of the box <span class="math notranslate nohighlight">\(\left( q_{in} + \frac{\partial q_{in}}{\partial x} \Delta x\right) \Delta y \Delta z\)</span> (the y and z directions are done in the same way). With these considerations, we can write a conservation equation for energy:</p>
+<div class="math notranslate nohighlight" id="equation-eq-1d-heat-flow">
+<span class="eqno">(2)<a class="headerlink" href="#equation-eq-1d-heat-flow" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
+\rho c_p \frac{\partial T}{\partial t} = -\frac{\partial q_{in}}{\partial x} = \frac{\partial}{\partial x}k\frac{\partial T}{\partial x}\\
+\frac{\partial T}{\partial t} = \frac{k}{\rho c_p} \frac{\partial^2 T}{\partial x^2} = \kappa \frac{\partial^2 T}{\partial x^2}
+\end{split}
+\end{align}\end{split}\]</div>
+<p><a class="reference internal" href="#equation-eq-1d-heat-flow">equation (2)</a> is called the heat transfer or heat diffusion equation and is one of the most fundamental equations in Earth Sciences. If the thermal conductivity is constant, we can define a thermal diffusivity, <span class="math notranslate nohighlight">\(\kappa\)</span>, and write the simpler second form of the equation.</p>
+<p>Note how the changes in heat flow can be written in terms of a divergence:</p>
+<div class="math notranslate nohighlight" id="equation-eq-1d-heat-flow-div">
+<span class="eqno">(3)<a class="headerlink" href="#equation-eq-1d-heat-flow-div" title="Permalink to this equation">¶</a></span>\[\rho c_p \frac{\partial T}{\partial t} =
+-\nabla \cdot (\vec{q}) =
+\frac{\partial}{\partial x}k\frac{\partial T}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T}{\partial y} + \frac{\partial}{\partial z}k\frac{\partial T}{\partial z}\]</div>
+<p>Or in vector notation:</p>
+<div class="math notranslate nohighlight" id="equation-eq-1d-heat-flow-vec">
+<span class="eqno">(4)<a class="headerlink" href="#equation-eq-1d-heat-flow-vec" title="Permalink to this equation">¶</a></span>\[\begin{split}\rho c_p \frac{\partial T}{\partial t} =
+-\nabla \cdot \left(\vec{q}\right) =
+\begin{bmatrix}
+\frac{\partial}{\partial x} &amp; \frac{\partial}{\partial y} &amp; \frac{\partial}{\partial z}
+\end{bmatrix}
+k
+\begin{bmatrix}
+\frac{\partial T}{\partial x}\\
+\frac{\partial T}{\partial y}\\
+\frac{\partial T}{\partial z}
+\end{bmatrix}\end{split}\]</div>
+</div>
+<div class="section" id="the-finite-differences-method">
+<h2>The Finite Differences Method<a class="headerlink" href="#the-finite-differences-method" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#equation-eq-1d-heat-flow">equation (2)</a> is a partial differential equation that describes the evolution of temperature. There are two fundamentally different ways to solve it: 1) analytically or 2) numerically. Analytical solutions have the virtue that they are exact but it is often not possible to find one for complex systems. Numerical solutions are always approximations but can be found also for very complex systems. We will first use one numerical technique called finite differences. To learn how partial differential equations are solved using finite differences, we have to go back to the definition of a derivative:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-d1">
+<span class="eqno">(5)<a class="headerlink" href="#equation-eq-fd-heat-flow-d1" title="Permalink to this equation">¶</a></span>\[\frac{\partial T}{\partial x} =
+\lim_{\Delta x \rightarrow 0} \frac{T(x + \Delta x) - T(x)}{\Delta x}\]</div>
+<p>In our case, the above derivative describes the change in temperature with x (our space coordinate). In numerics, we always deal with discrete functions (as opposed to continuous functions), which only exist at grid points (Fig. ref{fig:dike_setup}). We can therefore translate the above equation into computer readable form:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-d2">
+<span class="eqno">(6)<a class="headerlink" href="#equation-eq-fd-heat-flow-d2" title="Permalink to this equation">¶</a></span>\[\frac{\partial T}{\partial x} \approx
+\frac{T(i + 1) - T(i)}{x(i+1) - x(i)} =
+\frac{T(i + 1) - T(i)}{\Delta x}\]</div>
+<p><span class="math notranslate nohighlight">\(T(i)\)</span> is the temperature at a grid point <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(\Delta x\)</span> is the grid spacing between two grid points. Using this definition of a derivative, we can now compute the heat flow from the calculated temperature solution:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-d3">
+<span class="eqno">(7)<a class="headerlink" href="#equation-eq-fd-heat-flow-d3" title="Permalink to this equation">¶</a></span>\[q_x = -k \frac{\partial T}{\partial x} \approx -k \left(\frac{T(i+1)-T(i)}{x(i+1)-x(i)}\right)\]</div>
+<p>This form is called the <em>finite differences</em> form and is a first step towards solving partial differential equations numerically.</p>
+<p>Note that it actually matters in which direction you count: usually it makes life much easier if indices and physical coordinates point in the same direction, e.g. x coordinate and index increase to the right.</p>
+<p>We have learned how we can compute derivatives numerically. The next step is to solve the heat conduction equation <a class="reference internal" href="#equation-eq-1d-heat-flow">equation (2)</a> completely numerically. We are interested in the temperature evolution versus time <span class="math notranslate nohighlight">\(T(x, t)\)</span> which satisfies <a class="reference internal" href="#equation-eq-1d-heat-flow">equation (2)</a>, given an initial temperature distribution. We know already from the heat flow example how to calculate first derivatives (forward differencing):</p>
+<div class="math notranslate nohighlight" id="equation-eq-fd-temperature">
+<span class="eqno">(8)<a class="headerlink" href="#equation-eq-fd-temperature" title="Permalink to this equation">¶</a></span>\[\frac{\partial T}{\partial t} = \frac{T_i^{n+1} - T_i^n}{\Delta t}\]</div>
+<p>The index $n$ corresponds to the time step and the index $i$ to the grid point (x-coordinate). Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):</p>
+<div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-central-difference">
+<span class="eqno">(9)<a class="headerlink" href="#equation-eq-fd-heat-flow-central-difference" title="Permalink to this equation">¶</a></span>\[\kappa\frac{\partial^2 T}{\partial x^2} \approx \kappa \frac{\frac{T_{i+1}^n - T_i^n}{\Delta x}-\frac{T_{i}^n - T_{i-1}^n}{\Delta x}}{\Delta x} = \kappa \frac{T_{i+1}^n-2T_{i}^n+T_{i-1}^n}{\Delta x^2}\]</div>
+<p>If we combine equation <a class="reference internal" href="#equation-eq-fd-temperature">equation (8)</a> and <a class="reference internal" href="#equation-eq-fd-heat-flow-central-difference">equation (9)</a> we get:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-explicit">
+<span class="eqno">(10)<a class="headerlink" href="#equation-eq-fd-heat-flow-explicit" title="Permalink to this equation">¶</a></span>\[\frac{T_i^{n+1}-T_i^n}{\Delta t} = \kappa \left(\frac{T_{i+1}^n - 2T_i^n + T_{i-1}^n}{{\Delta x^2}}\right)\]</div>
+<p>The last step is a rearrangement of the discretized equation, so that all known quantities (i.e. temperature at time <span class="math notranslate nohighlight">\(n\)</span>) are on the right-hand side and the unknown quantities on the left-hand side (properties at <span class="math notranslate nohighlight">\(n+1\)</span>). This results in:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-explicit-solution">
+<span class="eqno">(11)<a class="headerlink" href="#equation-eq-fd-heat-flow-explicit-solution" title="Permalink to this equation">¶</a></span>\[T_i^{n+1} = \frac{\kappa \Delta t}{\Delta x^2} \left( T_{i+1}^n - 2 T_i^n + T_{i-1}^n\right) + T_i^n\]</div>
+<p>We have now translated the heat conduction equation <a class="reference internal" href="#equation-eq-1d-heat-flow">equation (2)</a> into a computer readable finite differences form.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="cooling_dike.html" class="btn btn-neutral float-right" title="Example 1: Cooling dike" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Lars Ruepke and Zhikui Guo.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+      
+        <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+          <span class="rst-current-version" data-toggle="rst-current-version">
+            <span class="fa fa-book"> Finite Element Modeling in Geodynamics</span>
+            v: latest
+            <span class="fa fa-caret-down"></span>
+          </span>
+          <div class="rst-other-versions">
+            <dl>
+              
+                
+                <dd><a href="https://lruepke.github.io/FEM_lecture/downloads/LectureNote.pdf">latest</a></dd>
+                
+                <dd><a href="#/LectureNote.pdf">2.0</a></dd>
+                
+              
+          </div>
+        </div>
+      
+    
+
+</body>
+</html>
