@@ -82,7 +82,7 @@ The Finite Differences Method
     \frac{\partial T}{\partial x} =
     \lim_{\Delta x \rightarrow 0} \frac{T(x + \Delta x) - T(x)}{\Delta x}
 
-In our case, the above derivative describes the change in temperature with x (our space coordinate). In numerics, we always deal with discrete functions (as opposed to continuous functions), which only exist at grid points (Fig. \ref{fig:dike_setup}). We can therefore translate the above equation into computer readable form:
+In our case, the above derivative describes the change in temperature with x (our space coordinate). In numerics, we always deal with discrete functions (as opposed to continuous functions), which only exist at grid points :numref:`dike_setup`. We can therefore translate the above equation into computer readable form:
 
 .. math::
     :label: eq:FD_heat_flow_d2
@@ -109,7 +109,7 @@ We have learned how we can compute derivatives numerically. The next step is to 
 
     \frac{\partial T}{\partial t} = \frac{T_i^{n+1} - T_i^n}{\Delta t}
 
-The index $n$ corresponds to the time step and the index $i$ to the grid point (x-coordinate). Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):
+The index :math:`n` corresponds to the time step and the index $i$ to the grid point (x-coordinate). Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):
 
 .. math::
     :label: eq:FD_heat_flow_central_difference
