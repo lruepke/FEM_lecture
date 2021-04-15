@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Introduction to OpenFOAM and HydrothermalFoam &mdash; HydrothermalFoam Lecture  documentation</title>
+  <title>Introduction to the Finite Element Method with applications problems in geodynamics &mdash; Finite Element Modeling in Geodynamics  documentation</title>
   
 
   
@@ -60,7 +60,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> HydrothermalFoam Lecture
+            <a href="#" class="icon icon-home"> Finite Element Modeling in Geodynamics
           
 
           
@@ -117,11 +117,7 @@
             
                 <li class="toctree-l1"><a href="mailto:zguo@geomar.de"><i class="fa fa-envelope fa-fw"></i> Dr. Zhikui Guo</a></li>
             
-                <li class="toctree-l1"><a href="https://www.hydrothermalfoam.info"><i class="fa fa-gitlab fa-fw"></i> HydrothermalFoam</a></li>
-            
-                <li class="toctree-l1"><a href="https://www.openfoam.org"><i class="fa fa-github fa-fw"></i> OpenFOAM</a></li>
-            
-                <li class="toctree-l1"><a href="https://lruepke.github.io/HTF_lecture/"><i class="fa fa-home fa-fw"></i> Public site</a></li>
+                <li class="toctree-l1"><a href="https://lruepke.github.io/FEM_lecture/"><i class="fa fa-home fa-fw"></i> Public site</a></li>
             
                 <li class="toctree-l1"><a href="https://lms.uni-kiel.de/url/RepositoryEntry/3664576582"><i class="fa fa-home fa-fw"></i> University site</a></li>
             
@@ -139,7 +135,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">HydrothermalFoam Lecture</a>
+          <a href="#">Finite Element Modeling in Geodynamics</a>
         
       </nav>
 
@@ -172,7 +168,7 @@
     
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Introduction to OpenFOAM and HydrothermalFoam</li>
+      <li>Introduction to the Finite Element Method with applications problems in geodynamics</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -217,33 +213,32 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="introduction-to-openfoam-and-hydrothermalfoam">
-<h1>Introduction to OpenFOAM and HydrothermalFoam<a class="headerlink" href="#introduction-to-openfoam-and-hydrothermalfoam" title="Permalink to this headline">¶</a></h1>
-<p>Welcome to the website for the course Numerical Fluid Dynamics I (flow in porous media) taught at Kiel University within the Geophysics master.  The course introduces methods and tools in geophysical fluid dynamics. The goal is to learn about the complete workflow from formulating a geoscientific hypothesis to testing it using numerical techniques. For this we will use the popular Computational Fluid Dynamics (CFD) package <a class="reference external" href="https://openfoam.org">OpenFOAM</a> . In terms of numerical methods, we will learn about finite-differences and finite-volumes including their respective strengths and limitations. Topic-wise, we will focus on porous flow processes with a special emphasis on hydrothermal flow problems like submarine black smoker systems and hydrothermal cooling of magmatic intrusions. For these topics we will use the 3-D hydrothermal flow model <a class="reference external" href="https://gitlab.com/gmdpapers/hydrothermalfoam">HydrothermalFoam</a>, which is also based on OpenFOAM.</p>
+<div class="section" id="introduction-to-the-finite-element-method-with-applications-problems-in-geodynamics">
+<h1>Introduction to the Finite Element Method with applications problems in geodynamics<a class="headerlink" href="#introduction-to-the-finite-element-method-with-applications-problems-in-geodynamics" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to the website for the course Numerical Fluid Dynamics II (FEM in geodynamics) taught at Kiel University within the Geophysics master.  The focus of this course is on learning how we can solve partial differential equations using the Finite Element Method (FEM) in the context of geodynamical modeling. The Finite Element Method is one of the main numerical methods in mechanics and is also used in the popular geodynamics community code ASPECT. We will first learn about the basics before progressing towards writing our own mantle convection code and using it to address various geodynamic problems ranging from subduction to seafloor spreading. If we have time, we will also cover the marker-in-cell method, which becomes increasingly popular in the geodynamics community. All examples will be implemented in MATLAB and/or Python using the FENICS framework.</p>
 <div class="section" id="course-content">
 <h2>Course content<a class="headerlink" href="#course-content" title="Permalink to this headline">¶</a></h2>
 <p>These are the main topics:</p>
 <ol class="arabic simple">
-<li><p>Introduction to computational fluids dynamics /  Navier-Stokes, Stokes, Darcy</p></li>
-<li><p>Numerical methods / finite differences and finite volumes (MATLAB/Python)</p></li>
-<li><p>Computational Fluid Dynamics with OpenFOAM</p></li>
-<li><p>Visualization with Paraview</p></li>
-<li><p>Hydrothermal systems</p></li>
-<li><p>Project work on transport in porous media</p></li>
+<li><p>Introduction to the finite element method (FEM)</p></li>
+<li><p>Matlab/Python implementation of the FEM in 1D und 2D</p></li>
+<li><p>Stokes-Flow</p></li>
+<li><p>Project work on geodynamical topics</p></li>
+<li><p>Introduction to marker-in-cell method</p></li>
 </ol>
 </div>
 <div class="section" id="course-goals">
 <h2>Course goals<a class="headerlink" href="#course-goals" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li><p>Develop the ability to perform independent modeling work on geoscientific problems.</p></li>
-<li><p>Learn numerical techniques and of how to solve partial differential equations using numerical methods.</p></li>
-<li><p>Obtain in-depth knowledge of OpenFOAM (problem setup, meshing, solvers, 2D -&gt; 3D, visualization).</p></li>
-<li><p>Perform independent project work.</p></li>
+<li><p>Ability to solve geodynamics problems using numerical models.</p></li>
+<li><p>Knowledge of numerical techniques and of how to solve partial differential equations using numerical methods using MATLAB or Python</p></li>
+<li><p>Ability to understand how the popular geodynamics community codes like ASPECT and LaMEM “work”.</p></li>
+<li><p>Preparation to a possible MSc project in geophysical fluid dynamics.</p></li>
 </ol>
 </div>
 <div class="section" id="course-format">
 <h2>Course format<a class="headerlink" href="#course-format" title="Permalink to this headline">¶</a></h2>
-<p>The majority of this course will be spent in front of a computer working on exercises related to (porous) flow problems in marine geodynamics.</p>
+<p>The majority of this course will be spent in front of a computer working on exercises related to FEM and problems in marine geodynamics.</p>
 <div class="admonition-open-access admonition">
 <p class="admonition-title">Open access!</p>
 <p>Note that the materials for this course are <strong>open to everyone</strong>; the course is, however, taught as an on-site class for registered students at Kiel University.</p>
@@ -253,6 +248,9 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="general-info/course-details.html">Course details</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="general-info/course-details.html#course-schedule">Course schedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general-info/course-details.html#instructors">Instructors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general-info/course-details.html#course-website">Course website</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general-info/course-details.html#further-readings">Further readings</a></li>
 </ul>
 </li>
 </ul>
@@ -279,7 +277,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2020, Lars Ruepke and Zhikui Guo.
+        &#169; Copyright 2021, Lars Ruepke and Zhikui Guo.
 
     </p>
   </div>
@@ -314,7 +312,7 @@
       
         <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
           <span class="rst-current-version" data-toggle="rst-current-version">
-            <span class="fa fa-book"> HydrothermalFoam Lecture</span>
+            <span class="fa fa-book"> Finite Element Modeling in Geodynamics</span>
             v: latest
             <span class="fa fa-caret-down"></span>
           </span>

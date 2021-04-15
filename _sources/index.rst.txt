@@ -1,35 +1,35 @@
 
 .. include:: /include.rst_
 
-Introduction to OpenFOAM and HydrothermalFoam
-==================================================
-Welcome to the website for the course Numerical Fluid Dynamics I (flow in porous media) taught at Kiel University within the Geophysics master.  The course introduces methods and tools in geophysical fluid dynamics. The goal is to learn about the complete workflow from formulating a geoscientific hypothesis to testing it using numerical techniques. For this we will use the popular Computational Fluid Dynamics (CFD) package OpenFOAM_ . In terms of numerical methods, we will learn about finite-differences and finite-volumes including their respective strengths and limitations. Topic-wise, we will focus on porous flow processes with a special emphasis on hydrothermal flow problems like submarine black smoker systems and hydrothermal cooling of magmatic intrusions. For these topics we will use the 3-D hydrothermal flow model HydrothermalFoam_, which is also based on OpenFOAM.
-        
+Introduction to the Finite Element Method with applications problems in geodynamics 
+===================================================================================
+Welcome to the website for the course Numerical Fluid Dynamics II (FEM in geodynamics) taught at Kiel University within the Geophysics master.  The focus of this course is on learning how we can solve partial differential equations using the Finite Element Method (FEM) in the context of geodynamical modeling. The Finite Element Method is one of the main numerical methods in mechanics and is also used in the popular geodynamics community code ASPECT. We will first learn about the basics before progressing towards writing our own mantle convection code and using it to address various geodynamic problems ranging from subduction to seafloor spreading. If we have time, we will also cover the marker-in-cell method, which becomes increasingly popular in the geodynamics community. All examples will be implemented in MATLAB and/or Python using the FENICS framework.        
 
 Course content
 ------------------     
 These are the main topics:
 
-1. Introduction to computational fluids dynamics /  Navier-Stokes, Stokes, Darcy
-2. Numerical methods / finite differences and finite volumes (MATLAB/Python)
-3. Computational Fluid Dynamics with OpenFOAM 
-4. Visualization with Paraview
-5. Hydrothermal systems
-6. Project work on transport in porous media
+1. Introduction to the finite element method (FEM)
+2. Matlab/Python implementation of the FEM in 1D und 2D 
+3. Stokes-Flow
+4. Project work on geodynamical topics
+5. Introduction to marker-in-cell method
+
 
 Course goals
 --------------
 
-1. Develop the ability to perform independent modeling work on geoscientific problems.
-2. Learn numerical techniques and of how to solve partial differential equations using numerical methods.
-3. Obtain in-depth knowledge of OpenFOAM (problem setup, meshing, solvers, 2D -> 3D, visualization). 
-4. Perform independent project work.
+1. Ability to solve geodynamics problems using numerical models. 
+2. Knowledge of numerical techniques and of how to solve partial differential equations using numerical methods using MATLAB or Python
+   
+3. Ability to understand how the popular geodynamics community codes like ASPECT and LaMEM "work".
+4. Preparation to a possible MSc project in geophysical fluid dynamics.
 
 
 Course format
 -------------
 
-The majority of this course will be spent in front of a computer working on exercises related to (porous) flow problems in marine geodynamics.
+The majority of this course will be spent in front of a computer working on exercises related to FEM and problems in marine geodynamics.
 
 .. admonition:: Open access!
 
