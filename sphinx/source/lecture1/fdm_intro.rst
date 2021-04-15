@@ -132,5 +132,220 @@ The last step is a rearrangement of the discretized equation, so that all known 
 
 We have now translated the heat conduction equation :eq:`eq:1D_heat_flow` into a computer readable finite differences form.
 
+Example 1: Cooling dike
+------------------------
+
+As a first example, we will use the finite differences form of the heat diffusion equation :eq:`eq:1D_heat_flow` to explore the cooling of a dike. We will look at a  :math:`2m` wide dike that intruded with a temperature of  :math:`1200°C` into  :math:`300°C` warm country rock. The initial conditions can then be written like this:
+
+.. math::
+    :label: eq:dike_ic
+
+    \begin{align}
+    \begin{split}
+    T(x<-1 \mid x>1) = 300\\
+    T(x>-1 \& x<1) = 1200
+    \end{split}
+    \end{align}
+
+In addition, we assume that the temperature far away from the dike center (at :math:`\lvert L/2 \rvert`) remains at a constant temperature. The boundary conditions are thus:
+
+.. math::
+    :label: eq:dike_bc
+
+    \begin{align}
+    \begin{split}
+    T(x=-\frac{L}{2}) = 300\\
+    T(x=\frac{L}{2}) = 300
+    \end{split}
+    \end{align}
+
+.. figure:: /_figures/1D_dike_example_stencil.*
+   :align: center
+   :name: dike_setup
+   :figwidth: 100%
+   
+   Setup of the model considered here (A). A hot basaltic dike intrudes into colder country rock. Only variations in x-direction are considered; properties in the other directions are assumed to be constant. The initial temperature distribution :math:`T(x,0)` has a step-like perturbation. B) Finite difference discretization of the 1D heat equation. The finite difference method approximates the temperature at given grid points, with spacing :math:`\Delta x`. The time-evolution is also computed at given times with timestep :math:`\Delta t`.
+
+
+:numref:`dike_setup` summarizes the setup of the cooling dike problem.
+
+Excercises
+^^^^^^^^^^
+Open MATLAB and an editor and type the Matlab script in an empty file. Save the file under the name ”heat1Dexplicit.m”. Fill in the question marks and run the file by typing heat1Dexplicit in the MATLAB command window (make sure you’re in the correct directory).
+Vary the parameters (e.g. use more gridpoints, a larger timestep). Note that if the timestep is increased beyond a certain value (what does this value depend on?), the numerical method becomes unstable. This is a major drawback of explicit finite difference codes such as the one presented here. In the next lesson we will learn methods that do not have these limitations.
+Go through the rest of the handout and see how one derives finite difference approximations.
+Record and plot the temperature evolution versus time at a distance of $5 \unt{m}$ from the dike/country rock contact. What is the maximum temperature the country rock experiences at this location and when is it reached?
+Bonus question: Derive a finite-difference approximation for variable $k$ and variable $\Delta x$.
+
+Appendix
+--------
+
+Taylor-series expansions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Finite difference approximations can be derived through the use of Taylor-series expansions. Suppose we have a function :math:`f(x)`, which is continuous and differentiable over the range of interest. Let’s also assume we know the value :math:`f(x_0)` and all the derivatives at :math:`x = x_0`. The forward Taylor-series expansion for :math:`f(x_0+\Delta x)` about :math:`x_0` gives
+
+.. math::
+    :label: eq:Taylor_series_expansion
+    
+    f(x_0+\Delta x) =
+    f(x_0)+
+    \frac{\partial f(x_0)}{\partial x} \Delta x +
+    \frac{\partial^2 f(x_0)}{\partial x^2} \frac{(\Delta x)^2}{2!} +
+    \frac{\partial^3 f(x_0)}{\partial x^3} \frac{(\Delta x)^3}{3!} +
+    \frac{\partial^n f(x_0)}{\partial x^n} \frac{(\Delta x)^n}{n!} +
+    O(\Delta x)^{n+1}
+
+We can compute the first derivative by rearranging equation \ref{eqs:Taylor_series_expansion}
+
+.. math::
+    :label: eq:Taylor_series_expansion_rearranged
+
+    \frac{\partial f(x_0)}{\partial x} =
+    \frac{f(x_0+\Delta x)− f(x_0)}{\Delta x} −
+    \frac{\partial^2 f(x_0)}{\partial x^2} \frac{(\Delta x)}{2!} −
+    \frac{\partial^3 f(x_0)}{\partial x^3} \frac{(\Delta x)^2}{3!} ...
+
+This can also be written in discretized notation as:
+
+.. math::
+    :label: eq:Taylor_series_expansion_rearranged_2
+
+    \frac{\partial f(x_i)}{\partial x} = \frac{f_{i+1}−f_i}{\Delta x} + O(\Delta x)
+
+here :math:`O(\Delta x)` is called the *truncation error*, which means that if the distance :math:`\Delta x` is made smaller and smaller, the (numerical approximation) error decreases with :math:`\Delta x`. This derivative is also called first order accurate.
+
+We can also expand the Taylor series backward
+
+.. math::
+    :label: eq:Tayler_series_expansion_backward
+
+    f(x_0−\Delta x) =
+    f(x_0)− \frac{\partial f(x_0)}{\partial x} \Delta x+
+    \frac{\partial^2 f(x_0)}{\partial x^2} \frac{(\Delta x)^2}{2!} −
+    \frac{\partial^3 f(x_0)}{\partial x^3} \frac{(\Delta x)^3}{3!} + \cdots
+
+In this case, the first (backward) derivative can be written as
+
+.. math::
+    :label: eq:Tayler_series_expansion_backward_fist_derivativ
+
+    \frac{\partial f (x0)}{\partial x} =
+    \frac{f(x_0)− f(x_0−\Delta x)}{\Delta x} +
+    \frac{\partial^2 f(x_0)}{\partial x^2} \frac{(\Delta x)}{2!} −
+    \frac{\partial^3 f(x_0)}{\partial x^3} \frac{(\Delta x)^2}{3!} \cdots\\
+    \frac{\partial f(x_i)}{\partial x} = \frac{f_i− f_{i−1}}{\Delta x} + O(\Delta x)
+
+By adding :eq:`eq:Taylor_series_expansion_rearranged` and :eq:`eq:Tayler_series_expansion_backward_fist_derivativ` and dividing by two, a second order accurate first order derivative is obtained
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy1
+
+    \frac{\partial f(x_i)}{\partial x} = \frac{f_{i+1} − f_{i−1}}{2\Delta x} + O(\Delta x)^2
+
+By adding equations :eq:`eq:Taylor_series_expansion_rearranged` and :eq:`eq:Tayler_series_expansion_backward` an approximation of the second derivative is obtained
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy2
+
+    \frac{\partial f^2(x_i)}{\partial x^2} = \frac{f_{i+1}−2 f_i+ f_{i−1}}{(\Delta x)^2} +O(\Delta x)^2
+
+With this approach we can basically derive all possible finite difference approximations. A different way to derive the second derivative is by computing the first derivative at :math:`i+\frac{1}{2}` and at :math:`i-\frac{1}{2}` and computing the second derivative at $i$ by using those two first derivatives:
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy3
+    
+    \begin{align}
+    \frac{\partial f(x_{i+1/2})}{\partial x} = \frac{f_{i+1}−f_i}{x_{i+1}−x_i}\\
+    \frac{\partial f(x_{i−1/2})}{\partial x} = \frac{f_i−f_{i−1}}{x_i−x_{i−1}}\\
+    \frac{\partial f^2(x_i)}{\partial x^2} = \frac{\frac{\partial f(x_{i+1/2})}{\partial x} − \frac{\partial f(x_{i−1/2})}{\partial x}}{x_{i+1/2}−x_{i−1/2}} =
+    \frac{ \frac{f_{i+1}−f_i}{x_{i+1}−x_i} − \frac{f_i−f_{i−1}}{x_i−x_{i−1}}}{0.5(x_{i+1}−x_{i−1})}
+    \end{align}
+
+Similarly we can derive higher order derivatives. Note that the highest order derivative that usually occurs in geodynamics is the :math:`4^th`-order derivative.
+
+
+Finite difference approximations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following equations are common finite difference approximations of derivatives. If you, in the future, need to write a finite difference approximation, come back here.
+
+Left-sided first derivative, first order
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy4
+    
+    \left| \frac{\partial u}{\partial x}\right|_{i−1/2} = \frac{u_i−u_{i−1}}{\Delta x} +O(\Delta x)
+
+Right-sided first derivative, first order
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy5
+    
+    \left| \frac{\partial u}{\partial x}\right|_{i+1/2} = \frac{u_{i+1}−u_i}{\Delta x} +O(\Delta x)
+
+Central first derivative, second order
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy6
+    
+    \left| \frac{\partial u}{\partial x}\right|_i = \frac{u_{i+1}−u_{i−1}}{2\Delta x} +O(\Delta x)^2
+
+Central first derivative, fourth order
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy7
+    
+    \left| \frac{\partial u}{\partial x}\right|_i = \frac{−u_{i+2}+8u_{i+1}−8u_{i−1}+u_{i−2}}{12\Delta x} +O(\Delta x)^4
+
+Central second derivative, second order
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy8
+    
+    \left| \frac{\partial^2 u}{\partial x^2}\right|_i = \frac{u_{i+1}−2u_i+u_{i−1}}{\Delta x^2} +O(\Delta x)^2
+
+Central second derivative, fourth order
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy9
+    
+    \left|\frac{\partial^2 u}{\partial x^2} \right|_i = \frac{−u_{i+2}+16u_{i+1}−30u_i+16u_{i−1}−u_{i−2}}{12\Delta x^2} +O(\Delta x)^4
+
+Central third derivative, second order
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy10
+    
+    \left|\frac{\partial^3 u}{\partial x^3}\right|_i = \frac{u_{i+2}−2u_{i+1}+2u_{i−1}−u_{i−2}}{2\Delta x^3} +O(\Delta x)^2
+
+Central third derivative, fourth order
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy11
+    
+    \left| \frac{\partial^3 u}{\partial x^3}\right|_i = \frac{−u_{i+3}+8u_{i+2}−13u_{i+1}+13u_{i−1}−8u_{i−2}+u_{i−3}}{8\Delta x^3} +O(\Delta x)^4
+
+Central fourth derivative
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy12
+    
+    \left| \frac{\partial^4 u}{\partial x^4}\right|_i =\frac{u_{i+2}−4u_{i+1}+6u_i−4u_{i−1}+u_{i−2}}{\Delta x^4} +O(\Delta x)2
+
+Note that the higher the order of the finite difference scheme, the more adjacent points are required. It is also important to note that derivatives of the following form
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy13
+    
+    \frac{\partial}{\partial x}\left(k\frac{\partial u}{\partial x}\right)
+
+should be formed as follows
+
+.. math::
+    :label: eq:Tayler_series_expansion_dummy14
+    
+    \left| \frac{\partial}{\partial x}\left(k\frac{\partial u}{\partial x} \right)\right|_i =
+    \frac{k_{i+1/2} \frac{u_{i+1}−u_i}{\Delta x} − k_{i−1/2} \frac{u_i−u_{i−1}}{\Delta x}}{\Delta x} +O(\Delta x)^2
 
 
