@@ -105,7 +105,10 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Lecture overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fdm_intro.html">Introduction Finite Differences</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Example 1: Cooling dike</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example 1: Cooling dike</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#excercises">Excercises</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -239,75 +242,19 @@ T(x=-\frac{L}{2}) = 300\\
 T(x=\frac{L}{2}) = 300
 \end{split}
 \end{align}\end{split}\]</div>
-<p>Figure ref{fig:dike_setup} summarized the setup of the cooling dike problem:</p>
-<dl class="simple">
-<dt>begin{figure}[htb]</dt><dd><p>center{includegraphics[width=textwidth]{figures/1D_dike_example_stencil.png}}</p>
-</dd>
-<dt>%       vspace{3in}</dt><dd><p>caption{label{fig:dike_setup} A) Setup of the model considered here. A hot basaltic dike intrudes into colder country rock. Only variations in x-direction are considered; properties in the other directions are assumed to be constant. The initial temperature distribution $T(x,0)$ has a step-like perturbation. B) Finite difference discretization of the 1D heat equation. The finite difference method approximates the temperature at given grid points, with spacing $Delta x$. The time-evolution is also computed at given times with timestep $Delta t$.
-}</p>
-</dd>
-</dl>
-<p>end{figure}</p>
-<p>subsection{Exercises}</p>
-<dl class="simple">
-<dt>begin{enumerate}</dt><dd><p>item Open MATLAB and an editor and type the Matlab script in an empty file. Save the file under the name ”heat1Dexplicit.m”. Fill in the question marks and run the file by typing heat1Dexplicit in the MATLAB command window (make sure you’re in the correct directory).
-item Vary the parameters (e.g. use more gridpoints, a larger timestep). Note that if the timestep is increased beyond a certain value (what does this value depend on?), the numerical method becomes unstable. This is a major drawback of explicit finite difference codes such as the one presented here. In the next lesson we will learn methods that do not have these limitations.
-item Go through the rest of the handout and see how one derives finite difference approximations.
-item Record and plot the temperature evolution versus time at a distance of $5 unt{m}$ from the dike/country rock contact. What is the maximum temperature the country rock experiences at this location and when is it reached?
+<div class="figure align-center" id="dike-setup" style="width: 100%">
+<img alt="../_images/1D_dike_example_stencil.png" src="../_images/1D_dike_example_stencil.png" />
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Setup of the model considered here (A). A hot basaltic dike intrudes into colder country rock. Only variations in x-direction are considered; properties in the other directions are assumed to be constant. The initial temperature distribution <span class="math notranslate nohighlight">\(T(x,0)\)</span> has a step-like perturbation. B) Finite difference discretization of the 1D heat equation. The finite difference method approximates the temperature at given grid points, with spacing <span class="math notranslate nohighlight">\(\Delta x\)</span>. The time-evolution is also computed at given times with timestep <span class="math notranslate nohighlight">\(\Delta t\)</span>.</span><a class="headerlink" href="#dike-setup" title="Permalink to this image">¶</a></p>
+</div>
+<p><a class="reference internal" href="#dike-setup"><span class="std std-numref">Fig. 2</span></a> summarizes the setup of the cooling dike problem.</p>
+<div class="section" id="excercises">
+<h2>Excercises<a class="headerlink" href="#excercises" title="Permalink to this headline">¶</a></h2>
+<p>Open MATLAB and an editor and type the Matlab script in an empty file. Save the file under the name ”heat1Dexplicit.m”. Fill in the question marks and run the file by typing heat1Dexplicit in the MATLAB command window (make sure you’re in the correct directory).
+Vary the parameters (e.g. use more gridpoints, a larger timestep). Note that if the timestep is increased beyond a certain value (what does this value depend on?), the numerical method becomes unstable. This is a major drawback of explicit finite difference codes such as the one presented here. In the next lesson we will learn methods that do not have these limitations.
+Go through the rest of the handout and see how one derives finite difference approximations.
+Record and plot the temperature evolution versus time at a distance of $5 unt{m}$ from the dike/country rock contact. What is the maximum temperature the country rock experiences at this location and when is it reached?
 Bonus question: Derive a finite-difference approximation for variable $k$ and variable $Delta x$.</p>
-</dd>
-</dl>
-<p>end{enumerate}
-pagebreak</p>
-<p>lstset{language=Matlab, frame=single, basicstyle=footnotesize} %or small or footnotesize etc.}
-begin{lstlisting}
-%heat1Dexplicit.m
-%
-% Solves the 1D heat equation with an explicit finite difference scheme
-clear</p>
-<p>%Physical parameters
-L       = 100;                          % Length of modeled domain [m]
-Tmagma  = 1200;                         % Temperature of magma [C]
-Trock   = 300;                          % Temperature of country rock [C]
-kappa   = 1e-6;                         % Thermal diffusivity of rock [m2/s]
-W       = 5;                            % Width of dike [m]
-day     = 3600*24;                      % # seconds per day
-dt      = 1*day;                        % Timestep [s]</p>
-<p>% Numerical parameters
-nx      = 201;                          % Number of gridpoints in x-direction
-nt      = 500;                          % Number of timesteps to compute
-dx      = L/(nx-1);                     % Spacing of grid
-X       = linspace(-L/2,L/2,nx);        % Grid</p>
-<p>% Setup initial temperature profile
-T       = ones(nx)*Trock;
-T(abs(X)&lt;=W/2) = Tmagma;
-time    = 0;</p>
-<p>%Main time loop
-for n=1:nt % Timestep loop</p>
-<blockquote>
-<div><p>% Compute new temperature
-Tnew = zeros(1,nx);
-for i=2:nx-1</p>
-<blockquote>
-<div><p>Tnew(i) = T(i) + ?????;</p>
-</div></blockquote>
-<p>end</p>
-<p>% Set boundary conditions
-Tnew(1)     = T(1);
-Tnew(nx)    = T(nx);</p>
-<p>% Update temperature and time
-T           = Tnew;
-time        = time+dt;</p>
-<p>% Plot solution
-figure(1), clf
-plot(X,Tnew);
-xlabel(‘x [m]’)
-ylabel(‘Temperature [^circ C]’)
-title([‘Temperature evolution after ‘,num2str(time/day),’ days’])
-drawnow</p>
-</div></blockquote>
-<p>end
-end{lstlisting}</p>
+</div>
 </div>
 
 

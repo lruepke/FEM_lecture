@@ -279,7 +279,7 @@ k
 <div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-d1">
 <span class="eqno">(5)<a class="headerlink" href="#equation-eq-fd-heat-flow-d1" title="Permalink to this equation">¶</a></span>\[\frac{\partial T}{\partial x} =
 \lim_{\Delta x \rightarrow 0} \frac{T(x + \Delta x) - T(x)}{\Delta x}\]</div>
-<p>In our case, the above derivative describes the change in temperature with x (our space coordinate). In numerics, we always deal with discrete functions (as opposed to continuous functions), which only exist at grid points (Fig. ref{fig:dike_setup}). We can therefore translate the above equation into computer readable form:</p>
+<p>In our case, the above derivative describes the change in temperature with x (our space coordinate). In numerics, we always deal with discrete functions (as opposed to continuous functions), which only exist at grid points <a class="reference internal" href="cooling_dike.html#dike-setup"><span class="std std-numref">Fig. 2</span></a>. We can therefore translate the above equation into computer readable form:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-d2">
 <span class="eqno">(6)<a class="headerlink" href="#equation-eq-fd-heat-flow-d2" title="Permalink to this equation">¶</a></span>\[\frac{\partial T}{\partial x} \approx
 \frac{T(i + 1) - T(i)}{x(i+1) - x(i)} =
@@ -292,7 +292,7 @@ k
 <p>We have learned how we can compute derivatives numerically. The next step is to solve the heat conduction equation <a class="reference internal" href="#equation-eq-1d-heat-flow">equation (2)</a> completely numerically. We are interested in the temperature evolution versus time <span class="math notranslate nohighlight">\(T(x, t)\)</span> which satisfies <a class="reference internal" href="#equation-eq-1d-heat-flow">equation (2)</a>, given an initial temperature distribution. We know already from the heat flow example how to calculate first derivatives (forward differencing):</p>
 <div class="math notranslate nohighlight" id="equation-eq-fd-temperature">
 <span class="eqno">(8)<a class="headerlink" href="#equation-eq-fd-temperature" title="Permalink to this equation">¶</a></span>\[\frac{\partial T}{\partial t} = \frac{T_i^{n+1} - T_i^n}{\Delta t}\]</div>
-<p>The index $n$ corresponds to the time step and the index $i$ to the grid point (x-coordinate). Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):</p>
+<p>The index <span class="math notranslate nohighlight">\(n\)</span> corresponds to the time step and the index $i$ to the grid point (x-coordinate). Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):</p>
 <div class="math notranslate nohighlight" id="equation-eq-fd-heat-flow-central-difference">
 <span class="eqno">(9)<a class="headerlink" href="#equation-eq-fd-heat-flow-central-difference" title="Permalink to this equation">¶</a></span>\[\kappa\frac{\partial^2 T}{\partial x^2} \approx \kappa \frac{\frac{T_{i+1}^n - T_i^n}{\Delta x}-\frac{T_{i}^n - T_{i-1}^n}{\Delta x}}{\Delta x} = \kappa \frac{T_{i+1}^n-2T_{i}^n+T_{i-1}^n}{\Delta x^2}\]</div>
 <p>If we combine equation <a class="reference internal" href="#equation-eq-fd-temperature">equation (8)</a> and <a class="reference internal" href="#equation-eq-fd-heat-flow-central-difference">equation (9)</a> we get:</p>
