@@ -237,9 +237,10 @@
 <h1>Introduction Finite Differences<a class="headerlink" href="#introduction-finite-differences" title="Permalink to this headline">¶</a></h1>
 <div class="admonition-credits admonition">
 <p class="admonition-title">Credits!</p>
+<p>Thanks to</p>
 <ul class="simple">
-<li><p>I believe Boris Kaus initially developed some of this material for course at Oslo University</p></li>
-<li><p>Ria Fischer helped to compile some of this material for previous lecture</p></li>
+<li><p>Boris Kaus, who initially developed some of the material in this chapter for course at Oslo University</p></li>
+<li><p>Ria Fischer, who helped to compile some of this material for a previous lecture</p></li>
 </ul>
 </div>
 <p>Before progressing towards finite element modeling, we will learn about the Finite Difference Method (FDM, which is a somewhat easier method to solve partial differential equations. We will do so by looking at how heat conduction “works”.</p>
@@ -256,7 +257,7 @@
 \end{bmatrix}\end{split}\]</div>
 <p>It states that heat flow is directed from high to low temperatures (that’s where the minus sign comes from) and is proportional to the geothermal gradient. The proportionality constant, k, is the thermal conductivity which has units of W/m/K and describes how well a rock transfers heat. k is a typically a complex function of rock type, porosity, and temperature yet is often simplified to a constant value.</p>
 <p>In most cases, we are interested in temperature and not heat flow so that we would like to have an equation that describes the temperature evolution in a rock. We can get this by deriving a conservation law for heat.</p>
-<div class="figure align-center" id="heat-flux-box" style="width: 100%">
+<div class="figure align-center" id="heat-flux-box" style="width: 80%">
 <img alt="../_images/3D_cube_heat_flow.png" src="../_images/3D_cube_heat_flow.png" />
 <p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Derivation of the energy equation. Change in internal energy is related to changes in heat fluxes into and out of the box (and a lot of other terms (e.g. advection) that are neglected here).</span><a class="headerlink" href="#heat-flux-box" title="Permalink to this image">¶</a></p>
 </div>

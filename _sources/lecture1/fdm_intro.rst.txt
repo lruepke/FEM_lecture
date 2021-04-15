@@ -3,8 +3,10 @@ Introduction Finite Differences
 
 .. admonition:: Credits!
 
-    - I believe Boris Kaus initially developed some of this material for course at Oslo University
-    - Ria Fischer helped to compile some of this material for previous lecture  
+    Thanks to
+    
+    - Boris Kaus, who initially developed some of the material in this chapter for course at Oslo University
+    - Ria Fischer, who helped to compile some of this material for a previous lecture  
 
 Before progressing towards finite element modeling, we will learn about the Finite Difference Method (FDM, which is a somewhat easier method to solve partial differential equations. We will do so by looking at how heat conduction "works".
 
@@ -32,7 +34,7 @@ In most cases, we are interested in temperature and not heat flow so that we wou
 .. figure:: /_figures/3D_cube_heat_flow.*
    :align: center
    :name: heat_flux_box
-   :figwidth: 100%
+   :figwidth: 80%
 
    Derivation of the energy equation. Change in internal energy is related to changes in heat fluxes into and out of the box (and a lot of other terms (e.g. advection) that are neglected here).
 
