@@ -16,9 +16,9 @@ sys.path.append(os.path.abspath('_extensions'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'HydrothermalFoam Lecture'
+project = 'Finite Element Modeling in Geodynamics'
 latex_name='LectureNote'
-copyright = '2020, Lars Ruepke and Zhikui Guo'
+copyright = '2021, Lars Ruepke and Zhikui Guo'
 author = 'Lars Ruepke'
 
 
@@ -101,16 +101,8 @@ html_context = {
             
         ),
         (
-            '<i class="fa fa-gitlab fa-fw"></i> HydrothermalFoam',
-            "https://www.hydrothermalfoam.info",
-        ),
-        (
-            '<i class="fa fa-github fa-fw"></i> OpenFOAM',
-            "https://www.openfoam.org",
-        ),
-        (
             '<i class="fa fa-home fa-fw"></i> Public site',
-            "https://lruepke.github.io/HTF_lecture/",
+            "https://lruepke.github.io/FEM_lecture/",
         ),
         (
             '<i class="fa fa-home fa-fw"></i> University site',
