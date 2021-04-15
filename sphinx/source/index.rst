@@ -1,6 +1,4 @@
 
-.. include:: /include.rst_
-
 Introduction to the Finite Element Method with applications problems in geodynamics 
 ===================================================================================
 Welcome to the website for the course Numerical Fluid Dynamics II (FEM in geodynamics) taught at Kiel University within the Geophysics master.  The focus of this course is on learning how we can solve partial differential equations using the Finite Element Method (FEM) in the context of geodynamical modeling. The Finite Element Method is one of the main numerical methods in mechanics and is also used in the popular geodynamics community code ASPECT. We will first learn about the basics before progressing towards writing our own mantle convection code and using it to address various geodynamic problems ranging from subduction to seafloor spreading. If we have time, we will also cover the marker-in-cell method, which becomes increasingly popular in the geodynamics community. All examples will be implemented in MATLAB and/or Python using the FENICS framework.        
@@ -41,6 +39,15 @@ The majority of this course will be spent in front of a computer working on exer
     :caption: Course information
 
     general-info/course-details
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Lecture 1
+
+    lecture1/overview
+    lecture1/installation
+    lecture1/fdm_intro
+    lecture1/cooling_dike
 
 .. toctree::
    :maxdepth: 2
