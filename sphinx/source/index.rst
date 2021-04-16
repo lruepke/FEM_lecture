@@ -49,6 +49,7 @@ The majority of this course will be spent in front of a computer working on exer
     lecture1/fdm_intro
     lecture1/example_1
     lecture1/example_2
+    lecture1/example_3
 
 .. toctree::
    :maxdepth: 2
