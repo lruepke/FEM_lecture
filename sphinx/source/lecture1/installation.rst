@@ -1,4 +1,3 @@
-
 Installation guide
 ==================
 
@@ -6,11 +5,11 @@ We will use Python for learning the basics of the finite element method. Later i
 
 Visual Studio Code
 ------------------
-We will do a lot of editing of text files and you can use your favorite text editor for this. However, we strongly recommend to use `Microsoft's Visual Studio Code <https://code.visualstudio.com/>`_. 
+We will do a lot of editing of text files and you can use your favorite text editor for this. However, we  recommend to use `Microsoft's Visual Studio Code <https://code.visualstudio.com/>`_. 
 
 Python
 --------
-In case you are already having a working python environment, read no further. If not, we recommend `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_. Follow the miniconda installation instructions and afterwards create a virtual environment for this course. If you are asked to automatically activate the base environment (add it to the system path), chose "no". It's usually a good idea to keep the normal OS python environment intact and only activate a miniconda environment when you need it.
+In case already have a working python environment, you can adapt it for this course (by e.g. creating a new virtual environment). If not, we recommend `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_. Follow the miniconda installation instructions and afterwards create a virtual environment for this course. If you are asked to automatically activate the base environment (add it to the system path), chose "no". It's usually a good idea to keep the normal OS python environment intact and only activate a miniconda environment when you need it.
 
 Download and install miniconda
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -63,6 +62,8 @@ You can activate and deactivate environments like this:
 Integration with Visual Studio Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 You will need to install Microsoft's Python extension. Just search for Python under Extensions and chose the one from Microsoft (usually the first option). Finally, you will have to set the Python interpreter. Do this by pushing CMD/CTRL+SHIFT+P. Type Python: Select Interpretor and select our newly created anaconda environment. If it doesn't show up, close and re-open Visual Studio Code.
+
+An alternative is to use jupyter lab; we will use both options.
 
 .. tip::
 
