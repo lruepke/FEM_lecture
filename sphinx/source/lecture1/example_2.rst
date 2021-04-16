@@ -93,7 +93,6 @@ The previous exercise on radioactive decay has shown that the fully implicit met
 .. math::
     :label: eq:imp_dummy5
 
-    \begin{align}\label{eqs:FD_heat_equation_explicit}
     \begin{split}
     \frac{T_i^{n+1} - T_i^n}{\Delta t} = \frac{\kappa}{\Delta x^2} \left( T_{i-1}^{n+1} - 2T_i^{n+1} + T_{i+1}^{n+1} \right)\\
     \begin{bmatrix}
@@ -106,7 +105,6 @@ The previous exercise on radioactive decay has shown that the fully implicit met
     \end{bmatrix}
     = T_i^{n}
     \end{split}
-    \end{align}
 
 
 It is characteristic for the implicit form that the solution for :math:`T^{n+1}_i` depends on the solution of the neighboring nodes (:math:`i-1` and :math:`i+1`). As a consequence we cannot simply solve for one node after the other anymore but need to solve a system of equations. In fact, the way forward is to state the problem in matrix form :math:`A\vec{x}=\vec{b}` and solve all equations simultaneously: 
@@ -114,7 +112,7 @@ It is characteristic for the implicit form that the solution for :math:`T^{n+1}_
 .. math::
     :label: eq:imp_dummy6
 
-    \begin{align}\label{eqs:implicit_full_matrix}
+    \begin{align}
     \begin{split}
     \begin{bmatrix}
     1 & 0 & 0 & 0 & 0 & 0 & 0\\
