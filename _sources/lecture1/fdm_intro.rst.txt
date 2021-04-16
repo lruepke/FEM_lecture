@@ -9,7 +9,7 @@ Background on conductive heat transport
 Temperature is one of the key parameters that control and affect the geological processes that we are exploring during this class. Mantle melting, rock rheology, and metamorphism are all functions of temperature. It is therefore essential that we understand how rocks exchange heat and change their temperature.
 
 One fundamental equation in the analysis of heat transfer is Fourier’s law for heat flow:
-
+ 
 .. math::
     :label: eq:heat_flow
     
@@ -209,16 +209,18 @@ By adding equations :eq:`eq:Taylor_series_expansion_rearranged` and :eq:`eq:Tayl
 
     \frac{\partial f^2(x_i)}{\partial x^2} = \frac{f_{i+1}−2 f_i+ f_{i−1}}{(\Delta x)^2} +O(\Delta x)^2
 
-With this approach we can basically derive all possible finite difference approximations. A different way to derive the second derivative is by computing the first derivative at :math:`i+\frac{1}{2}` and at :math:`i-\frac{1}{2}` and computing the second derivative at $i$ by using those two first derivatives:
+With this approach we can basically derive all possible finite difference approximations. A different way to derive the second derivative is by computing the first derivative at :math:`i+\frac{1}{2}` and at :math:`i-\frac{1}{2}` and computing the second derivative at :math:`i` by using those two first derivatives:
 
 .. math::
     :label: eq:Tayler_series_expansion_dummy3
     
     \begin{align}
+    \begin{split}
     \frac{\partial f(x_{i+1/2})}{\partial x} = \frac{f_{i+1}−f_i}{x_{i+1}−x_i}\\
     \frac{\partial f(x_{i−1/2})}{\partial x} = \frac{f_i−f_{i−1}}{x_i−x_{i−1}}\\
     \frac{\partial f^2(x_i)}{\partial x^2} = \frac{\frac{\partial f(x_{i+1/2})}{\partial x} − \frac{\partial f(x_{i−1/2})}{\partial x}}{x_{i+1/2}−x_{i−1/2}} =
     \frac{ \frac{f_{i+1}−f_i}{x_{i+1}−x_i} − \frac{f_i−f_{i−1}}{x_i−x_{i−1}}}{0.5(x_{i+1}−x_{i−1})}
+    \end{split}
     \end{align}
 
 Similarly we can derive higher order derivatives. Note that the highest order derivative that usually occurs in geodynamics is the :math:`4^th`-order derivative.

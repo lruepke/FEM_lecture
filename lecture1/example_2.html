@@ -285,8 +285,7 @@ An alternative formulation, the implicit form, is to assume that the decay rate 
 <h2>Implicit Heat Diffusion<a class="headerlink" href="#implicit-heat-diffusion" title="Permalink to this headline">¶</a></h2>
 <p>The previous exercise on radioactive decay has shown that the fully implicit method is always stable. We will now rewrite our dike cooling model using the implicit formulation. Here is the implicit finite differences form:</p>
 <div class="math notranslate nohighlight" id="equation-eq-imp-dummy5">
-<span class="eqno">(39)<a class="headerlink" href="#equation-eq-imp-dummy5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}\label{eqs:FD_heat_equation_explicit}
-\begin{split}
+<span class="eqno">(39)<a class="headerlink" href="#equation-eq-imp-dummy5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{split}
 \frac{T_i^{n+1} - T_i^n}{\Delta t} = \frac{\kappa}{\Delta x^2} \left( T_{i-1}^{n+1} - 2T_i^{n+1} + T_{i+1}^{n+1} \right)\\
 \begin{bmatrix}
 -\beta &amp; (1+2\beta) &amp; -\beta
@@ -297,11 +296,10 @@ T_{i}^{n+1}\\
 T_{i+1}^{n+1}
 \end{bmatrix}
 = T_i^{n}
-\end{split}
-\end{align}\end{split}\]</div>
+\end{split}\end{split}\]</div>
 <p>It is characteristic for the implicit form that the solution for <span class="math notranslate nohighlight">\(T^{n+1}_i\)</span> depends on the solution of the neighboring nodes (<span class="math notranslate nohighlight">\(i-1\)</span> and <span class="math notranslate nohighlight">\(i+1\)</span>). As a consequence we cannot simply solve for one node after the other anymore but need to solve a system of equations. In fact, the way forward is to state the problem in matrix form <span class="math notranslate nohighlight">\(A\vec{x}=\vec{b}\)</span> and solve all equations simultaneously:</p>
 <div class="math notranslate nohighlight" id="equation-eq-imp-dummy6">
-<span class="eqno">(40)<a class="headerlink" href="#equation-eq-imp-dummy6" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}\label{eqs:implicit_full_matrix}
+<span class="eqno">(40)<a class="headerlink" href="#equation-eq-imp-dummy6" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 \begin{bmatrix}
 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
