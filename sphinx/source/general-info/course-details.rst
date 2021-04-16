@@ -42,3 +42,8 @@ There are many good online resources on numerical modeling in marine geosciences
 - Website of the community code ASPECT  `<https://aspect.geodynamics.org>`_
 - Marc Spiegelmann's script on numerical methods  `<https://earth.usc.edu/~becker/teaching/557/reading/spiegelman_mmm.pdf>`_ 
 
+Credits
+-------
+
+    * Some of the material on finite differences are based on material that **Boris Kaus** initially developed for a modeling workshop at Oslo University.
+    * Special thanks also to **Ria Fischer**, who helped with a previous version of this lecture.
