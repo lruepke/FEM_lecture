@@ -178,11 +178,10 @@ In addition, we assume that the temperature far away from the dike center (at :m
 
 Excercises
 ^^^^^^^^^^
-Open MATLAB and an editor and type the Matlab script in an empty file. Save the file under the name ”heat1Dexplicit.m”. Fill in the question marks and run the file by typing heat1Dexplicit in the MATLAB command window (make sure you’re in the correct directory).
-Vary the parameters (e.g. use more gridpoints, a larger timestep). Note that if the timestep is increased beyond a certain value (what does this value depend on?), the numerical method becomes unstable. This is a major drawback of explicit finite difference codes such as the one presented here. In the next lesson we will learn methods that do not have these limitations.
-Go through the rest of the handout and see how one derives finite difference approximations.
-Record and plot the temperature evolution versus time at a distance of $5 \unt{m}$ from the dike/country rock contact. What is the maximum temperature the country rock experiences at this location and when is it reached?
-Bonus question: Derive a finite-difference approximation for variable $k$ and variable $\Delta x$.
+.. toctree::
+    :maxdepth: 2
+
+    jupyter/cooling_dike_1d_fdm.ipynb
 
 Appendix
 --------

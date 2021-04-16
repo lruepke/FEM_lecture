@@ -46,7 +46,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="References" href="../refs.html" />
+    <link rel="next" title="Script for solving the 1D diffusion equation" href="jupyter/cooling_dike_1d_fdm.html" />
     <link rel="prev" title="Installation guide" href="installation.html" /> 
 </head>
 
@@ -108,7 +108,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#background-on-conductive-heat-transport">Background on conductive heat transport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-finite-differences-method">The Finite Differences Method</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-1-cooling-dike">Example 1: Cooling dike</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#excercises">Excercises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#excercises">Excercises</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="jupyter/cooling_dike_1d_fdm.html">Script for solving the 1D diffusion equation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#appendix">Appendix</a><ul>
@@ -344,11 +347,11 @@ T(x=\frac{L}{2}) = 300
 <p><a class="reference internal" href="#dike-setup"><span class="std std-numref">Fig. 2</span></a> summarizes the setup of the cooling dike problem.</p>
 <div class="section" id="excercises">
 <h3>Excercises<a class="headerlink" href="#excercises" title="Permalink to this headline">¶</a></h3>
-<p>Open MATLAB and an editor and type the Matlab script in an empty file. Save the file under the name ”heat1Dexplicit.m”. Fill in the question marks and run the file by typing heat1Dexplicit in the MATLAB command window (make sure you’re in the correct directory).
-Vary the parameters (e.g. use more gridpoints, a larger timestep). Note that if the timestep is increased beyond a certain value (what does this value depend on?), the numerical method becomes unstable. This is a major drawback of explicit finite difference codes such as the one presented here. In the next lesson we will learn methods that do not have these limitations.
-Go through the rest of the handout and see how one derives finite difference approximations.
-Record and plot the temperature evolution versus time at a distance of $5 unt{m}$ from the dike/country rock contact. What is the maximum temperature the country rock experiences at this location and when is it reached?
-Bonus question: Derive a finite-difference approximation for variable $k$ and variable $Delta x$.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/cooling_dike_1d_fdm.html">Script for solving the 1D diffusion equation</a></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="appendix">
@@ -450,7 +453,7 @@ f(x_0)− \frac{\partial f(x_0)}{\partial x} \Delta x+
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../refs.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="jupyter/cooling_dike_1d_fdm.html" class="btn btn-neutral float-right" title="Script for solving the 1D diffusion equation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
