@@ -1,14 +1,7 @@
 Introduction Finite Differences
 ===============================
 
-.. admonition:: Credits!
-
-    Thanks to
-    
-    - Boris Kaus, who initially developed some of the material in this chapter for course at Oslo University
-    - Ria Fischer, who helped to compile some of this material for a previous lecture  
-
-Before progressing towards finite element modeling, we will learn about the Finite Difference Method (FDM, which is a somewhat easier method to solve partial differential equations. We will do so by looking at how heat conduction "works".
+Before progressing towards finite element modeling, we will learn about the Finite Difference Method (FDM), which is a somewhat easier method to solve partial differential equations. We will do so by looking at how heat conduction “works”.
 
 Background on conductive heat transport
 ---------------------------------------
@@ -78,8 +71,8 @@ Or in vector notation:
     \frac{\partial T}{\partial z}
     \end{bmatrix}
 
-The Finite Differences Method
------------------------------
+Finite Differences discretization
+---------------------------------
 
 :eq:`eq:1D_heat_flow` is a partial differential equation that describes the evolution of temperature. There are two fundamentally different ways to solve it: 1) analytically or 2) numerically. Analytical solutions have the virtue that they are exact but it is often not possible to find one for complex systems. Numerical solutions are always approximations but can be found also for very complex systems. We will first use one numerical technique called finite differences. To learn how partial differential equations are solved using finite differences, we have to go back to the definition of a derivative:
 
@@ -116,7 +109,7 @@ We have learned how we can compute derivatives numerically. The next step is to 
 
     \frac{\partial T}{\partial t} = \frac{T_i^{n+1} - T_i^n}{\Delta t}
 
-The index :math:`n` corresponds to the time step and the index $i$ to the grid point (x-coordinate). Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):
+The index :math:`n` corresponds to the time step and the index :math:`i` to the grid point (x-coordinate). Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):
 
 .. math::
     :label: eq:FD_heat_flow_central_difference
@@ -130,6 +123,10 @@ If we combine equation :eq:`eq:FD_temperature` and :eq:`eq:FD_heat_flow_central_
 
     \frac{T_i^{n+1}-T_i^n}{\Delta t} = \kappa \left(\frac{T_{i+1}^n - 2T_i^n + T_{i-1}^n}{{\Delta x^2}}\right)
 
+.. tip::
+    Notice how we have *conveniently* used the time index :math:`n` for the temperatures in the spatial derivatives. This results in the explicit form of the final discretized equation. The implicit form, which we will learn about later, would used the unknown new (time index :math:`n+1`) temperatures for the spatial derivatives, which requires solving a system of equations.
+
+
 The last step is a rearrangement of the discretized equation, so that all known quantities (i.e. temperature at time :math:`n`) are on the right-hand side and the unknown quantities on the left-hand side (properties at :math:`n+1`). This results in:
 
 .. math::
@@ -138,50 +135,6 @@ The last step is a rearrangement of the discretized equation, so that all known 
     T_i^{n+1} = \frac{\kappa \Delta t}{\Delta x^2} \left( T_{i+1}^n - 2 T_i^n + T_{i-1}^n\right) + T_i^n
 
 We have now translated the heat conduction equation :eq:`eq:1D_heat_flow` into a computer readable finite differences form.
-
-Example 1: Cooling dike
-------------------------
-
-As a first example, we will use the finite differences form of the heat diffusion equation :eq:`eq:1D_heat_flow` to explore the cooling of a dike. We will look at a  :math:`2m` wide dike that intruded with a temperature of  :math:`1200°C` into  :math:`300°C` warm country rock. The initial conditions can then be written like this:
-
-.. math::
-    :label: eq:dike_ic
-
-    \begin{align}
-    \begin{split}
-    T(x<-1 \mid x>1) = 300\\
-    T(x>-1 \& x<1) = 1200
-    \end{split}
-    \end{align}
-
-In addition, we assume that the temperature far away from the dike center (at :math:`\lvert L/2 \rvert`) remains at a constant temperature. The boundary conditions are thus:
-
-.. math::
-    :label: eq:dike_bc
-
-    \begin{align}
-    \begin{split}
-    T(x=-\frac{L}{2}) = 300\\
-    T(x=\frac{L}{2}) = 300
-    \end{split}
-    \end{align}
-
-.. figure:: /_figures/1D_dike_example_stencil.*
-   :align: center
-   :name: dike_setup
-   :figwidth: 100%
-   
-   Setup of the model considered here (A). A hot basaltic dike intrudes into colder country rock. Only variations in x-direction are considered; properties in the other directions are assumed to be constant. The initial temperature distribution :math:`T(x,0)` has a step-like perturbation. B) Finite difference discretization of the 1D heat equation. The finite difference method approximates the temperature at given grid points, with spacing :math:`\Delta x`. The time-evolution is also computed at given times with timestep :math:`\Delta t`.
-
-
-:numref:`dike_setup` summarizes the setup of the cooling dike problem.
-
-Excercises
-^^^^^^^^^^
-.. toctree::
-    :maxdepth: 2
-
-    jupyter/cooling_dike_1d_fdm.ipynb
 
 Appendix
 --------
