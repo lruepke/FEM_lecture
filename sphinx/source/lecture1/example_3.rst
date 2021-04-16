@@ -70,7 +70,7 @@ Again we can rearrange this equation to bring known terms to the right-hand side
     \end{align}
 
 
-This equation only involves grid points that are part of the computational grid and equation :eq:`eq:flux_BC_implicit_formulation` can be incorporated into the matrix :math:`A` and the right-hand side $b$.
+This equation only involves grid points that are part of the computational grid and equation :eq:`eq:flux_BC_implicit_formulation` can be incorporated into the matrix :math:`A` and the right-hand side :math:`b`.
 
 Example: seafloor temperature variations
 ----------------------------------------
