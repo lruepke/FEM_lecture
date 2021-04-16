@@ -19,7 +19,7 @@ where :math:`c_1` is the specified gradient. We could also write it as a heat fl
 
     \frac{−q_{base}}{k}= \frac{\partial T(y = −L,t)}{\partial y}
 
-We can program these conditions by using a forward or a backward finite difference expression. However, this is not so good, since these finite difference approximations are only first order accurate in space. Moreover they would yield the first derivative at the location :math:`T_{\sfrac{1}{2}}` or at :math:`T_{ny-\sfrac{1}{2}}`, and not at :math:`T_1` and :math:`T_y`. A better way to incorporate a flux boundary conditions is therefore to use a central finite difference approximation, which is given (at :math:`i = 1`) by:
+We can program these conditions by using a forward or a backward finite difference expression. However, this is not so good, since these finite difference approximations are only first order accurate in space. Moreover they would yield the first derivative at the location :math:`T_{\frac{1}{2}}` or at :math:`T_{ny-\frac{1}{2}}`, and not at :math:`T_1` and :math:`T_y`. A better way to incorporate a flux boundary conditions is therefore to use a central finite difference approximation, which is given (at :math:`i = 1`) by:
 
 .. math::
     :label: eq:flux_BC
