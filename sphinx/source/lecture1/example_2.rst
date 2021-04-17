@@ -84,6 +84,15 @@ An alternative formulation, the implicit form, is to assume that the decay rate 
 
 We will explore the differences between both formulations with a little python script.
 
+FDM notebook
+------------
+
+.. toctree::
+    :maxdepth: 2
+
+    jupyter/radio_decay.ipynb
+
+
 
 Implicit Heat Diffusion
 -----------------------
