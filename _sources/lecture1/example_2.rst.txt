@@ -93,6 +93,19 @@ FDM notebook
     jupyter/radio_decay.ipynb
 
 
+Excercise - radioactive decay
+-----------------------------
+    
+Try out the notebook and explore under which conditions the solutions are stable. What's the difference between the explicit and the implicit solution?
+
+Add another method to the script that takes the concentration at the center of the time step:
+
+.. math::
+    :label: eq:radio_4
+
+    \frac{c^{n+1} - c^{n}}{\Delta t}= - \lambda c^{n+\frac{1}{2}}
+
+    
 
 Implicit Heat Diffusion
 -----------------------
