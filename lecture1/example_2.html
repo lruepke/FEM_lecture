@@ -46,7 +46,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example 3: Periodic variations in seafloor temperature" href="example_3.html" />
+    <link rel="next" title="FD calculation of radioactive decay" href="jupyter/radio_decay.html" />
     <link rel="prev" title="Script for solving the 1D diffusion equation" href="jupyter/cooling_dike_1d_fdm.html" /> 
 </head>
 
@@ -109,6 +109,10 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Example 2: Cooling dike - implicit version</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#stability-analysis">Stability analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#radioactive-decay-analog">Radioactive decay analog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fdm-notebook">FDM notebook</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/radio_decay.html">FD calculation of radioactive decay</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#implicit-heat-diffusion">Implicit Heat Diffusion</a></li>
 </ul>
 </li>
@@ -282,6 +286,14 @@ An alternative formulation, the implicit form, is to assume that the decay rate 
 <span class="eqno">(38)<a class="headerlink" href="#equation-eq-radio-3" title="Permalink to this equation">¶</a></span>\[\frac{c^{n+1} - c^{n}}{\Delta t}= - \lambda c^{n+1}\]</div>
 <p>We will explore the differences between both formulations with a little python script.</p>
 </div>
+<div class="section" id="fdm-notebook">
+<h2>FDM notebook<a class="headerlink" href="#fdm-notebook" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/radio_decay.html">FD calculation of radioactive decay</a></li>
+</ul>
+</div>
+</div>
 <div class="section" id="implicit-heat-diffusion">
 <h2>Implicit Heat Diffusion<a class="headerlink" href="#implicit-heat-diffusion" title="Permalink to this headline">¶</a></h2>
 <p>The previous exercise on radioactive decay has shown that the fully implicit method is always stable. We will now rewrite our dike cooling model using the implicit formulation. Here is the implicit finite differences form:</p>
@@ -342,7 +354,7 @@ T_{bottom}\\
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="example_3.html" class="btn btn-neutral float-right" title="Example 3: Periodic variations in seafloor temperature" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="jupyter/radio_decay.html" class="btn btn-neutral float-right" title="FD calculation of radioactive decay" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="jupyter/cooling_dike_1d_fdm.html" class="btn btn-neutral float-left" title="Script for solving the 1D diffusion equation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
