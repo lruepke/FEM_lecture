@@ -58,6 +58,28 @@ You can activate and deactivate environments like this:
     conda activate py37_fem_class
     conda deactivate 
 
+Working with jupyter notebooks
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We will do most excercises using jupyter notebooks. A good workflow is to start jupyter labs in working directory. 
+
+.. code-block:: bash
+
+    cd "your working directory
+    jupyter lab
+
+
+One possible issue is that you need to make sure that your jupyter notebooks use the correct python environment. One way of doing this is to install nb_conda_kernels in your base environment and afterwards registering your virtual environment. This can be done like this:
+
+.. code-block:: bash
+
+    conda activate base
+    conda install nb_conda_kernels
+    conda activate py37_fem_class
+    ipython kernel install --user --name=py37_fem_class
+
+Restart you jupyter lab and try to select the correct python kernel.
+
 
 Integration with Visual Studio Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
