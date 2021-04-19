@@ -79,3 +79,16 @@ Oceanic heat flow measurements provide important insights into cooling and alter
 
 Assume a vertical modeling domain of $30\unt{m}$. At the top of the domain a sinusoidal change in surface temperature (:math:`\pm 2°C` around :math:`4°C`) over a one year period is applied and at the bottom a constant heat flow of :math:`60 \frac{mW}{m^2}` is assumed. The sediments have a constant diffusivity of :math:`1e^{-6} m^2/s` and a thermal conductivity of :math:`1.5 W/m/K`.
 
+FDM notebook
+------------
+
+.. toctree::
+    :maxdepth: 2
+
+    jupyter/seafloor_temp_variations.ipynb
+
+
+Excercise - periodic changes in seafloor temperature
+----------------------------------------------------
+        
+tbc
