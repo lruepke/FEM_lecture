@@ -169,3 +169,19 @@ It is characteristic for the implicit form that the solution for :math:`T^{n+1}_
 
 
 All we need to do is set up the matrix A and then solve for :math:`T^{n+1} = A \backslash T^n`!
+
+FDM notebook
+------------
+
+.. toctree::
+    :maxdepth: 2
+
+    jupyter/imp_dike_cooling.ipynb
+
+
+Excercise - implicit dike cooling
+---------------------------------
+        
+Get the notebook to work and programm the implicit solution. Explore if you find any stability limits.
+
+**Bonus:** Plot the explicit and implicit solutions together. Do you find the same behavior as in the radioactive decay example?

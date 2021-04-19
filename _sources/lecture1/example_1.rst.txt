@@ -60,6 +60,7 @@ The first step is to get the jupyter notebook to work. A good starting point is 
     
 Now you can explore the numerical solution.    
 
+    * Complete the notebook and get it to work
     * Vary the parameters (e.g. use more gridpoints, a larger timestep). Notice how the numerical solution becomes unstable when the timestep is increased beyond a certain value (what does this value depend on?). This is a major drawback of explicit finite difference codes such as the one presented here.
     * Record and plot the temperature evolution versus time at a distance of 5 meter from the dike/country rock contact. What is the maximum temperature the country rock experiences at this location and when is it reached?
     * Bonus question: Derive a finite-difference approximation for variable k and variable dx.
