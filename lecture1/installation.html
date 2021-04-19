@@ -107,6 +107,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#download-and-install-miniconda">Download and install miniconda</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#create-a-virtual-environment">Create a virtual environment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#switching-between-environments">Switching between environments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-jupyter-notebooks">Working with jupyter notebooks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#integration-with-visual-studio-code">Integration with Visual Studio Code</a></li>
 </ul>
 </li>
@@ -279,6 +280,22 @@
 conda deactivate
 </pre></div>
 </div>
+</div>
+<div class="section" id="working-with-jupyter-notebooks">
+<h3>Working with jupyter notebooks<a class="headerlink" href="#working-with-jupyter-notebooks" title="Permalink to this headline">¶</a></h3>
+<p>We will do most excercises using jupyter notebooks. A good workflow is to start jupyter labs in working directory.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="s2">&quot;your working directory</span>
+<span class="s2">jupyter lab</span>
+</pre></div>
+</div>
+<p>One possible issue is that you need to make sure that your jupyter notebooks use the correct python environment. One way of doing this is to install nb_conda_kernels in your base environment and afterwards registering your virtual environment. This can be done like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate base
+conda install nb_conda_kernels
+conda activate py37_fem_class
+ipython kernel install --user --name<span class="o">=</span>py37_fem_class
+</pre></div>
+</div>
+<p>Restart you jupyter lab and try to select the correct python kernel.</p>
 </div>
 <div class="section" id="integration-with-visual-studio-code">
 <h3>Integration with Visual Studio Code<a class="headerlink" href="#integration-with-visual-studio-code" title="Permalink to this headline">¶</a></h3>
