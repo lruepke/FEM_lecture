@@ -770,7 +770,7 @@ class Exporter(nbconvert.RSTExporter):
         for i in range(0,len(nb.cells)):
             split_source=nb.cells[i].source.split('\n')
             if('hide' in split_source[0]):
-                nb.cells[i].source=split_source[0]+': the code in this cell is hidden'
+                nb.cells[i].source=split_source[0]+': the code in this cell is hidden by the author'
         # ---------------------------
         nb = copy.deepcopy(nb)
         if resources is None:
