@@ -265,7 +265,7 @@
 <p>You can also do that in the terminal within Visual Studio Code (on MacOS).</p>
 </div>
 <p>Now we are ready to create a virtual environment. We can create it with this command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n py37_fem_class <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 numpy pandas matplotlib vtk h5py ipython scipy ipykernel
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n py37_fem_class <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 numpy pandas matplotlib vtk h5py ipython scipy ipykernel jupyterlab
 </pre></div>
 </div>
 <p>We are using python 3.7 here (instead of the newest 3.8) because of an incompatibility with vtk. Activate the new environment</p>
@@ -288,10 +288,8 @@ conda deactivate
 jupyter lab
 </pre></div>
 </div>
-<p>One possible issue is that you need to make sure that your jupyter notebooks use the correct python environment. One way of doing this is to install nb_conda_kernels in your base environment and afterwards registering your virtual environment. This can be done like this:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate base
-conda install nb_conda_kernels
-conda activate py37_fem_class
+<p>One possible issue is that you need to make sure that your jupyter notebooks use the correct python environment. One way of doing this is to registering your virtual environment as a jupyter kernel. This can be done like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate py37_fem_class
 ipython kernel install --user --name<span class="o">=</span>py37_fem_class
 </pre></div>
 </div>
@@ -300,20 +298,7 @@ ipython kernel install --user --name<span class="o">=</span>py37_fem_class
 <div class="section" id="integration-with-visual-studio-code">
 <h3>Integration with Visual Studio Code<a class="headerlink" href="#integration-with-visual-studio-code" title="Permalink to this headline">¶</a></h3>
 <p>You will need to install Microsoft’s Python extension. Just search for Python under Extensions and chose the one from Microsoft (usually the first option). Finally, you will have to set the Python interpreter. Do this by pushing CMD/CTRL+SHIFT+P. Type Python: Select Interpretor and select our newly created anaconda environment. If it doesn’t show up, close and re-open Visual Studio Code.</p>
-<p>An alternative is to use jupyter lab; we will use both options.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Test your installation by doing this:</p>
-<ul class="simple">
-<li><p>choose the right python interpretor STRG/CMD+SHIFT+P</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">code</span> <span class="pre">hello.ipynb</span></code></p></li>
-<li><p>type in the example code from the figure below</p></li>
-<li><p>execute the cell with SHIFT+RETURN</p></li>
-</ul>
-<div class="figure align-center" style="width: 70%">
-<img alt="../_images/python_install.png" src="../_images/python_install.png" />
-</div>
-</div>
+<p>An alternative is to use jupyter lab - we (currently) recommend using jupyterlab.</p>
 </div>
 </div>
 </div>

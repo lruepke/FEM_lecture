@@ -39,7 +39,7 @@ Now we are ready to create a virtual environment. We can create it with this com
 
 .. code-block:: bash
 
-    conda create -n py37_fem_class python=3.7 numpy pandas matplotlib vtk h5py ipython scipy ipykernel
+    conda create -n py37_fem_class python=3.7 numpy pandas matplotlib vtk h5py ipython scipy ipykernel jupyterlab
 
 We are using python 3.7 here (instead of the newest 3.8) because of an incompatibility with vtk. Activate the new environment
 
@@ -69,12 +69,10 @@ We will do most excercises using jupyter notebooks. A good workflow is to start 
     jupyter lab
 
 
-One possible issue is that you need to make sure that your jupyter notebooks use the correct python environment. One way of doing this is to install nb_conda_kernels in your base environment and afterwards registering your virtual environment. This can be done like this:
+One possible issue is that you need to make sure that your jupyter notebooks use the correct python environment. One way of doing this is to registering your virtual environment as a jupyter kernel. This can be done like this:
 
 .. code-block:: bash
 
-    conda activate base
-    conda install nb_conda_kernels
     conda activate py37_fem_class
     ipython kernel install --user --name=py37_fem_class
 
@@ -85,20 +83,5 @@ Integration with Visual Studio Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 You will need to install Microsoft's Python extension. Just search for Python under Extensions and chose the one from Microsoft (usually the first option). Finally, you will have to set the Python interpreter. Do this by pushing CMD/CTRL+SHIFT+P. Type Python: Select Interpretor and select our newly created anaconda environment. If it doesn't show up, close and re-open Visual Studio Code.
 
-An alternative is to use jupyter lab; we will use both options.
-
-.. tip::
-
-    Test your installation by doing this:
-
-    - choose the right python interpretor STRG/CMD+SHIFT+P 
-    - :code:`code hello.ipynb`
-    - type in the example code from the figure below 
-    - execute the cell with SHIFT+RETURN
-
-    .. figure:: /_figures/python_install.*
-        :align: center
-        :figwidth: 70% 
-
-    
+An alternative is to use jupyter lab - we (currently) recommend using jupyterlab.
 

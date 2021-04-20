@@ -77,7 +77,7 @@ Example: seafloor temperature variations
 
 Oceanic heat flow measurements provide important insights into cooling and alteration processes of oceanic plates. Such measurements are usually done with devices that measure heat flow within the first few meters of sediment. A natural question to ask is to which degree such measurements may be perturbed by seasonal variations in bottom water temperatures. Let’s set up a simple model for this.
 
-Assume a vertical modeling domain of $30\unt{m}$. At the top of the domain a sinusoidal change in surface temperature (:math:`\pm 2°C` around :math:`4°C`) over a one year period is applied and at the bottom a constant heat flow of :math:`60 \frac{mW}{m^2}` is assumed. The sediments have a constant diffusivity of :math:`1e^{-6} m^2/s` and a thermal conductivity of :math:`1.5 W/m/K`.
+Assume a vertical modeling domain of :math:`30m`. At the top of the domain a sinusoidal change in surface temperature (:math:`\pm 2°C` around :math:`4°C`) over a one year period is applied and at the bottom a constant heat flow of :math:`60 \frac{mW}{m^2}` is assumed. The sediments have a constant diffusivity of :math:`1e^{-6} m^2/s` and a thermal conductivity of :math:`1.5 W/m/K`.
 
 FDM notebook
 ------------
