@@ -65,7 +65,7 @@ We will do most excercises using jupyter notebooks. A good workflow is to start 
 
 .. code-block:: bash
 
-    cd "your working directory
+    cd "your working directory"
     jupyter lab
 
 
