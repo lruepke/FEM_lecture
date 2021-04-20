@@ -42,6 +42,13 @@ There are many good online resources on numerical modeling in marine geosciences
 - Website of the community code ASPECT  `<https://aspect.geodynamics.org>`_
 - Marc Spiegelmann's script on numerical methods  `<https://earth.usc.edu/~becker/teaching/557/reading/spiegelman_mmm.pdf>`_ 
 
+
+There are also a number of books that are really helpful:
+
+- Guy Simpson's book on FE with Matlab `<https://onlinelibrary.wiley.com/doi/book/10.1002/9781119248644>`_
+- Hughes classic book on FEM `<https://books.google.de/books/about/The_Finite_Element_Method.html?id=yarmSc7ULRsC&redir_esc=y>`_
+- Reddy and Gartling's book `<https://books.google.de/books?id=sv0VKLL5lWUC&printsec=frontcover#v=onepage&q&f=false>`_ 
+
 Credits
 -------
 

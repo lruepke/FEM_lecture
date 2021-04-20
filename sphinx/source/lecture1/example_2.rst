@@ -129,6 +129,16 @@ The previous exercise on radioactive decay has shown that the fully implicit met
     \end{split}
 
 
+.. figure:: /_figures/1D_implicit_vs_explicit_stencil.*
+   :align: center
+   :name: imp_exp_stencil_fig
+   :figwidth: 100%
+
+   Different explicit and implicit FD discretization stencils.
+
+
+
+
 It is characteristic for the implicit form that the solution for :math:`T^{n+1}_i` depends on the solution of the neighboring nodes (:math:`i-1` and :math:`i+1`). As a consequence we cannot simply solve for one node after the other anymore but need to solve a system of equations. In fact, the way forward is to state the problem in matrix form :math:`A\vec{x}=\vec{b}` and solve all equations simultaneously: 
 
 .. math::
