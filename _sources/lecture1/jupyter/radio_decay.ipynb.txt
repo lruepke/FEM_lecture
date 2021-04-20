@@ -17,12 +17,8 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 18,
-   "metadata": {
-    "jupyter": {
-     "source_hidden": true
-    }
-   },
+   "execution_count": 7,
+   "metadata": {},
    "outputs": [],
    "source": [
     "import numpy as np\n",
@@ -40,7 +36,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 23,
+   "execution_count": 8,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -57,11 +53,10 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 24,
+   "execution_count": 10,
    "metadata": {},
    "outputs": [],
    "source": [
-    "#hide\n",
     "dt      = 2                             # time step\n",
     "steps   = 41                            # number of time steps\n",
     "Cana    = np.zeros(steps)               # analytical solution\n",
@@ -142,6 +137,24 @@
     "plt.legend()\n",
     "\n",
     "plt.show"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "test cell hidden feature\n"
+     ]
+    }
+   ],
+   "source": [
+    "# hide\n",
+    "print(\"test cell hidden feature\")"
    ]
   },
   {

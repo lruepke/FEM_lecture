@@ -458,7 +458,7 @@ div.rendered_html tbody tr:hover {
 <p>We will solve for radioactive using explicit and implicit FD schemes.</p>
 <p>Load libraries and set resolution of output figures</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -471,7 +471,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Define physics constants, here we use arbitrary values without any physical meaning</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -482,11 +482,19 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Setup numerics</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1">#hide: the code in this cell is hidden</span>
+<span></span><span class="n">dt</span>      <span class="o">=</span> <span class="mi">2</span>                             <span class="c1"># time step</span>
+<span class="n">steps</span>   <span class="o">=</span> <span class="mi">41</span>                            <span class="c1"># number of time steps</span>
+<span class="n">Cana</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>               <span class="c1"># analytical solution</span>
+<span class="n">Cana</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">c0</span>                            <span class="c1"># initial condition</span>
+
+<span class="n">Cexp</span>    <span class="o">=</span> <span class="n">Cana</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>                   <span class="c1"># make a copy</span>
+<span class="n">Cimp</span>    <span class="o">=</span> <span class="n">Cana</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">Time</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">steps</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span><span class="p">,</span> <span class="n">steps</span><span class="p">)</span>  <span class="c1"># time stepping, and Time vector</span>
 </pre></div>
 </div>
 </div>
@@ -541,6 +549,23 @@ div.rendered_html tbody tr:hover {
 <div class="output_area docutils container">
 <img alt="../../_images/lecture1_jupyter_radio_decay_10_1.png" src="../../_images/lecture1_jupyter_radio_decay_10_1.png" />
 </div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># hide: the code in this cell is hidden</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+test cell hidden feature
+</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
