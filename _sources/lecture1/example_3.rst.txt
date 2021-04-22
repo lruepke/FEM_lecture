@@ -91,4 +91,7 @@ FDM notebook
 Excercise - periodic changes in seafloor temperature
 ----------------------------------------------------
         
-tbc
+Explore the solution and understand what controls the depth to which periodic varations in seafloor temperature are "felt" inside the sediments
+
+    - to which depth to seasonal, annual, and decadal variations propagate into the sediments?
+    - Is there a phase shift between surface heat flow and temperature variations?
