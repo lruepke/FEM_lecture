@@ -47,7 +47,8 @@ There are also a number of books that are really helpful:
 
 - Guy Simpson's book on FE with Matlab :cite:`Simpson2017`
 - Hughes classic book on FEM :cite:`Hughes2000`
-- Reddy and Gartling's book :cite:`reddy2010` 
+- Reddy and Gartling's book :cite:`reddy2010`
+- Grandin's book on FEM :cite:`grandin1991` 
 
 Credits
 -------
