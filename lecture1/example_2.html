@@ -47,7 +47,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="FD calculation of radioactive decay" href="jupyter/radio_decay.html" />
-    <link rel="prev" title="Script for solving the 1D diffusion equation" href="jupyter/cooling_dike_1d_fdm.html" /> 
+    <link rel="prev" title="Script for solving the 1D diffusion equation - T(t) at x meters from dike" href="jupyter/cooling_dike_1d_fdm_T_at_x_m.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -287,7 +287,7 @@ T_4 = \begin{bmatrix}0.2 &amp; 0.6 &amp; 0.2\end{bmatrix}\begin{bmatrix}0\\0\\1\
 <div class="math notranslate nohighlight" id="equation-eq-radio-2">
 <span class="eqno">(37)<a class="headerlink" href="#equation-eq-radio-2" title="Permalink to this equation">¶</a></span>\[\frac{c^{n+1} - c^{n}}{\Delta t}= - \lambda c^n\]</div>
 <p>This standard implementation is called the explicit form because you can write the new concentration directly as a function of the old one. The assumption here is that the concentration at the beginning of the time step controls the decay rate.
-An alternative formulation, the implicit form, is to assume that the decay rate is controlled by the (unknown) concentration at the end of the time step <span class="math notranslate nohighlight">\(c^{n+1}\)</span>:. The implicit from is therefore:</p>
+An alternative formulation, the implicit form, is to assume that the decay rate is controlled by the (unknown) concentration at the end of the time step <span class="math notranslate nohighlight">\(c^{n+1}\)</span>. The implicit from is therefore:</p>
 <div class="math notranslate nohighlight" id="equation-eq-radio-3">
 <span class="eqno">(38)<a class="headerlink" href="#equation-eq-radio-3" title="Permalink to this equation">¶</a></span>\[\frac{c^{n+1} - c^{n}}{\Delta t}= - \lambda c^{n+1}\]</div>
 <p>We will explore the differences between both formulations with a little python script.</p>
@@ -327,7 +327,7 @@ T_{i+1}^{n+1}
 <img alt="../_images/1D_implicit_vs_explicit_stencil.png" src="../_images/1D_implicit_vs_explicit_stencil.png" />
 <p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Different explicit and implicit FD discretization stencils.</span><a class="headerlink" href="#imp-exp-stencil-fig" title="Permalink to this image">¶</a></p>
 </div>
-<p>It is characteristic for the implicit form that the solution for <span class="math notranslate nohighlight">\(T^{n+1}_i\)</span> depends on the solution of the neighboring nodes (<span class="math notranslate nohighlight">\(i-1\)</span> and <span class="math notranslate nohighlight">\(i+1\)</span>). As a consequence we cannot simply solve for one node after the other anymore but need to solve a system of equations. In fact, the way forward is to state the problem in matrix form <span class="math notranslate nohighlight">\(A\vec{x}=\vec{b}\)</span> and solve all equations simultaneously:</p>
+<p>It is characteristic for the implicit form that the solution for <span class="math notranslate nohighlight">\(T^{n+1}_i\)</span> depends on the solution of the neighboring nodes (<span class="math notranslate nohighlight">\(i-1\)</span> and <span class="math notranslate nohighlight">\(i+1\)</span>). As a consequence, we cannot simply solve for one node after the other anymore but need to solve a system of equations. In fact, the way forward is to state the problem in matrix form <span class="math notranslate nohighlight">\(A\vec{x}=\vec{b}\)</span> and solve all equations simultaneously:</p>
 <div class="math notranslate nohighlight" id="equation-eq-imp-dummy6">
 <span class="eqno">(41)<a class="headerlink" href="#equation-eq-imp-dummy6" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
@@ -373,8 +373,12 @@ T_{bottom}\\
 </div>
 <div class="section" id="excercise-implicit-dike-cooling">
 <h2>Excercise - implicit dike cooling<a class="headerlink" href="#excercise-implicit-dike-cooling" title="Permalink to this headline">¶</a></h2>
-<p>Get the notebook to work and programm the implicit solution. Explore if you find any stability limits.</p>
-<p><strong>Bonus:</strong> Plot the explicit and implicit solutions together. Do you find the same behavior as in the radioactive decay example?</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Get the notebook to work and programm the implicit solution. Explore if you find any stability limits.</p></li>
+<li><p><strong>Bonus:</strong> Plot the explicit and implicit solutions together. Do you find the same behavior as in the radioactive decay example?</p></li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 
@@ -385,7 +389,7 @@ T_{bottom}\\
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="jupyter/radio_decay.html" class="btn btn-neutral float-right" title="FD calculation of radioactive decay" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="jupyter/cooling_dike_1d_fdm.html" class="btn btn-neutral float-left" title="Script for solving the 1D diffusion equation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="jupyter/cooling_dike_1d_fdm_T_at_x_m.html" class="btn btn-neutral float-left" title="Script for solving the 1D diffusion equation - T(t) at x meters from dike" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

@@ -112,6 +112,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#excercises">Excercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fdm-notebook-t-t-at-x-meters-from-dike">FDM notebook - T(t) at x meters from dike</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/cooling_dike_1d_fdm_T_at_x_m.html">Script for solving the 1D diffusion equation - T(t) at x meters from dike</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="example_2.html">Example 2: Cooling dike - implicit version</a></li>
@@ -235,7 +239,7 @@
 <h1>Example 1: Cooling dike<a class="headerlink" href="#example-1-cooling-dike" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="problem-description">
 <h2>Problem description<a class="headerlink" href="#problem-description" title="Permalink to this headline">¶</a></h2>
-<p>As a first example, we will use the finite differences form of the heat diffusion equation <a class="reference internal" href="fdm_intro.html#equation-eq-1d-heat-flow">equation (2)</a> to explore the cooling of a dike. We will look at a  <span class="math notranslate nohighlight">\(2m\)</span> wide dike that intruded with a temperature of  <span class="math notranslate nohighlight">\(1200°C\)</span> into  <span class="math notranslate nohighlight">\(300°C\)</span> warm country rock. The initial conditions can then be written like this:</p>
+<p>As a first example, we will use the finite differences form <a class="reference internal" href="fdm_intro.html#equation-eq-fd-heat-flow-explicit-solution">equation (11)</a> of the heat diffusion equation <a class="reference internal" href="fdm_intro.html#equation-eq-1d-heat-flow">equation (2)</a> to explore the cooling of a dike. We will look at a  <span class="math notranslate nohighlight">\(2m\)</span> wide dike that intruded with a temperature of  <span class="math notranslate nohighlight">\(1200°C\)</span> into  <span class="math notranslate nohighlight">\(300°C\)</span> warm country rock. The initial conditions can then be written like this:</p>
 <div class="math notranslate nohighlight" id="equation-eq-dike-ic">
 <span class="eqno">(31)<a class="headerlink" href="#equation-eq-dike-ic" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
@@ -267,7 +271,7 @@ T(x=\frac{L}{2}) = 300
 </div>
 <div class="section" id="excercises">
 <h2>Excercises<a class="headerlink" href="#excercises" title="Permalink to this headline">¶</a></h2>
-<p>The first step is to get the jupyter notebook to work. A good starting point is to make your own copy of the notebook. One way is to start-up your course python environment in a shell, start a jupyter lab, and create a new notebook. You can then copy the code blocks (cells) from the script into your notebook and complete the missing pieces.</p>
+<p>The first step is to get the jupyter notebook to work. A good starting point is to make your own copy of the notebook. One way is to start-up your course python environment in a shell, start a jupyter lab or notebook, and create a new notebook. You can then copy the code blocks (cells) from the script into your notebook and complete the missing pieces.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate py37_fem_lecture
 <span class="nb">cd</span> <span class="nv">$your_working_directory</span>$
 jupyter lab
@@ -277,11 +281,19 @@ jupyter lab
 <blockquote>
 <div><ul class="simple">
 <li><p>Complete the notebook and get it to work</p></li>
-<li><p>Vary the parameters (e.g. use more gridpoints, a larger timestep). Notice how the numerical solution becomes unstable when the timestep is increased beyond a certain value (what does this value depend on?). This is a major drawback of explicit finite difference codes such as the one presented here.</p></li>
+<li><p>Vary the parameters (e.g. use more gridpoints, a larger timestep). Notice how the numerical solution becomes unstable when the timestep is increased beyond a certain value. What does this value depend on? This is a major drawback of explicit finite difference codes such as the one presented here.</p></li>
 <li><p>Record and plot the temperature evolution versus time at a distance of 5 meter from the dike/country rock contact. What is the maximum temperature the country rock experiences at this location and when is it reached?</p></li>
 <li><p>Bonus question: Derive a finite-difference approximation for variable k and variable dx.</p></li>
 </ul>
 </div></blockquote>
+</div>
+<div class="section" id="fdm-notebook-t-t-at-x-meters-from-dike">
+<h2>FDM notebook - T(t) at x meters from dike<a class="headerlink" href="#fdm-notebook-t-t-at-x-meters-from-dike" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/cooling_dike_1d_fdm_T_at_x_m.html">Script for solving the 1D diffusion equation - T(t) at x meters from dike</a></li>
+</ul>
+</div>
 </div>
 </div>
 
