@@ -113,7 +113,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Lecture overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mwr_intro.html">Introduction Method of Weighted Residuals</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">MWR solutions of the steady advection-diffusion equation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MWR solutions of the steady advection-diffusion equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#collocation-method">Collocation method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#least-squares-method">Least-squares method</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -281,7 +285,7 @@ a_1 &amp;= 1-a_2
 \end{align}\end{split}\]</div>
 <p>So the residual is</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-example-5">
-<span class="eqno">(70)<a class="headerlink" href="#equation-eq-mwr-example-5" title="Permalink to this equation">¶</a></span>\[R(x)=c\left ( (1-a_2)+ 2a_2 x \right ) - K(2a_2)-0\]</div>
+<span class="eqno">(70)<a class="headerlink" href="#equation-eq-mwr-example-5" title="Permalink to this equation">¶</a></span>\[R(x)=c\left ( (1-a_2)+ 2a_2 x \right ) - K(2a_2)\]</div>
 <p>Before continuing let us explore an example problem:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-example-tmp1">
 <span class="eqno">(71)<a class="headerlink" href="#equation-eq-mwr-example-tmp1" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
@@ -290,6 +294,19 @@ c &amp;= 1\\
 K &amp;= 1
 \end{split}
 \end{align}\end{split}\]</div>
+<div class="section" id="collocation-method">
+<h2>Collocation method<a class="headerlink" href="#collocation-method" title="Permalink to this headline">¶</a></h2>
+<p>For the collocation method, the residual is forced to zero at a number of discrete points. Since there is only one unknown <span class="math notranslate nohighlight">\(a_2\)</span>, only one collocation point is needed. We choose (arbitrarily, but from symmetry considerations) the collocation point <span class="math notranslate nohighlight">\(x = 0.5\)</span>. Thus, the equation needed to evaluate the unknown <span class="math notranslate nohighlight">\(a_2\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-eq-mwr-collo-ex-1">
+<span class="eqno">(72)<a class="headerlink" href="#equation-eq-mwr-collo-ex-1" title="Permalink to this equation">¶</a></span>\[R\left(\frac{1}{2}\right)=c\left ( (1-a_2)+ 2a_2 \left(\frac{1}{2}\right) \right ) - K(2a_2)=0\]</div>
+<p>and the contant <span class="math notranslate nohighlight">\(a_2\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-eq-mwr-collo-ex-2">
+<span class="eqno">(73)<a class="headerlink" href="#equation-eq-mwr-collo-ex-2" title="Permalink to this equation">¶</a></span>\[a_2=\frac{c}{2K}\]</div>
+</div>
+<div class="section" id="least-squares-method">
+<h2>Least-squares method<a class="headerlink" href="#least-squares-method" title="Permalink to this headline">¶</a></h2>
+<p>The weight function <span class="math notranslate nohighlight">\(W_i\)</span> with respect to the unknown <span class="math notranslate nohighlight">\(a_2\)</span>:</p>
+</div>
 </div>
 
 
