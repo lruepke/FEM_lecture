@@ -45,12 +45,13 @@ There are many good online resources on numerical modeling in marine geosciences
 
 There are also a number of books that are really helpful:
 
-- Guy Simpson's book on FE with Matlab `<https://onlinelibrary.wiley.com/doi/book/10.1002/9781119248644>`_
-- Hughes classic book on FEM `<https://books.google.de/books/about/The_Finite_Element_Method.html?id=yarmSc7ULRsC&redir_esc=y>`_
-- Reddy and Gartling's book `<https://books.google.de/books?id=sv0VKLL5lWUC&printsec=frontcover#v=onepage&q&f=false>`_ 
+- Guy Simpson's book on FE with Matlab :cite:`Simpson2017`
+- Hughes classic book on FEM :cite:`Hughes2000`
+- Reddy and Gartling's book :cite:`reddy2010` 
 
 Credits
 -------
 
     * Some of the material on finite differences are based on material that **Boris Kaus** initially developed for a modeling workshop at Oslo University.
     * Special thanks also to **Ria Fischer**, who helped with a previous version of this lecture.
+    * Thanks also to **Prof. Keith A. Woodbury** of The University of Alabama for letting us use his lecture notes on Weighted Residuals.
