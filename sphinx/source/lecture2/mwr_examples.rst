@@ -84,7 +84,7 @@ So the residual is
 .. math::
     :label: eq:mwr_example_5
 
-    R(x)=c\left ( (1-a_2)+ 2a_2 x \right ) - K(2a_2)-0
+    R(x)=c\left ( (1-a_2)+ 2a_2 x \right ) - K(2a_2)
 
 Before continuing let us explore an example problem:
 	  
@@ -97,3 +97,25 @@ Before continuing let us explore an example problem:
     K &= 1
     \end{split}
     \end{align}   
+
+Collocation method
+------------------
+
+For the collocation method, the residual is forced to zero at a number of discrete points. Since there is only one unknown :math:`a_2`, only one collocation point is needed. We choose (arbitrarily, but from symmetry considerations) the collocation point :math:`x = 0.5`. Thus, the equation needed to evaluate the unknown :math:`a_2` is
+
+.. math::
+    :label: eq:mwr_collo_ex_1
+
+    R\left(\frac{1}{2}\right)=c\left ( (1-a_2)+ 2a_2 \left(\frac{1}{2}\right) \right ) - K(2a_2)=0
+
+and the contant :math:`a_2` is
+
+.. math::
+    :label: eq:mwr_collo_ex_2
+
+    a_2=\frac{c}{2K}
+
+Least-squares method
+--------------------
+
+The weight function :math:`W_i`is just the derivative of :math:`R(x)` with respect to the unknown :math:`a_2`:
