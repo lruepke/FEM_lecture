@@ -4,7 +4,7 @@ Example 3: Periodic variations in seafloor temperature
 Flux boundary conditions
 ------------------------
 
-So far we have always assumed that the boundary condition for the temperature equation was a fixed temperature. This condition is also called a *Dirichlet boundary condition*. We can however, also assume a case where the boundary has a constant gradient (e.g. heat flux). This is called a *Neumann boundary conditions* and an example would be a given flux of heat from the mantle at the base of the lithosphere or the top basement in the case of sedimentary basin analysis. A flux boundary condition at the bottom could be written like this:
+So far, we have always assumed that the boundary condition for the temperature equation was a fixed temperature. This condition is also called a *Dirichlet boundary condition*. We can, however, also assume a case where the boundary has a constant gradient (e.g. heat flux). This is called a *Neumann boundary conditions* and an example would be a given conductive heat flux from below. A flux boundary condition at the bottom could be written like this:
 
 .. math::
     :label: eq:sf_dummy1
@@ -93,5 +93,5 @@ Excercise - periodic changes in seafloor temperature
         
 Explore the solution and understand what controls the depth to which periodic varations in seafloor temperature are "felt" inside the sediments
 
-    - to which depth to seasonal, annual, and decadal variations propagate into the sediments?
+    - To which depth to seasonal, annual, and decadal variations propagate into the sediments?
     - Is there a phase shift between surface heat flow and temperature variations?

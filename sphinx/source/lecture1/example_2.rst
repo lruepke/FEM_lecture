@@ -74,7 +74,7 @@ A good test problem to explore the stability and accuracy of different finite el
 
 
 This standard implementation is called the explicit form because you can write the new concentration directly as a function of the old one. The assumption here is that the concentration at the beginning of the time step controls the decay rate.
-An alternative formulation, the implicit form, is to assume that the decay rate is controlled by the (unknown) concentration at the end of the time step :math:`c^{n+1}`:. The implicit from is therefore:
+An alternative formulation, the implicit form, is to assume that the decay rate is controlled by the (unknown) concentration at the end of the time step :math:`c^{n+1}`. The implicit from is therefore:
 
 .. math::
     :label: eq:radio_3
@@ -139,7 +139,7 @@ The previous exercise on radioactive decay has shown that the fully implicit met
 
 
 
-It is characteristic for the implicit form that the solution for :math:`T^{n+1}_i` depends on the solution of the neighboring nodes (:math:`i-1` and :math:`i+1`). As a consequence we cannot simply solve for one node after the other anymore but need to solve a system of equations. In fact, the way forward is to state the problem in matrix form :math:`A\vec{x}=\vec{b}` and solve all equations simultaneously: 
+It is characteristic for the implicit form that the solution for :math:`T^{n+1}_i` depends on the solution of the neighboring nodes (:math:`i-1` and :math:`i+1`). As a consequence, we cannot simply solve for one node after the other anymore but need to solve a system of equations. In fact, the way forward is to state the problem in matrix form :math:`A\vec{x}=\vec{b}` and solve all equations simultaneously: 
 
 .. math::
     :label: eq:imp_dummy6
@@ -192,6 +192,5 @@ FDM notebook
 Excercise - implicit dike cooling
 ---------------------------------
         
-Get the notebook to work and programm the implicit solution. Explore if you find any stability limits.
-
-**Bonus:** Plot the explicit and implicit solutions together. Do you find the same behavior as in the radioactive decay example?
+    - Get the notebook to work and programm the implicit solution. Explore if you find any stability limits.
+    - **Bonus:** Plot the explicit and implicit solutions together. Do you find the same behavior as in the radioactive decay example?

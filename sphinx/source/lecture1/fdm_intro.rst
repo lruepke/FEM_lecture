@@ -31,7 +31,7 @@ In most cases, we are interested in temperature and not heat flow so that we wou
 
    Derivation of the energy equation. Change in internal energy is related to changes in heat fluxes into and out of the box (and a lot of other terms (e.g. advection) that are neglected here).
 
-For simple incompressible cases, changes in internal energy can be expressed as changes in temperature timesdue density and specific heat. The change in internal energy with time can now be written as :math:`\rho c_p \frac{\partial}{\partial t} T \Delta x \Delta y \Delta z` (:math:`\rho` is density, :math:`c_p` specific heat, and :math:`T` temperature), has units of (:math:`J/s`), and must be equal to the difference between the heat flow into the box :math:`q_{in} \Delta y \Delta z \left( \frac{W}{m K}\frac{K}{m}m^2 = \frac{J}{s}\right)` and the heat flow out of the box :math:`\left( q_{in} + \frac{\partial q_{in}}{\partial x} \Delta x\right) \Delta y \Delta z` (the y and z directions are done in the same way). With these considerations, we can write a conservation equation for energy:
+For simple incompressible cases, changes in internal energy can be expressed as changes in temperature times density and specific heat. The change in internal energy with time can now be written as :math:`\rho c_p \frac{\partial}{\partial t} T \Delta x \Delta y \Delta z` (:math:`\rho` is density, :math:`c_p` specific heat, and :math:`T` temperature), has units of (:math:`J/s`), and must be equal to the difference between the heat flow into the box :math:`q_{in} \Delta y \Delta z \left( \frac{W}{m K}\frac{K}{m}m^2 = \frac{J}{s}\right)` and the heat flow out of the box :math:`\left( q_{in} + \frac{\partial q_{in}}{\partial x} \Delta x\right) \Delta y \Delta z` (the y and z directions are done in the same way). With these considerations, we can write a conservation equation for energy in 1D:
 
 .. math::
     :label: eq:1D_heat_flow
@@ -39,13 +39,14 @@ For simple incompressible cases, changes in internal energy can be expressed as 
     \begin{align}
     \begin{split}
     \rho c_p \frac{\partial T}{\partial t} = -\frac{\partial q_{in}}{\partial x} = \frac{\partial}{\partial x}k\frac{\partial T}{\partial x}\\
-    \frac{\partial T}{\partial t} = \frac{k}{\rho c_p} \frac{\partial^2 T}{\partial x^2} = \kappa \frac{\partial^2 T}{\partial x^2}
+    \frac{\partial T}{\partial t} = \frac{k}{\rho c_p} \frac{\partial^2 T}{\partial x^2} = \kappa \frac{\partial^2 T}{\partial x^2}\\
+    \frac{\partial T}{\partial t} = \kappa \frac{\partial^2 T}{\partial x^2}   
     \end{split}
     \end{align}
 
 :eq:`eq:1D_heat_flow` is called the heat transfer or heat diffusion equation and is one of the most fundamental equations in Earth Sciences. If the thermal conductivity is constant, we can define a thermal diffusivity, :math:`\kappa`, and write the simpler second form of the equation.
 
-Note how the changes in heat flow can be written in terms of a divergence:
+Note that in 3D, the changes in heat flow are expressed as a divergence:
 
 .. math::
     :label: eq:1D_heat_flow_div
@@ -100,16 +101,16 @@ In our case, the above derivative describes the change in temperature with x (ou
 
 This form is called the *finite differences* form and is a first step towards solving partial differential equations numerically.
 
-Note that it actually matters in which direction you count: usually it makes life much easier if indices and physical coordinates point in the same direction, e.g. x coordinate and index increase to the right.
+Note that it matters in which direction you count. Usually it makes life much easier if indices and physical coordinates point in the same direction, e.g. x coordinate and index increase to the right.
 
-We have learned how we can compute derivatives numerically. The next step is to solve the heat conduction equation :eq:`eq:1D_heat_flow` completely numerically. We are interested in the temperature evolution versus time :math:`T(x, t)` which satisfies :eq:`eq:1D_heat_flow`, given an initial temperature distribution. We know already from the heat flow example how to calculate first derivatives (forward differencing):
+We have learned how we can compute derivatives numerically. The next step is to solve the heat conduction equation :eq:`eq:1D_heat_flow` completely numerically. We are interested in the temperature evolution as a function of time and space :math:`T(x, t)`, which satisfies :eq:`eq:1D_heat_flow`, given an initial temperature distribution. We know already from the heat flow example how to calculate first derivatives (forward differencing):
 
 .. math::
     :label: eq:FD_temperature
 
     \frac{\partial T}{\partial t} = \frac{T_i^{n+1} - T_i^n}{\Delta t}
 
-The index :math:`n` corresponds to the time step and the index :math:`i` to the grid point (x-coordinate). Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):
+The index :math:`n` corresponds to the time step and the index :math:`i` to the grid point (x-coordinate) :numref:`dike_setup`. Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):
 
 .. math::
     :label: eq:FD_heat_flow_central_difference
