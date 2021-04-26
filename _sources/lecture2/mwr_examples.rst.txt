@@ -119,3 +119,29 @@ Least-squares method
 --------------------
 
 The weight function :math:`W_i`is just the derivative of :math:`R(x)` with respect to the unknown :math:`a_2`:
+
+.. math::
+    :label: eq:mwr_lsq_ex_1
+
+    W_1(x)=\frac{dR}{da_2}=-c+2xc-2K
+
+So the weighted residual statement becomes
+
+.. math::
+    :label: eq:mwr_lsq_ex_2
+
+    \int_{0}^{1}W_{1}(x)\cdot R(x)dx &= 0 \\
+    W_1(x)&=\frac{dR}{da_2}=c(2x-1)-2K \\
+    \int_{0}^{1}\left(c(2x-1)-2K \right )\left[c \left( (1-a_2)+2a_2 x \right ) -K(2a_2)\right ] dx &= 0
+
+the math is considerably more involved than before, but nothing more than integration of polynomial terms. Direct evaluation leads to the algebraic relation
+
+.. math::
+    :label: eq:mwr_lsq_ex_3
+
+    a_2 = \frac{6cK}{\left (c^2 + 12K^2 \right )}
+
+Galerkin method
+---------------
+
+In the Galerkin Method, the weight function :math:`W_1` is the derivative of the approximating function :math:`\tilde{u}` with respect to the unknown coefficient :math:`a_2`:
