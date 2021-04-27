@@ -43,7 +43,9 @@
 
     
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Example of a high-order approximation" href="MWR_higher_order.html" />
+    <link rel="prev" title="Excercises" href="../excercises.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -106,10 +108,24 @@
 <li class="toctree-l1"><a class="reference internal" href="../../lecture1/example_3.html">Example 3: Periodic variations in seafloor temperature</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 2</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Lecture overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mwr_intro.html">Introduction Method of Weighted Residuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mwr_examples.html">MWR solutions of the steady advection-diffusion equation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../excercises.html">Excercises</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../excercises.html#notebook-excercises">Notebook - excercises</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">MWR example problems</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Analytical-solution">Analytical solution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Weighted-residual-results">Weighted residual results</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../excercises.html#higher-order-approximations">Higher-order approximations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../excercises.html#notebook-derivation-of-higher-order-constants">Notebook - derivation of higher-order constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../excercises.html#outlook">Outlook</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -179,6 +195,8 @@
   <ul class="wy-breadcrumbs">
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../excercises.html">Excercises</a> &raquo;</li>
         
       <li>MWR example problems</li>
     
@@ -580,22 +598,31 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># hide: the code in this cell is hidden by the author</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># least squares</span>
-<span class="n">a2</span><span class="p">,</span><span class="n">x</span>    <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a2 x&#39;</span><span class="p">)</span>
-<span class="n">Ri</span>      <span class="o">=</span> <span class="n">c</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">a2</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">a2</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">K</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">a2</span>         <span class="c1">#definition of residual</span>
-<span class="n">Wi</span>      <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">Ri</span><span class="p">,</span><span class="n">a2</span><span class="p">)</span>                        <span class="c1">#weight function is derivative of R with a2</span>
-<span class="n">a2</span>      <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">integrate</span><span class="p">(</span><span class="n">Wi</span><span class="o">*</span><span class="n">Ri</span><span class="p">,(</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span><span class="n">a2</span><span class="p">)</span> <span class="c1">#symbolic solution</span>
+<span class="c1">#a2,x    = symbols(&#39;a2 x&#39;)</span>
+<span class="c1">#Ri      = ???         #definition of residual</span>
+<span class="c1">#Wi      = diff(Ri,a2)                        #weight function is derivative of R with a2</span>
+<span class="c1">#a2      = ??? #symbolic solution</span>
 
-<span class="n">a2</span>      <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">a2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n</span><span class="p">())</span> <span class="c1"># convert result to float</span>
+<span class="c1">#a2      = float(list(a2)[0].n()) # convert result to float</span>
 
-<span class="n">a1</span>     <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">a2</span><span class="p">;</span>
-<span class="n">a0</span>     <span class="o">=</span> <span class="mi">0</span>
+<span class="c1">#a1     = 1-a2;</span>
+<span class="c1">#a0     = 0</span>
 
-<span class="n">u_ls</span>    <span class="o">=</span> <span class="n">a0</span> <span class="o">+</span> <span class="n">a1</span><span class="o">*</span><span class="n">X</span> <span class="o">+</span> <span class="n">a2</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<span class="c1">#u_ls    = a0 + a1*X + a2*(np.square(X))</span>
 
 <span class="c1">#compute the RMS error</span>
-<span class="n">E_rms_ls</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">u_ex</span> <span class="o">-</span> <span class="n">u_ls</span><span class="p">))</span><span class="o">/</span><span class="n">nx</span><span class="p">)</span>
-<span class="n">E_x_ls</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">u_ex</span> <span class="o">-</span> <span class="n">u_ls</span><span class="p">)</span><span class="o">/</span><span class="n">nx</span><span class="p">)</span>
+<span class="c1">#E_rms_ls = sqrt(np.sum(np.square(u_ex - u_ls))/nx)</span>
+<span class="c1">#E_x_ls   = np.sqrt(np.square(u_ex - u_ls)/nx)</span>
 </pre></div>
 </div>
 </div>
@@ -604,21 +631,30 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># hide: the code in this cell is hidden by the author</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Galerkin</span>
-<span class="n">a2</span><span class="p">,</span><span class="n">x</span>    <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a2 x&#39;</span><span class="p">)</span>
-<span class="n">Ri</span>      <span class="o">=</span> <span class="n">c</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">a2</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">a2</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">K</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">a2</span>       <span class="c1">#definition of residual</span>
-<span class="n">Wi</span>      <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">x</span><span class="p">);</span>                        <span class="c1">#weight function is derivative of R with a2</span>
-<span class="n">a2</span>      <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">integrate</span><span class="p">(</span><span class="n">Wi</span><span class="o">*</span><span class="n">Ri</span><span class="p">,(</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span><span class="n">a2</span><span class="p">)</span> <span class="c1">#symbolic solution</span>
-<span class="n">a2</span>      <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">a2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n</span><span class="p">())</span> <span class="c1"># convert result to float</span>
+<span class="c1">#a2,x    = symbols(&#39;a2 x&#39;)</span>
+<span class="c1">#Ri      = ???       #definition of residual</span>
+<span class="c1">#Wi      = ???                        #weight function is derivative of R with a2</span>
+<span class="c1">#a2      = ??? #symbolic solution</span>
+<span class="c1">#a2      = float(list(a2)[0].n()) # convert result to float</span>
 
-<span class="n">a1</span>     <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">a2</span><span class="p">;</span>
-<span class="n">a0</span>     <span class="o">=</span> <span class="mi">0</span>
+<span class="c1">#a1     = 1-a2;</span>
+<span class="c1">#a0     = 0</span>
 
-<span class="n">u_g</span>    <span class="o">=</span> <span class="n">a0</span> <span class="o">+</span> <span class="n">a1</span><span class="o">*</span><span class="n">X</span> <span class="o">+</span> <span class="n">a2</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<span class="c1">#u_g    = a0 + a1*X + a2*(np.square(X))</span>
 
 <span class="c1">#compute the RMS error</span>
-<span class="n">E_rms_g</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">u_ex</span> <span class="o">-</span> <span class="n">u_g</span><span class="p">))</span><span class="o">/</span><span class="n">nx</span><span class="p">)</span>
-<span class="n">E_x_g</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">u_ex</span> <span class="o">-</span> <span class="n">u_g</span><span class="p">)</span><span class="o">/</span><span class="n">nx</span><span class="p">)</span>
+<span class="c1">#E_rms_g = sqrt(np.sum(np.square(u_ex - u_g))/nx)</span>
+<span class="c1">#E_x_g   = np.sqrt(np.square(u_ex - u_g)/nx)</span>
 </pre></div>
 </div>
 </div>
@@ -672,7 +708,7 @@ Text(0, 0.5, &#39;RMS Error&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/lecture2_jupyter_MWR_excercise_11_1.png" src="../../_images/lecture2_jupyter_MWR_excercise_11_1.png" />
+<img alt="../../_images/lecture2_jupyter_MWR_excercise_13_1.png" src="../../_images/lecture2_jupyter_MWR_excercise_13_1.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -692,6 +728,10 @@ Text(0, 0.5, &#39;RMS Error&#39;)
            
           </div>
           <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="MWR_higher_order.html" class="btn btn-neutral float-right" title="Example of a high-order approximation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../excercises.html" class="btn btn-neutral float-left" title="Excercises" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 
