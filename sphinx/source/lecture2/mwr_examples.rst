@@ -169,6 +169,26 @@ Again, the math is straightforward but tedious. Direct evaluation leads to the a
 
 Note how this solution is, for this special case, exactly the same as the one for the collocation method.
 
+
+.. admonition:: Derivation of the coefficients
+
+    We can derive the coefficients for the different methods by using the sympy symbolic math package for python. Install into your course environment:
+
+    .. code::
+
+        conda activate "your environment"
+        conda install sympy
+
+
+Notebook - derivation of constants
+------------------------------------------
+        
+.. toctree::
+    :maxdepth: 2
+
+    jupyter/MWR_example_derivation.ipynb
+        
+
 Discussion
 ----------
 
