@@ -1,5 +1,5 @@
-Lecture overview
-================
+Overview: Method of Weighted Residuals (MWR)
+============================================
 
 So far, we have learned how to solve partial differential equations using the Finite Differences Method (FDM). :cite:`Briggs2000` in their book “A Multigrid Tutorial” describe this as *“…finite differences methods replace the problem domain by a grid and produce a vector whose components are approximations to the solution at the grid points”*. This is straightforward and exactly what we have done in the past weeks. Here is what they have to say on finite elements: *“…finite element methods partition the problem domain into subregions and produce a simple function in each subregion that approximates the solution”*. This seems a bit less straightforward but results in a very powerful method to solve partial differential equations.
 

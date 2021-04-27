@@ -60,7 +60,13 @@ The majority of this course will be spent in front of a computer working on exer
     lecture2/mwr_examples
     lecture2/excercises
 
+.. toctree::
+    :maxdepth: 2
+    :caption: Lecture 3
 
+    lecture3/overview
+
+    
 .. toctree::
    :maxdepth: 2
    :caption: References
