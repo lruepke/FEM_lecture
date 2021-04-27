@@ -250,9 +250,7 @@ combination of basis functions chosen from a linearly independent set. That
 is,</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-basic-2">
 <span class="eqno">(51)<a class="headerlink" href="#equation-eq-mwr-basic-2" title="Permalink to this equation">¶</a></span>\[u\cong \tilde{u}=\sum_{i=1}^na_i\varphi _i\]</div>
-<p>Now, when substituted into the differential operator, <span class="math notranslate nohighlight">\(D\)</span>, the result of the
-operations is not, in general, <span class="math notranslate nohighlight">\(p(x)\)</span>. Hence a error or <em>residual</em> will
-exist:</p>
+<p>where <span class="math notranslate nohighlight">\(a\)</span> are the coefficients of the <span class="math notranslate nohighlight">\(n\)</span> basis functions <span class="math notranslate nohighlight">\(\varphi\)</span>. Now, when substituted into the differential operator, <span class="math notranslate nohighlight">\(D\)</span>, the result of the operations is not, in general, <span class="math notranslate nohighlight">\(p(x)\)</span>. Hence an error or residual will exist:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-basic-3">
 <span class="eqno">(52)<a class="headerlink" href="#equation-eq-mwr-basic-3" title="Permalink to this equation">¶</a></span>\[E(x)=R(x)=D(\tilde{u}(x))-p(x)\neq 0.\]</div>
 <p>The notion in the MWR is to force the residual to zero in some average sense
@@ -316,7 +314,7 @@ rationale behind the name can be seen. In other words, a minimum of</p>
 <span class="eqno">(59)<a class="headerlink" href="#equation-eq-mwr-lsq-3" title="Permalink to this equation">¶</a></span>\[W_i=2\frac{\partial R}{\partial a_i}\]</div>
 <p>However, the <span class="math notranslate nohighlight">\(2\)</span> can be dropped, since it cancels out in the equation.
 Therefore the weight functions for the Least Squares Method are just the
-dierivatives of the residual with respect to the unknown constants:</p>
+derivatives of the residual with respect to the unknown constants:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-lsq-4">
 <span class="eqno">(60)<a class="headerlink" href="#equation-eq-mwr-lsq-4" title="Permalink to this equation">¶</a></span>\[W_i=\frac{\partial R}{\partial a_i}\]</div>
 </div>

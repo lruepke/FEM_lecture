@@ -22,9 +22,7 @@ is,
     
     u\cong \tilde{u}=\sum_{i=1}^na_i\varphi _i
 
-Now, when substituted into the differential operator, :math:`D`, the result of the
-operations is not, in general, :math:`p(x)`. Hence a error or *residual* will
-exist:
+where :math:`a` are the coefficients of the :math:`n` basis functions :math:`\varphi`. Now, when substituted into the differential operator, :math:`D`, the result of the operations is not, in general, :math:`p(x)`. Hence an error or residual will exist:
 
 .. math::
     :label: eq:mwr_basic_3
@@ -124,7 +122,7 @@ Comparing with :eq:`eq:mwr_basic_4`, the weight functions are seen to be
 
 However, the :math:`2` can be dropped, since it cancels out in the equation.
 Therefore the weight functions for the Least Squares Method are just the
-dierivatives of the residual with respect to the unknown constants: 
+derivatives of the residual with respect to the unknown constants: 
 
 .. math::
     :label: eq:mwr_lsq_4

@@ -9,8 +9,8 @@ Let us explore the steady-state advection diffusion equation and find approximat
 
     \begin{align}
     \begin{split}
-    \frac{\partial u}{\partial t} = K \frac{\partial^2 T}{\partial x^2} - c\frac{\partial u}{\partial x}=0\\
-    c\frac{\partial u}{\partial x} - K \frac{\partial^2 T}{\partial x^2} =0\\
+    \frac{\partial u}{\partial t} = K \frac{\partial^2 u}{\partial x^2} - c\frac{\partial u}{\partial x}=0\\
+    c\frac{\partial u}{\partial x} - K \frac{\partial^2 u}{\partial x^2} =0\\
     u(0)=0\\
     u(1)=1
     \end{split}
@@ -54,7 +54,7 @@ Application of the boundary conditions reveals
 
     \begin{align}
     \begin{split}
-    \tilde{u}(0) &= 0=a_1\\
+    \tilde{u}(0) &= 0=a_0\\
     \tilde{u}(1) &= 1=0+a_1 + a_2\\
     a_1 &= 1-a_2
     \end{split}
@@ -145,3 +145,49 @@ Galerkin method
 ---------------
 
 In the Galerkin Method, the weight function :math:`W_1` is the derivative of the approximating function :math:`\tilde{u}` with respect to the unknown coefficient :math:`a_2`:
+
+.. math::
+    :label: eq:mwr_gal_ex_1
+
+    W_{1}(x)=\frac{d\widetilde{u}}{da_{2}}=x^{2}-x 
+
+
+So the weighted residual statement becomes
+
+.. math::
+    :label: eq:mwr_gal_ex_2
+
+    \int_{0}^{1}W_{1}(x)\cdot R(x)dx &=&0 \\
+    \int_{0}^{1}\left( x^{2}-x\right) \cdot \left[ c\left( (1-a_2)+2a_2x\right)-K(2a_2) \right] dx &=&0
+
+Again, the math is straightforward but tedious. Direct evaluation leads to the algebraic equation:
+
+.. math::
+    :label: eq:mwr_gal_ex_3
+
+    a_2=\frac{c}{2K}
+
+Note how this solution is, for this special case, exactly the same as the one for the collocation method.
+
+Discussion
+----------
+
+Let us evaluate the different approximations by exploring an example. If both the velocity and the diffusion constants are set to 1, the exact solution looks like in Figure 1. We can plot the approximate solutions using the equations above or by quickly re-deriving them using Python/Matlab. For this Matlab’s Symbolic Math Toolbox, sympy for Python are extremely useful.
+
+Before we start let us introduce a useful measure for the quality of the approximation. A reasonable scalar index for the closeness of two functions is the L2 norm, or Euclidian norm. This measure is often called the root-mean-squared (RMS) error in engineering. The RMS error can be defined
+
+.. math::
+    :label: eq:mwr_dis_1
+
+    E_{RMS}=\frac{\sqrt{\int \left( u(x)-\widetilde{u}(x)\right) ^{2}dx}}{\int dx%
+    } 
+
+which in discrete terms can be evaluated as
+
+.. math::
+    :label: eq:mwr_dis_2
+
+    E_{RMS}=\sqrt{\frac{\sum_{i=1}^{N}\left( u_{i}-\widetilde{u}_{i}\right) ^{2}%
+    }{N}\text{.}} 
+
+where N is the number of grid points. 
