@@ -14,6 +14,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
   <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -33,12 +35,13 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/tabs.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -273,10 +276,10 @@
 <h2>Higher-order approximations<a class="headerlink" href="#higher-order-approximations" title="Permalink to this headline">¶</a></h2>
 <p>What we have seen is that for diffusion dominated problems, the above approximation gives reasonable results. For advection dominated problems, a simple polynomial function can no longer approximate the solution in a satisfactory way. One possible solution is to use a higher polynomial as the approximating function. Let’s try this:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-example-ho-1">
-<span class="eqno">(82)<a class="headerlink" href="#equation-eq-mwr-example-ho-1" title="Permalink to this equation">¶</a></span>\[\tilde{u}(x)=a_0 + a_1 x + a_2 x^2 + a_3 x^3\]</div>
+<span class="eqno">(81)<a class="headerlink" href="#equation-eq-mwr-example-ho-1" title="Permalink to this equation">¶</a></span>\[\tilde{u}(x)=a_0 + a_1 x + a_2 x^2 + a_3 x^3\]</div>
 <p>The boundary conditions can now be written as:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-example-ho-2">
-<span class="eqno">(83)<a class="headerlink" href="#equation-eq-mwr-example-ho-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(82)<a class="headerlink" href="#equation-eq-mwr-example-ho-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 \tilde{u}(0) &amp;= 0=a_0\\
 \tilde{u}(1) &amp;= 1=0+a_1 + a_2 + a_3\\
@@ -285,7 +288,7 @@
 \end{align}\end{split}\]</div>
 <p>The first and second derivatives become:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-example-ho-3">
-<span class="eqno">(84)<a class="headerlink" href="#equation-eq-mwr-example-ho-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(83)<a class="headerlink" href="#equation-eq-mwr-example-ho-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 \frac{\partial \tilde{u}}{\partial x} &amp;= a_1+2a_2x + 3a_3x^2\\
 \frac{\partial^2 \tilde{u}}{\partial x^2} &amp;= 2a_2 + 6a_3x
@@ -294,15 +297,15 @@
 <p>So the residual is</p>
 <blockquote>
 <div><div class="math notranslate nohighlight" id="equation-eq-mwr-example-ho-4">
-<span class="eqno">(85)<a class="headerlink" href="#equation-eq-mwr-example-ho-4" title="Permalink to this equation">¶</a></span>\[R(x)=c\left ( a_1 + 2a_2x+3a_3x^2 \right ) - K(2a_2+6a_3x)\]</div>
+<span class="eqno">(84)<a class="headerlink" href="#equation-eq-mwr-example-ho-4" title="Permalink to this equation">¶</a></span>\[R(x)=c\left ( a_1 + 2a_2x+3a_3x^2 \right ) - K(2a_2+6a_3x)\]</div>
 </div></blockquote>
 <p>We will only use the collocation method with two collocation points to determine the two unknown coefficients. The result is a system of equations for the four coefficients <span class="math notranslate nohighlight">\(ai\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-example-ho-5">
-<span class="eqno">(86)<a class="headerlink" href="#equation-eq-mwr-example-ho-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(85)<a class="headerlink" href="#equation-eq-mwr-example-ho-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 a_0 &amp;=0\\
 c \left( a_1+2a_2 \left(\frac{1}{3}\right) +3a_3\left(\frac{1}{3}\right)^2 \right)-K\left(2a_2+6a_3\left(\frac{1}{3}\right)\right)&amp;=0=R\left(\frac{1}{3}\right)\\
-c \left( a_1+2a_2 \left(\frac{1}{3}\right) +3a_3\left(\frac{2}{3}\right)^2 \right)-K\left(2a_2+6a_3\left(\frac{2}{3}\right)\right)&amp;=0=R\left(\frac{2}{3}\right)\\
+c \left( a_1+2a_2 \left(\frac{2}{3}\right) +3a_3\left(\frac{2}{3}\right)^2 \right)-K\left(2a_2+6a_3\left(\frac{2}{3}\right)\right)&amp;=0=R\left(\frac{2}{3}\right)\\
 a_1 + a_2 + a_3 -1 &amp;=0
 \end{split}
 \end{align}\end{split}\]</div>

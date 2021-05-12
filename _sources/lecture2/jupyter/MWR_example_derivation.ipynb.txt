@@ -10,7 +10,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 35,
+   "execution_count": 1,
    "id": "015feb92",
    "metadata": {},
    "outputs": [],
@@ -67,13 +67,28 @@
    "id": "04ac704b",
    "metadata": {},
    "source": [
-    "## Least Squares method"
+    "## Least Squares method\n",
+    "Try to compute the functional form of the coefficient a2 using the symbolic math package following the example given above."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 38,
+   "execution_count": 2,
    "id": "18dc5a09",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a2, x, c, K = symbols('a2 x c K')\n",
+    "#Ri          = ???\n",
+    "#Wi          = ???\n",
+    "#a2          = ???\n",
+    "#a2\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "7de4ee4c",
    "metadata": {},
    "outputs": [
     {
@@ -82,17 +97,17 @@
        "[6*K*c/(12*K**2 + c**2)]"
       ]
      },
-     "execution_count": 38,
+     "execution_count": 3,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "a2, x, c, K = symbols('a2 x c K')\n",
+    "# hide\n",
     "Ri          = c*((1-a2)+2*a2*x) - K*2*a2\n",
     "Wi          = diff(Ri,a2)\n",
     "a2          = solve(integrate(Wi*Ri,(x,0,1)),a2)\n",
-    "a2\n"
+    "a2"
    ]
   },
   {
@@ -105,8 +120,22 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 39,
+   "execution_count": 4,
    "id": "11124b2f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a2, x, c, K = symbols('a2 x c K')\n",
+    "#Ri          = ???\n",
+    "#Wi          = ???\n",
+    "#a2          = ???\n",
+    "# a2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "b3da5155",
    "metadata": {},
    "outputs": [
     {
@@ -115,13 +144,13 @@
        "[c/(2*K)]"
       ]
      },
-     "execution_count": 39,
+     "execution_count": 5,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "a2, x, c, K = symbols('a2 x c K')\n",
+    "# hide\n",
     "Ri          = c*((1-a2)+2*a2*x) - K*2*a2\n",
     "Wi          = (x**2-x);\n",
     "a2          = solve(integrate(Wi*Ri,(x,0,1)),a2)\n",
@@ -139,9 +168,9 @@
  ],
  "metadata": {
   "kernelspec": {
-   "display_name": "py37_fem_class",
+   "display_name": "py3_htf_class",
    "language": "python",
-   "name": "py37_fem_class"
+   "name": "py3_htf_class"
   },
   "language_info": {
    "codemirror_mode": {

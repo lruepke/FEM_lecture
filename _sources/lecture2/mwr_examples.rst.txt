@@ -86,17 +86,7 @@ So the residual is
 
     R(x)=c\left ( (1-a_2)+ 2a_2 x \right ) - K(2a_2)
 
-Before continuing let us explore an example problem:
-	  
-.. math::
-    :label: eq:mwr_example_tmp1
 
-    \begin{align}
-    \begin{split}
-    c &= 1\\
-    K &= 1
-    \end{split}
-    \end{align}   
 
 Collocation method
 ------------------
@@ -182,7 +172,9 @@ Note how this solution is, for this special case, exactly the same as the one fo
 
 Notebook - derivation of constants
 ------------------------------------------
-        
+Excercise: Go through the notebook and try to re-derive the functional forms of the :math:`a_2` coefficient!
+
+
 .. toctree::
     :maxdepth: 2
 
