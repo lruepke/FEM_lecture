@@ -69,7 +69,7 @@ We will only use the collocation method with two collocation points to determine
     \begin{split}
     a_0 &=0\\
     c \left( a_1+2a_2 \left(\frac{1}{3}\right) +3a_3\left(\frac{1}{3}\right)^2 \right)-K\left(2a_2+6a_3\left(\frac{1}{3}\right)\right)&=0=R\left(\frac{1}{3}\right)\\
-    c \left( a_1+2a_2 \left(\frac{1}{3}\right) +3a_3\left(\frac{2}{3}\right)^2 \right)-K\left(2a_2+6a_3\left(\frac{2}{3}\right)\right)&=0=R\left(\frac{2}{3}\right)\\
+    c \left( a_1+2a_2 \left(\frac{2}{3}\right) +3a_3\left(\frac{2}{3}\right)^2 \right)-K\left(2a_2+6a_3\left(\frac{2}{3}\right)\right)&=0=R\left(\frac{2}{3}\right)\\
     a_1 + a_2 + a_3 -1 &=0
     \end{split}
     \end{align}   
