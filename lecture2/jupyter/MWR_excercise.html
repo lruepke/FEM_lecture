@@ -133,6 +133,7 @@
 <p class="caption"><span class="caption-text">Lecture 3</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../lecture3/overview.html">Overview: Finite Elements!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lecture3/fem_intro.html">Introduction Finite Element Method</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -471,7 +472,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="MWR-example-problems">
 <h1>MWR example problems<a class="headerlink" href="#MWR-example-problems" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -486,11 +487,11 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Analytical-solution">
 <h2>Analytical solution<a class="headerlink" href="#Analytical-solution" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">c_vec</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>  <span class="c1"># velocities</span>
+<span></span><span class="n">c_vec</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">20</span><span class="p">])</span>  <span class="c1"># velocities</span>
 <span class="n">K</span>       <span class="o">=</span> <span class="mi">1</span>    <span class="c1"># diffusion constant</span>
 <span class="n">nx</span>      <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># grid points</span>
 <span class="n">x0</span>      <span class="o">=</span> <span class="mi">0</span>    <span class="c1"># left boundary</span>
@@ -502,12 +503,12 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># function to compute analytical solution with boundary conditions u(0) = 0 and u(1) = 1</span>
-<span class="k">def</span> <span class="nf">solve_analytical</span><span class="p">(</span><span class="n">u_ex</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">solve_analytical</span><span class="p">():</span>
     <span class="n">C2</span>      <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="n">K</span><span class="p">))</span>
     <span class="n">C1</span>      <span class="o">=</span> <span class="o">-</span><span class="n">C2</span>
     <span class="n">u_ex</span>    <span class="o">=</span> <span class="n">C1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="n">K</span><span class="o">*</span><span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">C2</span>
@@ -517,7 +518,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[155]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -531,7 +532,7 @@ div.rendered_html tbody tr:hover {
 
 <span class="c1"># compute solutions</span>
 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">c_vec</span><span class="p">:</span>
-    <span class="n">u_ex</span> <span class="o">=</span> <span class="n">solve_analytical</span><span class="p">(</span><span class="n">u_ex</span><span class="p">)</span>
+    <span class="n">u_ex</span> <span class="o">=</span> <span class="n">solve_analytical</span><span class="p">()</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">u_ex</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Analytical solution c = </span><span class="si">%2i</span><span class="s1"> K = </span><span class="si">%2i</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">K</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -549,13 +550,13 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Weighted-residual-results">
 <h2>Weighted residual results<a class="headerlink" href="#Weighted-residual-results" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[156]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># global variables</span>
 <span class="n">K</span>       <span class="o">=</span> <span class="mi">1</span>
-<span class="n">c</span>       <span class="o">=</span> <span class="mi">2</span>
+<span class="n">c</span>       <span class="o">=</span> <span class="mi">5</span>
 
 <span class="c1"># analytical solution</span>
 <span class="n">C2</span>      <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="n">K</span><span class="p">))</span>
@@ -566,7 +567,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[157]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -601,7 +602,7 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[158]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -610,7 +611,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -634,7 +635,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[161]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -643,7 +644,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -666,7 +667,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[167]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -703,7 +704,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[167]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -716,6 +717,15 @@ Text(0, 0.5, &#39;RMS Error&#39;)
 </div>
 <div class="output_area docutils container">
 <img alt="../../_images/lecture2_jupyter_MWR_excercise_13_1.png" src="../../_images/lecture2_jupyter_MWR_excercise_13_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
