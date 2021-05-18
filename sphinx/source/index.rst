@@ -65,6 +65,7 @@ The majority of this course will be spent in front of a computer working on exer
     :caption: Lecture 3
 
     lecture3/overview
+    lecture3/fem_intro
 
     
 .. toctree::
