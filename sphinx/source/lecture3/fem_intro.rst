@@ -225,7 +225,7 @@ Where the first matrix is the element stiffness matrix, the second vector are th
 Excercise
 ----------
 
-Let's put this into python
+Let's put this into python!
 
 .. toctree::
     :maxdepth: 2
