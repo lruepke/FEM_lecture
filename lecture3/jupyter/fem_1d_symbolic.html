@@ -494,12 +494,12 @@ div.rendered_html tbody tr:hover {
 <span class="c1">#N1  = 1-(x-xi)/(dx)</span>
 <span class="c1">#N2  = (x-xi)/(dx)</span>
 
-<span class="c1">#E11 = ???</span>
+<span class="c1">#E11 = sy.integrate(sy.diff(N1,x)*k*sy.diff(N1,x), (x,0,dx))</span>
 <span class="c1">#E12 = ???</span>
 <span class="c1">#E21 = ???</span>
 <span class="c1">#E22 = ???</span>
 
-<span class="c1">#Ael = Matrix([[?, ?], [?, ?]])</span>
+<span class="c1">#Ael = Matrix([[E11, ?], [?, ?]])</span>
 <span class="c1">#Ael</span>
 </pre></div>
 </div>

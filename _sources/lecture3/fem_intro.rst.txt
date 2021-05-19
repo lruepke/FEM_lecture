@@ -56,9 +56,9 @@ Applying this to :eq:`eq:partial_int` results in the **weak form** of our govern
     \begin{split}
     \int_XN_i\frac{\partial}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx=0\ \ \ \ \ \ \ i=1,2,...,n\\
     \Rightarrow \\
-    -\int_X \frac{\partial N_j}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx + \oint_{\Gamma} N_ik\frac{\partial N_j T_j }{\partial x}d\Gamma=0\ \ \ \ \ \ \ i=1,2,...,n\\
+    -\int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx + \oint_{\Gamma} N_ik\frac{\partial N_j T_j }{\partial x}d\Gamma=0\ \ \ \ \ \ \ i=1,2,...,n\\
     \Rightarrow \\
-    \int_X \frac{\partial N_j}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx - \oint_{\Gamma}\vec{q}\vec{n}d\Gamma=0\ \ \ \ \ \ \ i=1,2,...,n\\
+    \int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx - \oint_{\Gamma}\vec{q}\vec{n}d\Gamma=0\ \ \ \ \ \ \ i=1,2,...,n\\
     \end{split}
     \end{align}
 
@@ -67,7 +67,7 @@ Close inspection of the boundary integral reveals that it is the heat flow throu
 .. math::
     :label: eq:fem_1d_weak_simple
 
-    \int_X \frac{\partial N_j}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx =0\ \ \ \ \ \ \ i=1,2,...,n
+    \int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx =0\ \ \ \ \ \ \ i=1,2,...,n
 
 
 How can we solve this using the FEM?
@@ -79,9 +79,9 @@ The basic idea is to split the integrals into subdomains and the solution will b
 
     \begin{align}
     \begin{split}
-    \int_X \frac{\partial N_j}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx =0\ \ \ \ \ \ \ i=1,2,...,n\\
+    \int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx =0\ \ \ \ \ \ \ i=1,2,...,n\\
     \Rightarrow \\
-    \int_X \frac{\partial N_j}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx =  \sum_{Elements} \int_{X_e} \frac{\partial N_j}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx = 0\ \ \ \ \ \ \ i=1,2,...,n\\
+    \int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx =  \sum_{Elements} \int_{X_e} \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx = 0\ \ \ \ \ \ \ i=1,2,...,n\\
     \end{split}
     \end{align}
 
@@ -103,11 +103,11 @@ Let’s look at a single 1-D element. If we use linear shape functions, one 1-D 
     \int_{X_e} \frac{\partial N_1}{\partial x}k\frac{\partial N_2}{\partial x}dx \\
     \int_{X_e} \frac{\partial N_2}{\partial x}k\frac{\partial N_1}{\partial x}dx &
     \int_{X_e} \frac{\partial N_2}{\partial x}k\frac{\partial N_2}{\partial x}dx
-    \end{bmatrix} = 
+    \end{bmatrix}
     \begin{bmatrix}
     T_1 \\
     T_2
-    \end{bmatrix}
+    \end{bmatrix}=0
     
 We get a :math:`2x2` so-called stiffness matrix for every element. In the end we will have to sum the contributions from every element into a global stiffness matrix, which will again be :math:`[n x n]`.  Note: The node numbering in :eq:`eq:fem_1d_single_element` is local! I.e. node number 1 is the first node of an element k and has the global node number k, while node number 2 is the second node of the element and has the global node number k+1!
 
