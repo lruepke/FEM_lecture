@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Symbolic derivation of 1-D FEM stiffness matrix &mdash; Finite Element Modeling in Geodynamics  documentation</title>
+  <title>Numerical 1-D FEM solution of the heat diffusion equation &mdash; Finite Element Modeling in Geodynamics  documentation</title>
   
 
   
@@ -41,16 +41,12 @@
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/tabs.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="References" href="../../refs.html" />
-    <link rel="prev" title="Introduction Finite Element Method" href="../fem_intro.html" /> 
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -120,22 +116,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../lecture2/excercises.html">Excercises</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 3</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview: Finite Elements!</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../fem_intro.html">Introduction Finite Element Method</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../fem_intro.html#fem-1-d-heat-diffusion">FEM: 1-D heat diffusion</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../fem_intro.html#excercise">Excercise</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Symbolic derivation of 1-D FEM stiffness matrix</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../fem_intro.html#matrix-assembly">Matrix assembly</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../fem_intro.html#example-1-d-heat-diffusion-numerical-fem-solution">Example: 1-D heat diffusion numerical FEM solution</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../fem_intro.html#id1">Excercise</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Symbolic derivation of 1-D FEM stiffness matrix</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../fem_intro.html">Introduction Finite Element Method</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -206,16 +189,14 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="../fem_intro.html">Introduction Finite Element Method</a> &raquo;</li>
-        
-      <li>Symbolic derivation of 1-D FEM stiffness matrix</li>
+      <li>Numerical 1-D FEM solution of the heat diffusion equation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
             
-              <a href="https://github.com/lruepke/HTF_lecture/blob/main//source/lecture3/jupyter/fem_1d_symbolic.ipynb" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/lruepke/HTF_lecture/blob/main//source/lecture3/jupyter/fem_1d_numerical.ipynb" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -471,83 +452,90 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Symbolic-derivation-of-1-D-FEM-stiffness-matrix">
-<h1>Symbolic derivation of 1-D FEM stiffness matrix<a class="headerlink" href="#Symbolic-derivation-of-1-D-FEM-stiffness-matrix" title="Permalink to this headline">¶</a></h1>
-<p>First import everything. Note how we now import sympy as sy to make it clear which functions we are using</p>
+<div class="section" id="Numerical-1-D-FEM-solution-of-the-heat-diffusion-equation">
+<h1>Numerical 1-D FEM solution of the heat diffusion equation<a class="headerlink" href="#Numerical-1-D-FEM-solution-of-the-heat-diffusion-equation" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sy</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>
 </pre></div>
 </div>
 </div>
-<p>Now we define the symbols, compute the shape function, and build the stiffness matrix of a single elelemt.</p>
+<p>First we define some numerical constants and define the problem</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># symbols</span>
-<span class="c1">#dx, x, k, xi = symbols(&#39;dx x k xi&#39;)</span>
+<span></span><span class="c1">#constants</span>
+<span class="n">lx</span>          <span class="o">=</span> <span class="mi">10</span>           <span class="c1">#width</span>
+<span class="n">nnod</span>        <span class="o">=</span> <span class="mi">7</span>            <span class="c1">#number of nodes</span>
+<span class="n">nnodel</span>      <span class="o">=</span> <span class="mi">2</span>            <span class="c1">#nodes per element</span>
+<span class="n">k</span>           <span class="o">=</span> <span class="mi">1</span>            <span class="c1">#conductivity</span>
+<span class="n">Q</span>           <span class="o">=</span> <span class="mi">1</span>            <span class="c1">#source term</span>
+<span class="n">Tleft</span>       <span class="o">=</span> <span class="mi">0</span>            <span class="c1">#T boundary conditions</span>
+<span class="n">Trite</span>       <span class="o">=</span> <span class="mi">0</span>
 
-<span class="c1">#N1  = 1-(x-xi)/(dx)</span>
-<span class="c1">#N2  = (x-xi)/(dx)</span>
+<span class="c1">#numerics</span>
+<span class="n">nel</span>         <span class="o">=</span> <span class="n">nnod</span><span class="o">-</span><span class="mi">1</span>       <span class="c1">#numnber of elements</span>
 
-<span class="c1">#E11 = ???</span>
-<span class="c1">#E12 = ???</span>
-<span class="c1">#E21 = ???</span>
-<span class="c1">#E22 = ???</span>
 
-<span class="c1">#Ael = Matrix([[?, ?], [?, ?]])</span>
-<span class="c1">#Ael</span>
 </pre></div>
 </div>
 </div>
+<p>Now we make our FEM mesh and element connectivity</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Gcoord</span><span class="p">,</span> <span class="n">dx</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">lx</span><span class="p">,</span><span class="n">nnod</span><span class="p">,</span>   <span class="n">retstep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#global coordinates</span>
+<span class="n">EL2NOD</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nnod</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nnod</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>  <span class="c1"># connectivity matrix</span>
+</pre></div>
+</div>
+</div>
+<p>Now we spell out our analytically-derived element stiffness matrix (see previous sections):</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Ael</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">k</span><span class="o">/</span><span class="n">dx</span><span class="p">,</span> <span class="o">-</span><span class="n">k</span><span class="o">/</span><span class="n">dx</span><span class="p">],[</span><span class="o">-</span><span class="n">k</span><span class="o">/</span><span class="n">dx</span><span class="p">,</span> <span class="n">k</span><span class="o">/</span><span class="n">dx</span><span class="p">]])</span>
+<span class="n">Rhs_el</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Q</span><span class="o">*</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">Q</span><span class="o">*</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<p>And allocate the global Rhs and coefficient matrix arrays</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A_all</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nnod</span><span class="p">,</span> <span class="n">nnod</span><span class="p">))</span>
+<span class="n">Rhs_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nnod</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now we need to loop over all elements and assemble the global stiffness matrix</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># hide: the code in this cell is hidden by the author</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-$\displaystyle \left[\begin{matrix}\frac{k}{dx} &amp; - \frac{k}{dx}\\- \frac{k}{dx} &amp; \frac{k}{dx}\end{matrix}\right]$</div></div>
-</div>
-<p>Note how we made a little simplification here and integrated from 0 to dx and not from x(i) to x(i+1); the result is the same.</p>
-<p>Now we build the global stiffness matrix by adding all element stiffness matrices to the big global stiffness matrix. Unfortunately, the indexing in sympy matrices is a bit different to normal numpy indexing.</p>
-<p>We there have to use a little trick that is described here: <a class="reference external" href="https://www.reddit.com/r/learnpython/comments/f7uxn6/question_how_to_add_matrix_to_submatrix_in_sympy/">https://www.reddit.com/r/learnpython/comments/f7uxn6/question_how_to_add_matrix_to_submatrix_in_sympy/</a></p>
-<p>We simply identify the upper left index on the left-hand side and use list indexing on the right-hand side when adding the small matrices to the big one.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># numerical paramters</span>
-<span class="n">nel</span>     <span class="o">=</span> <span class="mi">4</span>       <span class="c1"># number of elements</span>
-<span class="n">nnodel</span>  <span class="o">=</span> <span class="mi">2</span>       <span class="c1"># nodes per element</span>
-<span class="n">nnod</span>    <span class="o">=</span> <span class="n">nel</span><span class="o">+</span><span class="mi">1</span>   <span class="c1"># number of nodes</span>
+<span></span><span class="k">for</span> <span class="n">iel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nel</span><span class="p">):</span>
 
-<span class="n">EL2NOD</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nnod</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nnod</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>  <span class="c1"># connectivity matrix</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">)</span>
+        <span class="n">A_all</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="c1">#= A_all[list(EL2NOD[:,iel]-1), list(EL2NOD[:,iel]-1)] + Ael</span>
 
-<span class="c1"># global matrix assemly</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nnod</span><span class="p">,</span> <span class="n">nnod</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">iel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nel</span><span class="p">):</span>
-    <span class="n">A</span><span class="p">[</span><span class="n">EL2NOD</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">EL2NOD</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span> <span class="o">+</span> <span class="n">Ael</span>
 
-<span class="n">A</span>
+    <span class="c1">#A[EL2NOD[0,iel]-1,EL2NOD[0,iel]-1] = A[list(EL2NOD[:,iel]-1), list(EL2NOD[:,iel]-1)] + Ael</span>
 
+<span class="n">A_all</span>
 </pre></div>
 </div>
 </div>
@@ -556,19 +544,124 @@ $\displaystyle \left[\begin{matrix}\frac{k}{dx} &amp; - \frac{k}{dx}\\- \frac{k}
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[1 2 3 4]
- [2 3 4 5]]
+[1 2]
+[0. 0.]
+[[ 0.6 -0.6]
+ [-0.6  0.6]]
+[2 3]
+[0. 0.]
+[[ 0.6 -0.6]
+ [-0.6  0.6]]
+[3 4]
+[0. 0.]
+[[ 0.6 -0.6]
+ [-0.6  0.6]]
+[4 5]
+[0. 0.]
+[[ 0.6 -0.6]
+ [-0.6  0.6]]
+[5 6]
+[0. 0.]
+[[ 0.6 -0.6]
+ [-0.6  0.6]]
+[6 7]
+[0. 0.]
+[[ 0.6 -0.6]
+ [-0.6  0.6]]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-$\displaystyle \left[\begin{matrix}\frac{k}{dx} &amp; - \frac{k}{dx} &amp; 0 &amp; 0 &amp; 0\\- \frac{k}{dx} &amp; \frac{2 k}{dx} &amp; - \frac{k}{dx} &amp; 0 &amp; 0\\0 &amp; - \frac{k}{dx} &amp; \frac{2 k}{dx} &amp; - \frac{k}{dx} &amp; 0\\0 &amp; 0 &amp; - \frac{k}{dx} &amp; \frac{2 k}{dx} &amp; - \frac{k}{dx}\\0 &amp; 0 &amp; 0 &amp; - \frac{k}{dx} &amp; \frac{k}{dx}\end{matrix}\right]$</div></div>
+<div class="highlight"><pre>
+array([[0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0.]])
+</pre></div></div>
 </div>
-<p>Does this matrix look familiar, or at least has a familiar structure?</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+
+<span></span><span class="o">%</span><span class="k">local</span> stiffness matrix and local RHS
+<span class="n">K_el</span>    <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="o">/</span><span class="n">dx</span><span class="p">,</span> <span class="o">-</span><span class="n">k</span><span class="o">/</span><span class="n">dx</span><span class="p">;</span> <span class="o">-</span><span class="n">k</span><span class="o">/</span><span class="n">dx</span><span class="p">,</span> <span class="n">k</span><span class="o">/</span><span class="n">dx</span><span class="p">];</span>
+<span class="n">Rhs_el</span>  <span class="o">=</span> <span class="p">[</span><span class="n">Q</span><span class="o">*</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span> <span class="n">Q</span><span class="o">*</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">];</span>
+
+<span class="o">%</span><span class="k">storage</span> global stiffness matrix and RHS vector
+<span class="n">K_all</span>   <span class="o">=</span> <span class="n">sparse</span><span class="p">(</span><span class="n">nnod</span><span class="p">,</span><span class="n">nnod</span><span class="p">);</span>
+<span class="n">Rhs_all</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">nnod</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="o">%</span><span class="k">assembly</span> loop over all elements
+<span class="k">for</span> <span class="n">iel</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">nel</span>
+
+    <span class="o">%</span><span class="k">sort</span> local stiffness matrix into global
+    <span class="n">K_all</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">(</span><span class="n">iel</span><span class="p">,:),</span> <span class="n">EL2NOD</span><span class="p">(</span><span class="n">iel</span><span class="p">,:))</span> <span class="o">=</span> <span class="n">K_all</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">(</span><span class="n">iel</span><span class="p">,:),</span> <span class="n">EL2NOD</span><span class="p">(</span><span class="n">iel</span><span class="p">,:))</span> <span class="o">+</span> <span class="n">K_el</span><span class="p">;</span>
+
+    <span class="o">%</span><span class="k">sort</span> local RHS into global RHS
+    <span class="n">Rhs_all</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">(</span><span class="n">iel</span><span class="p">,:))</span> <span class="o">=</span> <span class="n">Rhs_all</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">(</span><span class="n">iel</span><span class="p">,:))</span> <span class="o">+</span> <span class="n">Rhs_el</span><span class="p">;</span>
+<span class="n">end</span>
+
+<span class="o">%</span><span class="k">Apply</span> boundary conditions
+<span class="n">K_all</span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">K_all</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">Rhs_all</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">Tleft</span><span class="p">;</span>
+<span class="n">K_all</span><span class="p">(</span><span class="n">end</span><span class="p">,:)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">K_all</span><span class="p">(</span><span class="n">end</span><span class="p">,</span><span class="n">end</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">Rhs_all</span><span class="p">(</span><span class="n">end</span><span class="p">)</span> <span class="o">=</span> <span class="n">Trite</span><span class="p">;</span>
+
+<span class="o">%</span><span class="k">and</span> solve
+<span class="n">T</span> <span class="o">=</span> <span class="n">K_all</span>\<span class="n">Rhs_all</span><span class="p">;</span>
+
+<span class="o">%</span><span class="k">Analytical</span> solution
+<span class="n">X</span>     <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">lx</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="n">nnod</span><span class="p">);</span>
+<span class="n">T_ana</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">Q</span><span class="o">/</span><span class="n">k</span><span class="o">*</span><span class="n">X</span><span class="o">.^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">Q</span><span class="o">/</span><span class="n">k</span><span class="o">*</span><span class="n">lx</span><span class="o">*</span><span class="n">X</span><span class="p">;</span>
+
+<span class="o">%</span><span class="k">Plotting</span>
+<span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">Gcoord</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">T_ana</span><span class="p">);</span>
+<span class="n">legend</span><span class="p">(</span><span class="s1">&#39;FEM&#39;</span><span class="p">,</span> <span class="s1">&#39;Analytical&#39;</span><span class="p">);</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature&#39;</span><span class="p">);</span>
+<span class="n">box</span> <span class="n">on</span>
+<span class="n">grid</span> <span class="n">on</span>
+
+
+
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -585,10 +678,6 @@ $\displaystyle \left[\begin{matrix}\frac{k}{dx} &amp; - \frac{k}{dx} &amp; 0 &am
            
           </div>
           <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../../refs.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../fem_intro.html" class="btn btn-neutral float-left" title="Introduction Finite Element Method" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
 
   <hr/>
 

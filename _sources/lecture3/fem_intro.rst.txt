@@ -126,3 +126,108 @@ We have two linear shape functions for the points i and i+1 of each element:
 
 Excercise
 ----------
+.. toctree::
+    :maxdepth: 2
+
+    jupyter/fem_1d_symbolic.ipynb
+
+
+Matrix assembly
+---------------
+The above exercise results in the integrated element stiffness matrix of steady-state diffusion:
+
+.. math::
+    :label: eq:fem_1d_int_Ae
+
+    Ael = 
+    \begin{bmatrix}
+    \frac{k}{\Delta x} & 
+    -\frac{k}{\Delta x} \\
+    -\frac{k}{\Delta x} &
+    \frac{k}{\Delta x}
+    \end{bmatrix}
+
+
+The global stiffness matrix :math:`A` is the sum of all element stiffness matrices; we simply have to add them all together using the connectivity information, i.e. which nodes belong to which elements (something that we call EL2NOD in the codes).
+
+If we assume three linear elements, this looks like this
+
+.. math::
+    :label: eq:fem_1d_matrix_assembly
+
+    A = 
+    \begin{bmatrix}
+    \frac{k}{\Delta x} & -\frac{k}{\Delta x} & 0 & 0\\
+    -\frac{k}{\Delta x} & \frac{k}{\Delta x} & 0 & 0\\
+    0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0\\
+    \end{bmatrix} + 
+    \begin{bmatrix}
+    0 & 0 & 0 & 0\\
+    0 & \frac{k}{\Delta x} & -\frac{k}{\Delta x} & 0 \\
+    0 & -\frac{k}{\Delta x} & \frac{k}{\Delta x} & 0\\
+    0 & 0 & 0 & 0\\
+    \end{bmatrix}+ 
+    \begin{bmatrix}
+    0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0\\
+    0 & 0 & \frac{k}{\Delta x} & -\frac{k}{\Delta x} \\
+    0 & 0 & -\frac{k}{\Delta x} & \frac{k}{\Delta x} \\
+    \end{bmatrix}
+
+
+Example: 1-D heat diffusion numerical FEM solution
+--------------------------------------------------
+
+Let's put everything together and write our first finite element code! We will do this by programming a FEM solution to the steady-state heat diffusion equation but this time with a source term.
+
+.. math::
+    :label: eq:fem_1d_strong_ex
+
+    \frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}-Q=0.
+    
+The weak form will then look like this (signs get flipped during partial integration):
+
+.. math::
+    :label: eq:fem_1d_weak_simple_ex1
+
+    \begin{align}
+    \begin{split}
+    \int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j  }{\partial x}T_j - N_iQdx =0\ \ \ \ \ \ \ i=1,2,...,n\\
+    \Rightarrow \\
+    \int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j  }{\partial x} T_j - N_i Qd x =  \sum_{Elements} \int_{X_e} \frac{\partial N_i}{\partial x}k\frac{\partial N_j  }{\partial x} T_j - N_i Q dx = 0\ \ \ \ \ \ \ i=1,2,...,n\\
+    \end{split}
+    \end{align}
+
+After another symbolic integration (try it) of the source term,we get the following element stiffness matrix and element system of equations:
+
+.. math::
+    :label: eq:fem_1d_weak_simple_ex2
+
+    Ael = 
+    \begin{bmatrix}
+    \frac{k}{\Delta x} & 
+    -\frac{k}{\Delta x} \\
+    -\frac{k}{\Delta x} &
+    \frac{k}{\Delta x}
+    \end{bmatrix} 
+    \begin{bmatrix}
+    T_i \\
+    T_{i+1}
+    \end{bmatrix} = 
+    \begin{bmatrix}
+    \frac{\Delta x}{2}Q_{el} \\
+    \frac{\Delta x}{2}Q_{el}
+    \end{bmatrix}
+
+Where the first matrix is the element stiffness matrix, the second vector are the unknown temperatures of the element, and the right-hand side has the integration source term :math:`Q_{el}` which here is constant value (per element).
+
+Excercise
+----------
+
+Let's put this into python
+
+.. toctree::
+    :maxdepth: 2
+
+    jupyter/fem_1d_symbolic.ipynb

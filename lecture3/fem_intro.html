@@ -49,7 +49,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="References" href="../refs.html" />
+    <link rel="next" title="Symbolic derivation of 1-D FEM stiffness matrix" href="jupyter/fem_1d_symbolic.html" />
     <link rel="prev" title="Overview: Finite Elements!" href="overview.html" /> 
 </head>
 
@@ -124,7 +124,16 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview: Finite Elements!</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction Finite Element Method</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#fem-1-d-heat-diffusion">FEM: 1-D heat diffusion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#excercise">Excercise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#excercise">Excercise</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/fem_1d_symbolic.html">Symbolic derivation of 1-D FEM stiffness matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#matrix-assembly">Matrix assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-1-d-heat-diffusion-numerical-fem-solution">Example: 1-D heat diffusion numerical FEM solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Excercise</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/fem_1d_symbolic.html">Symbolic derivation of 1-D FEM stiffness matrix</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -316,6 +325,87 @@ N_{i+1}(x) = \frac{x-x_i}{x_{i+1} - x_i} &amp;= \frac{x-x_i}{\Delta x}\\
 </div>
 <div class="section" id="excercise">
 <h2>Excercise<a class="headerlink" href="#excercise" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/fem_1d_symbolic.html">Symbolic derivation of 1-D FEM stiffness matrix</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="matrix-assembly">
+<h2>Matrix assembly<a class="headerlink" href="#matrix-assembly" title="Permalink to this headline">¶</a></h2>
+<p>The above exercise results in the integrated element stiffness matrix of steady-state diffusion:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-1d-int-ae">
+<span class="eqno">(97)<a class="headerlink" href="#equation-eq-fem-1d-int-ae" title="Permalink to this equation">¶</a></span>\[\begin{split}Ael =
+\begin{bmatrix}
+\frac{k}{\Delta x} &amp;
+-\frac{k}{\Delta x} \\
+-\frac{k}{\Delta x} &amp;
+\frac{k}{\Delta x}
+\end{bmatrix}\end{split}\]</div>
+<p>The global stiffness matrix <span class="math notranslate nohighlight">\(A\)</span> is the sum of all element stiffness matrices; we simply have to add them all together using the connectivity information, i.e. which nodes belong to which elements (something that we call EL2NOD in the codes).</p>
+<p>If we assume three linear elements, this looks like this</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-1d-matrix-assembly">
+<span class="eqno">(98)<a class="headerlink" href="#equation-eq-fem-1d-matrix-assembly" title="Permalink to this equation">¶</a></span>\[\begin{split}A =
+\begin{bmatrix}
+\frac{k}{\Delta x} &amp; -\frac{k}{\Delta x} &amp; 0 &amp; 0\\
+-\frac{k}{\Delta x} &amp; \frac{k}{\Delta x} &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0\\
+\end{bmatrix} +
+\begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; \frac{k}{\Delta x} &amp; -\frac{k}{\Delta x} &amp; 0 \\
+0 &amp; -\frac{k}{\Delta x} &amp; \frac{k}{\Delta x} &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0\\
+\end{bmatrix}+
+\begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; \frac{k}{\Delta x} &amp; -\frac{k}{\Delta x} \\
+0 &amp; 0 &amp; -\frac{k}{\Delta x} &amp; \frac{k}{\Delta x} \\
+\end{bmatrix}\end{split}\]</div>
+</div>
+<div class="section" id="example-1-d-heat-diffusion-numerical-fem-solution">
+<h2>Example: 1-D heat diffusion numerical FEM solution<a class="headerlink" href="#example-1-d-heat-diffusion-numerical-fem-solution" title="Permalink to this headline">¶</a></h2>
+<p>Let’s put everything together and write our first finite element code! We will do this by programming a FEM solution to the steady-state heat diffusion equation but this time with a source term.</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-1d-strong-ex">
+<span class="eqno">(99)<a class="headerlink" href="#equation-eq-fem-1d-strong-ex" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}-Q=0.\]</div>
+<p>The weak form will then look like this (signs get flipped during partial integration):</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-1d-weak-simple-ex1">
+<span class="eqno">(100)<a class="headerlink" href="#equation-eq-fem-1d-weak-simple-ex1" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
+\int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j  }{\partial x}T_j - N_iQdx =0\ \ \ \ \ \ \ i=1,2,...,n\\
+\Rightarrow \\
+\int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j  }{\partial x} T_j - N_i Qd x =  \sum_{Elements} \int_{X_e} \frac{\partial N_i}{\partial x}k\frac{\partial N_j  }{\partial x} T_j - N_i Q dx = 0\ \ \ \ \ \ \ i=1,2,...,n\\
+\end{split}
+\end{align}\end{split}\]</div>
+<p>After another symbolic integration (try it) of the source term,we get the following element stiffness matrix and element system of equations:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-1d-weak-simple-ex2">
+<span class="eqno">(101)<a class="headerlink" href="#equation-eq-fem-1d-weak-simple-ex2" title="Permalink to this equation">¶</a></span>\[\begin{split}Ael =
+\begin{bmatrix}
+\frac{k}{\Delta x} &amp;
+-\frac{k}{\Delta x} \\
+-\frac{k}{\Delta x} &amp;
+\frac{k}{\Delta x}
+\end{bmatrix}
+\begin{bmatrix}
+T_i \\
+T_{i+1}
+\end{bmatrix} =
+\begin{bmatrix}
+\frac{\Delta x}{2}Q_{el} \\
+\frac{\Delta x}{2}Q_{el}
+\end{bmatrix}\end{split}\]</div>
+<p>Where the first matrix is the element stiffness matrix, the second vector are the unknown temperatures of the element, and the right-hand side has the integration source term <span class="math notranslate nohighlight">\(Q_{el}\)</span> which here is constant value (per element).</p>
+</div>
+<div class="section" id="id1">
+<h2>Excercise<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Let’s put this into python</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/fem_1d_symbolic.html">Symbolic derivation of 1-D FEM stiffness matrix</a></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -325,7 +415,7 @@ N_{i+1}(x) = \frac{x-x_i}{x_{i+1} - x_i} &amp;= \frac{x-x_i}{\Delta x}\\
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../refs.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="jupyter/fem_1d_symbolic.html" class="btn btn-neutral float-right" title="Symbolic derivation of 1-D FEM stiffness matrix" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="overview.html" class="btn btn-neutral float-left" title="Overview: Finite Elements!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
