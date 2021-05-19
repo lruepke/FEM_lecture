@@ -46,7 +46,9 @@
 
     
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="References" href="../../refs.html" />
+    <link rel="prev" title="Symbolic derivation of 1-D FEM stiffness matrix" href="fem_1d_symbolic.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -116,9 +118,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../../lecture2/excercises.html">Excercises</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 3</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview: Finite Elements!</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../fem_intro.html">Introduction Finite Element Method</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../fem_intro.html">Introduction Finite Element Method</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fem_intro.html#fem-1-d-heat-diffusion">FEM: 1-D heat diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fem_intro.html#excercise">Excercise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fem_intro.html#matrix-assembly">Matrix assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fem_intro.html#example-1-d-heat-diffusion-numerical-fem-solution">Example: 1-D heat diffusion numerical FEM solution</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../fem_intro.html#id1">Excercise</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Numerical 1-D FEM solution of the heat diffusion equation</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -188,6 +200,8 @@
   <ul class="wy-breadcrumbs">
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../fem_intro.html">Introduction Finite Element Method</a> &raquo;</li>
         
       <li>Numerical 1-D FEM solution of the heat diffusion equation</li>
     
@@ -455,7 +469,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Numerical-1-D-FEM-solution-of-the-heat-diffusion-equation">
 <h1>Numerical 1-D FEM solution of the heat diffusion equation<a class="headerlink" href="#Numerical-1-D-FEM-solution-of-the-heat-diffusion-equation" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -463,6 +477,8 @@ div.rendered_html tbody tr:hover {
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sy</span>
 <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
 </pre></div>
 </div>
 </div>
@@ -523,19 +539,68 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Now we need to loop over all elements and assemble the global stiffness matrix</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[92]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">iel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nel</span><span class="p">):</span>
+<span></span><span class="n">I</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">J</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">K</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">At</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">At</span><span class="p">)</span>
+<span class="c1">#J = array([1,2])</span>
+<span class="c1">#V = array([1,1])</span>
+<span class="c1">#A = sparse.coo_matrix((V,(I,J)),shape=(4,4))</span>
+<span class="c1">#print(A)</span>
 
-        <span class="n">A_all</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
-        <span class="c1">#= A_all[list(EL2NOD[:,iel]-1), list(EL2NOD[:,iel]-1)] + Ael</span>
+<span class="n">I</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nnodel</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+<span class="n">J</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">EL2NOD</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">J</span><span class="p">)</span>
+<span class="n">K</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">At</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[1 2]
+ [3 4]]
+[array([1., 1., 2., 2.])]
+[array([1., 2., 1., 2.])]
+[array([1, 2, 3, 4])]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[122]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 
+<span></span><span class="n">I</span> <span class="o">=</span> <span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nnodel</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">)</span>
+<span class="n">J</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nnodel</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">EL2NOD</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">Ael</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+<span class="n">I</span><span class="o">.</span><span class="n">shape</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">iel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nel</span><span class="p">):</span>
+
+    <span class="n">I</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nnodel</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">))</span>
+    <span class="n">J</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nnodel</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">EL2NOD</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">))</span>
+    <span class="n">K</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Ael</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">))</span>
 
     <span class="c1">#A[EL2NOD[0,iel]-1,EL2NOD[0,iel]-1] = A[list(EL2NOD[:,iel]-1), list(EL2NOD[:,iel]-1)] + Ael</span>
 
-<span class="n">A_all</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+<span class="c1">#I=np.array(I)</span>
+
+<span class="c1">#I.reshape(nnod*nnod)</span>
+<span class="c1">#J.reshape(nnod*nnod)</span>
+<span class="c1">#K.reshape(nnod*nnod)</span>
+<span class="c1">#A = sparse.coo_matrix((K,(I,J)),shape=(nnod,nnod))</span>
 </pre></div>
 </div>
 </div>
@@ -544,45 +609,24 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[1 2]
-[0. 0.]
-[[ 0.6 -0.6]
- [-0.6  0.6]]
-[2 3]
-[0. 0.]
-[[ 0.6 -0.6]
- [-0.6  0.6]]
-[3 4]
-[0. 0.]
-[[ 0.6 -0.6]
- [-0.6  0.6]]
-[4 5]
-[0. 0.]
-[[ 0.6 -0.6]
- [-0.6  0.6]]
-[5 6]
-[0. 0.]
-[[ 0.6 -0.6]
- [-0.6  0.6]]
-[6 7]
-[0. 0.]
-[[ 0.6 -0.6]
- [-0.6  0.6]]
+[2. 2. 3. 3.]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([[0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0.]])
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-122-87a1f703eed0&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> K <span class="ansi-blue-fg">=</span> Ael<span class="ansi-blue-fg">.</span>reshape<span class="ansi-blue-fg">(</span>nnodel<span class="ansi-blue-fg">*</span>nnodel<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> print<span class="ansi-blue-fg">(</span>I<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg"> </span>I<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> <span class="ansi-green-fg">for</span> iel <span class="ansi-green-fg">in</span> range<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span>nel<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: &#39;tuple&#39; object is not callable
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -678,6 +722,10 @@ array([[0., 0., 0., 0., 0., 0., 0.],
            
           </div>
           <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../../refs.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="fem_1d_symbolic.html" class="btn btn-neutral float-left" title="Symbolic derivation of 1-D FEM stiffness matrix" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 

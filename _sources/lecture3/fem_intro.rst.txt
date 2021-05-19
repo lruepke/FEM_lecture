@@ -230,4 +230,4 @@ Let's put this into python
 .. toctree::
     :maxdepth: 2
 
-    jupyter/fem_1d_symbolic.ipynb
+    jupyter/fem_1d_numerical.ipynb

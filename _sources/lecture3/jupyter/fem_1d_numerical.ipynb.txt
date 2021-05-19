@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "d90178dc",
+   "id": "10b7cd01",
    "metadata": {},
    "source": [
     "# Numerical 1-D FEM solution of the heat diffusion equation"
@@ -10,20 +10,22 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 19,
-   "id": "b6ffce47",
+   "execution_count": 52,
+   "id": "76b935c6",
    "metadata": {},
    "outputs": [],
    "source": [
     "import numpy as np\n",
     "import matplotlib.pyplot as plt\n",
     "import sympy as sy\n",
-    "from scipy.sparse import csr_matrix"
+    "from scipy.sparse import csr_matrix\n",
+    "from scipy import sparse\n",
+    "from numpy import array"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "933f6cd8",
+   "id": "0beb0f46",
    "metadata": {},
    "source": [
     "First we define some numerical constants and define the problem"
@@ -32,7 +34,7 @@
   {
    "cell_type": "code",
    "execution_count": 22,
-   "id": "7759ed47",
+   "id": "f70ce261",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -52,7 +54,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "30f7b31d",
+   "id": "2e693dad",
    "metadata": {},
    "source": [
     "Now we make our FEM mesh and element connectivity"
@@ -61,7 +63,7 @@
   {
    "cell_type": "code",
    "execution_count": 23,
-   "id": "37f67a27",
+   "id": "8906c201",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -71,7 +73,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "6f7272be",
+   "id": "3f65131a",
    "metadata": {},
    "source": [
     "Now we spell out our analytically-derived element stiffness matrix (see previous sections):"
@@ -80,7 +82,7 @@
   {
    "cell_type": "code",
    "execution_count": 37,
-   "id": "eee803ff",
+   "id": "56abe7d9",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -90,7 +92,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "7fa6ed57",
+   "id": "78689027",
    "metadata": {},
    "source": [
     "And allocate the global Rhs and coefficient matrix arrays"
@@ -99,7 +101,7 @@
   {
    "cell_type": "code",
    "execution_count": 41,
-   "id": "4a055b25",
+   "id": "a518c501",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -109,7 +111,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "c1f3fcd3",
+   "id": "2a99661d",
    "metadata": {},
    "source": [
     "Now we need to loop over all elements and assemble the global stiffness matrix"
@@ -117,73 +119,95 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 50,
-   "id": "8f7170d7",
+   "execution_count": 92,
+   "id": "2cbcf565",
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "[1 2]\n",
-      "[0. 0.]\n",
-      "[[ 0.6 -0.6]\n",
-      " [-0.6  0.6]]\n",
-      "[2 3]\n",
-      "[0. 0.]\n",
-      "[[ 0.6 -0.6]\n",
-      " [-0.6  0.6]]\n",
-      "[3 4]\n",
-      "[0. 0.]\n",
-      "[[ 0.6 -0.6]\n",
-      " [-0.6  0.6]]\n",
-      "[4 5]\n",
-      "[0. 0.]\n",
-      "[[ 0.6 -0.6]\n",
-      " [-0.6  0.6]]\n",
-      "[5 6]\n",
-      "[0. 0.]\n",
-      "[[ 0.6 -0.6]\n",
-      " [-0.6  0.6]]\n",
-      "[6 7]\n",
-      "[0. 0.]\n",
-      "[[ 0.6 -0.6]\n",
-      " [-0.6  0.6]]\n"
+      "[[1 2]\n",
+      " [3 4]]\n",
+      "[array([1., 1., 2., 2.])]\n",
+      "[array([1., 2., 1., 2.])]\n",
+      "[array([1, 2, 3, 4])]\n"
      ]
-    },
-    {
-     "data": {
-      "text/plain": [
-       "array([[0., 0., 0., 0., 0., 0., 0.],\n",
-       "       [0., 0., 0., 0., 0., 0., 0.],\n",
-       "       [0., 0., 0., 0., 0., 0., 0.],\n",
-       "       [0., 0., 0., 0., 0., 0., 0.],\n",
-       "       [0., 0., 0., 0., 0., 0., 0.],\n",
-       "       [0., 0., 0., 0., 0., 0., 0.],\n",
-       "       [0., 0., 0., 0., 0., 0., 0.]])"
-      ]
-     },
-     "execution_count": 50,
-     "metadata": {},
-     "output_type": "execute_result"
     }
    ],
    "source": [
-    "for iel in range(0,nel):\n",
+    "I = []\n",
+    "J = []\n",
+    "K = []\n",
+    "At = np.array([[1,2], [3,4]])\n",
+    "print(At)\n",
+    "#J = array([1,2])\n",
+    "#V = array([1,1])\n",
+    "#A = sparse.coo_matrix((V,(I,J)),shape=(4,4))\n",
+    "#print(A)\n",
+    "\n",
+    "I.append((EL2NOD[:,iel]*np.ones((nnodel,1))).T.reshape(nnodel*nnodel))\n",
+    "print(I)\n",
+    "J.append((np.ones((2,1)) * EL2NOD[:,0]).reshape(4))\n",
+    "print(J)\n",
+    "K.append(At.reshape(4))\n",
+    "print(K)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 122,
+   "id": "552dbd5a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[2. 2. 3. 3.]\n"
+     ]
+    },
+    {
+     "ename": "TypeError",
+     "evalue": "'tuple' object is not callable",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-122-87a1f703eed0>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[0mK\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mAel\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mreshape\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnnodel\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0mnnodel\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0mprint\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mI\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 5\u001b[0;31m \u001b[0mI\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshape\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      6\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      7\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0miel\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mrange\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0mnel\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mTypeError\u001b[0m: 'tuple' object is not callable"
+     ]
+    }
+   ],
+   "source": [
+    "\n",
+    "I = (EL2NOD[:,iel]*np.ones((nnodel,1))).T.reshape(nnodel*nnodel)\n",
+    "J = (np.ones((nnodel,1)) * EL2NOD[:,0]).reshape(nnodel*nnodel)\n",
+    "K = Ael.reshape(nnodel*nnodel)\n",
+    "print(I)\n",
+    "I.shape()\n",
+    "\n",
+    "for iel in range(1,nel):\n",
     "    \n",
-    "        A_all[list(EL2NOD[:,iel]-1), list(EL2NOD[:,iel]-1)])\n",
-    "        #= A_all[list(EL2NOD[:,iel]-1), list(EL2NOD[:,iel]-1)] + Ael\n",
-    "    \n",
-    "    \n",
+    "    I.concatenate((EL2NOD[:,iel]*np.ones((nnodel,1))).T.reshape(nnodel*nnodel))\n",
+    "    J.concatenate((np.ones((nnodel,1)) * EL2NOD[:,0]).reshape(nnodel*nnodel))\n",
+    "    K.concatenate(Ael.reshape(nnodel*nnodel))\n",
+    "       \n",
     "    #A[EL2NOD[0,iel]-1,EL2NOD[0,iel]-1] = A[list(EL2NOD[:,iel]-1), list(EL2NOD[:,iel]-1)] + Ael\n",
     "\n",
-    "A_all"
+    "print(I)\n",
+    "#I=np.array(I)\n",
+    "    \n",
+    "#I.reshape(nnod*nnod)\n",
+    "#J.reshape(nnod*nnod)\n",
+    "#K.reshape(nnod*nnod)\n",
+    "#A = sparse.coo_matrix((K,(I,J)),shape=(nnod,nnod))"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "87d87c0e",
+   "id": "58265819",
    "metadata": {},
    "outputs": [],
    "source": []
@@ -191,7 +215,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "a51e13b6",
+   "id": "5469c9de",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -241,7 +265,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "e27bc2bc",
+   "id": "82336171",
    "metadata": {},
    "outputs": [],
    "source": []
@@ -249,7 +273,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "67c3d03c",
+   "id": "f074dd94",
    "metadata": {},
    "outputs": [],
    "source": []
@@ -257,7 +281,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "fbb88bf2",
+   "id": "f5d48a82",
    "metadata": {},
    "outputs": [],
    "source": []
