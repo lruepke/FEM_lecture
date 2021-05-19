@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>&lt;no title&gt; &mdash; Finite Element Modeling in Geodynamics  documentation</title>
+  <title>Symbolic derivation of 1-D FEM stiffness matrix &mdash; Finite Element Modeling in Geodynamics  documentation</title>
   
 
   
@@ -191,7 +191,7 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>&lt;no title&gt;</li>
+      <li>Symbolic derivation of 1-D FEM stiffness matrix</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -454,115 +454,81 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
+<div class="section" id="Symbolic-derivation-of-1-D-FEM-stiffness-matrix">
+<h1>Symbolic derivation of 1-D FEM stiffness matrix<a class="headerlink" href="#Symbolic-derivation-of-1-D-FEM-stiffness-matrix" title="Permalink to this headline">¶</a></h1>
+<p>First import everything. Note how we now import sympy as sy to make it clear which functions we are using</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sy</span>
+</pre></div>
+</div>
+</div>
+<p>Now we define the symbols, compute the shape function, and build the stiffness matrix of a single elelemt.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[137]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># symbols</span>
+<span class="c1">#dx, x, k, xi = symbols(&#39;dx x k xi&#39;)</span>
+
+<span class="c1">#N1  = 1-(x-xi)/(dx)</span>
+<span class="c1">#N2  = (x-xi)/(dx)</span>
+
+<span class="c1">#E11 = ???</span>
+<span class="c1">#E12 = ???</span>
+<span class="c1">#E21 = ???</span>
+<span class="c1">#E22 = ???</span>
+
+<span class="c1">#Ael = Matrix([[?, ?], [?, ?]])</span>
+<span class="c1">#Ael</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[138]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">dx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">xip</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;dx x k xi xip&#39;</span><span class="p">)</span>
-
-<span class="n">N1</span>  <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">xi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span>
-<span class="n">N2</span>  <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">xi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span>
-
-<span class="n">E11</span> <span class="o">=</span> <span class="n">integrate</span><span class="p">(</span><span class="n">diff</span><span class="p">(</span><span class="n">N1</span><span class="p">,</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">k</span><span class="o">*</span><span class="n">diff</span><span class="p">(</span><span class="n">N1</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dx</span><span class="p">))</span>
-<span class="n">E12</span> <span class="o">=</span> <span class="n">integrate</span><span class="p">(</span><span class="n">diff</span><span class="p">(</span><span class="n">N1</span><span class="p">,</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">k</span><span class="o">*</span><span class="n">diff</span><span class="p">(</span><span class="n">N2</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dx</span><span class="p">))</span>
-<span class="n">E21</span> <span class="o">=</span> <span class="n">integrate</span><span class="p">(</span><span class="n">diff</span><span class="p">(</span><span class="n">N2</span><span class="p">,</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">k</span><span class="o">*</span><span class="n">diff</span><span class="p">(</span><span class="n">N1</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dx</span><span class="p">))</span>
-<span class="n">E22</span> <span class="o">=</span> <span class="n">integrate</span><span class="p">(</span><span class="n">diff</span><span class="p">(</span><span class="n">N2</span><span class="p">,</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">k</span><span class="o">*</span><span class="n">diff</span><span class="p">(</span><span class="n">N2</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dx</span><span class="p">))</span>
-
-<span class="n">Ael</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">([[</span><span class="n">E11</span><span class="p">,</span> <span class="n">E12</span><span class="p">],</span> <span class="p">[</span><span class="n">E21</span><span class="p">,</span> <span class="n">E22</span><span class="p">]])</span>
-
+<span></span><span class="c1"># hide: the code in this cell is hidden by the author</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[138]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math notranslate nohighlight">
 $\displaystyle \left[\begin{matrix}\frac{k}{dx} &amp; - \frac{k}{dx}\\- \frac{k}{dx} &amp; \frac{k}{dx}\end{matrix}\right]$</div></div>
 </div>
+<p>Now we build the global stiffness matrix by adding all element stiffness matrices to the big global stiffness matrix. Unfortunately, the indexing in sympy matrices is a bit different to normal numpy indexing.</p>
+<p>We there have to use a little trick that is described here: <a class="reference external" href="https://www.reddit.com/r/learnpython/comments/f7uxn6/question_how_to_add_matrix_to_submatrix_in_sympy/">https://www.reddit.com/r/learnpython/comments/f7uxn6/question_how_to_add_matrix_to_submatrix_in_sympy/</a></p>
+<p>We simply identify the upper left index on the left-hand side and use list indexing on the right-hand side when adding the small matrices to the big one.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[143]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-$\displaystyle \left[\begin{matrix}\frac{k}{dx} &amp; - \frac{k}{dx}\\- \frac{k}{dx} &amp; \frac{k}{dx}\end{matrix}\right]$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">19</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">20</span><span class="p">)])</span>
-<span class="n">B</span><span class="o">.</span><span class="n">shape</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">A</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[1 2]
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-$\displaystyle \left[\begin{matrix}0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0\end{matrix}\right]$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">nel</span>     <span class="o">=</span> <span class="mi">4</span>
-<span class="n">nnodel</span>  <span class="o">=</span> <span class="mi">2</span>
-<span class="n">nnod</span>    <span class="o">=</span> <span class="n">nel</span><span class="o">+</span><span class="mi">1</span>
+<span></span><span class="c1"># numerical paramters</span>
+<span class="n">nel</span>     <span class="o">=</span> <span class="mi">4</span>       <span class="c1"># number of elements</span>
+<span class="n">nnodel</span>  <span class="o">=</span> <span class="mi">2</span>       <span class="c1"># nodes per element</span>
+<span class="n">nnod</span>    <span class="o">=</span> <span class="n">nel</span><span class="o">+</span><span class="mi">1</span>   <span class="c1"># number of nodes</span>
 
-<span class="n">EL2NOD</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nnod</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nnod</span><span class="p">)])</span>
-
+<span class="n">EL2NOD</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nnod</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nnod</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>  <span class="c1"># connectivity matrix</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">)</span>
-<span class="c1">#iel = 1</span>
-<span class="c1">#A[(EL2NOD[:,iel])</span>
 
-<span class="c1"># global matrix assemly?</span>
+<span class="c1"># global matrix assemly</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">nnod</span><span class="p">,</span> <span class="n">nnod</span><span class="p">)</span>
-<span class="c1">#</span>
-<span class="k">for</span> <span class="n">iel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nel</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">iel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nel</span><span class="p">):</span>
+    <span class="n">A</span><span class="p">[</span><span class="n">EL2NOD</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">EL2NOD</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span> <span class="o">+</span> <span class="n">Ael</span>
 
-    <span class="c1">#i = EL2NOD[:,iel]</span>
-
-    <span class="n">A</span><span class="p">[</span><span class="n">EL2NOD</span><span class="p">[</span><span class="n">iel</span><span class="p">,:],</span> <span class="n">EL2NOD</span><span class="p">[</span><span class="n">iel</span><span class="p">,:]]</span>
-<span class="n">end</span>
+<span class="n">A</span>
 
 </pre></div>
 </div>
@@ -572,63 +538,34 @@ $\displaystyle \left[\begin{matrix}0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0\\0 &amp;
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[1 2 3]
- [2 3 4]]
+[[1 2 3 4]
+ [2 3 4 5]]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[143]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}\frac{k}{dx} &amp; - \frac{k}{dx} &amp; 0 &amp; 0 &amp; 0\\- \frac{k}{dx} &amp; \frac{2 k}{dx} &amp; - \frac{k}{dx} &amp; 0 &amp; 0\\0 &amp; - \frac{k}{dx} &amp; \frac{2 k}{dx} &amp; - \frac{k}{dx} &amp; 0\\0 &amp; 0 &amp; - \frac{k}{dx} &amp; \frac{2 k}{dx} &amp; - \frac{k}{dx}\\0 &amp; 0 &amp; 0 &amp; - \frac{k}{dx} &amp; \frac{k}{dx}\end{matrix}\right]$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[122]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[122]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/dense.py</span> in <span class="ansi-cyan-fg">__getitem__</span><span class="ansi-blue-fg">(self, key)</span>
-<span class="ansi-green-intense-fg ansi-bold">    100</span>             <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 101</span><span class="ansi-red-fg">                 </span>i<span class="ansi-blue-fg">,</span> j <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>key2ij<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    102</span>                 <span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_mat<span class="ansi-blue-fg">[</span>i<span class="ansi-blue-fg">*</span>self<span class="ansi-blue-fg">.</span>cols <span class="ansi-blue-fg">+</span> j<span class="ansi-blue-fg">]</span>
-
-<span class="ansi-green-fg">~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/matrices.py</span> in <span class="ansi-cyan-fg">key2ij</span><span class="ansi-blue-fg">(self, key)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1832</span>             return [a2idx_(i, n) if not isinstance(i, slice) else i
-<span class="ansi-green-fg">-&gt; 1833</span><span class="ansi-red-fg">                     for i, n in zip(key, self.shape)]
-</span><span class="ansi-green-intense-fg ansi-bold">   1834</span>         <span class="ansi-green-fg">elif</span> isinstance<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">,</span> slice<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/matrices.py</span> in <span class="ansi-cyan-fg">&lt;listcomp&gt;</span><span class="ansi-blue-fg">(.0)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1832</span>             return [a2idx_(i, n) if not isinstance(i, slice) else i
-<span class="ansi-green-fg">-&gt; 1833</span><span class="ansi-red-fg">                     for i, n in zip(key, self.shape)]
-</span><span class="ansi-green-intense-fg ansi-bold">   1834</span>         <span class="ansi-green-fg">elif</span> isinstance<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">,</span> slice<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/common.py</span> in <span class="ansi-cyan-fg">a2idx</span><span class="ansi-blue-fg">(j, n)</span>
-<span class="ansi-green-intense-fg ansi-bold">   3218</span>         <span class="ansi-green-fg">if</span> jindex <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 3219</span><span class="ansi-red-fg">             </span>j <span class="ansi-blue-fg">=</span> jindex<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   3220</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-red-fg">TypeError</span>: only integer scalar arrays can be converted to a scalar index
-
-During handling of the above exception, another exception occurred:
-
-<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-37-87a37cea7df8&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     16</span>     <span class="ansi-red-fg">#i = EL2NOD[:,iel]</span>
-<span class="ansi-green-intense-fg ansi-bold">     17</span>
-<span class="ansi-green-fg">---&gt; 18</span><span class="ansi-red-fg">     </span>A<span class="ansi-blue-fg">[</span>EL2NOD<span class="ansi-blue-fg">[</span>iel<span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> EL2NOD<span class="ansi-blue-fg">[</span>iel<span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     19</span> end
-
-<span class="ansi-green-fg">~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/dense.py</span> in <span class="ansi-cyan-fg">__getitem__</span><span class="ansi-blue-fg">(self, key)</span>
-<span class="ansi-green-intense-fg ansi-bold">    121</span>                 <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    122</span>                     j <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>j<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-fg">--&gt; 123</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>extract<span class="ansi-blue-fg">(</span>i<span class="ansi-blue-fg">,</span> j<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    124</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    125</span>             <span class="ansi-red-fg"># row-wise decomposition of matrix</span>
-
-<span class="ansi-green-fg">~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/common.py</span> in <span class="ansi-cyan-fg">extract</span><span class="ansi-blue-fg">(self, rowsList, colsList)</span>
-<span class="ansi-green-intense-fg ansi-bold">    366</span>             <span class="ansi-green-fg">raise</span> TypeError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;rowsList and colsList must be iterable&#34;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    367</span>         <span class="ansi-red-fg"># ensure rowsList and colsList are lists of integers</span>
-<span class="ansi-green-fg">--&gt; 368</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">if</span> rowsList <span class="ansi-green-fg">and</span> all<span class="ansi-blue-fg">(</span>isinstance<span class="ansi-blue-fg">(</span>i<span class="ansi-blue-fg">,</span> bool<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> i <span class="ansi-green-fg">in</span> rowsList<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    369</span>             rowsList <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>index <span class="ansi-green-fg">for</span> index<span class="ansi-blue-fg">,</span> item <span class="ansi-green-fg">in</span> enumerate<span class="ansi-blue-fg">(</span>rowsList<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">if</span> item<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">    370</span>         <span class="ansi-green-fg">if</span> colsList <span class="ansi-green-fg">and</span> all<span class="ansi-blue-fg">(</span>isinstance<span class="ansi-blue-fg">(</span>i<span class="ansi-blue-fg">,</span> bool<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> i <span class="ansi-green-fg">in</span> colsList<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-red-fg">ValueError</span>: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+1
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -657,14 +594,6 @@ During handling of the above exception, another exception occurred:
 <span></span>
 </pre></div>
 </div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
 </div>
 </div>
 

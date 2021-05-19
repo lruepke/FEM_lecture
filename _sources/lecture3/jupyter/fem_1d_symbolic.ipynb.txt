@@ -1,21 +1,67 @@
 {
  "cells": [
   {
+   "cell_type": "markdown",
+   "id": "34b52134",
+   "metadata": {},
+   "source": [
+    "# Symbolic derivation of 1-D FEM stiffness matrix"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "afa777f4",
+   "metadata": {},
+   "source": [
+    "First import everything. Note how we now import sympy as sy to make it clear which functions we are using"
+   ]
+  },
+  {
    "cell_type": "code",
-   "execution_count": 1,
-   "id": "95cfa73b",
+   "execution_count": null,
+   "id": "d9f6ed97",
    "metadata": {},
    "outputs": [],
    "source": [
     "import numpy as np\n",
     "import matplotlib.pyplot as plt\n",
-    "from sympy import *"
+    "import sympy as sy"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c284aaf4",
+   "metadata": {},
+   "source": [
+    "Now we define the symbols, compute the shape function, and build the stiffness matrix of a single elelemt."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 8,
-   "id": "c9ac82ff",
+   "execution_count": 137,
+   "id": "f67a152b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# symbols\n",
+    "#dx, x, k, xi = symbols('dx x k xi')\n",
+    "    \n",
+    "#N1  = 1-(x-xi)/(dx)\n",
+    "#N2  = (x-xi)/(dx)\n",
+    "\n",
+    "#E11 = ???\n",
+    "#E12 = ???\n",
+    "#E21 = ???\n",
+    "#E22 = ???\n",
+    "\n",
+    "#Ael = Matrix([[?, ?], [?, ?]])\n",
+    "#Ael"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 138,
+   "id": "09380c85",
    "metadata": {},
    "outputs": [
     {
@@ -29,13 +75,15 @@
        "[-k/dx,  k/dx]])"
       ]
      },
-     "execution_count": 8,
+     "execution_count": 138,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "dx, x, k, xi, xip = symbols('dx x k xi xip')\n",
+    "# hide\n",
+    "# symbols\n",
+    "dx, x, k, xi = symbols('dx x k xi')\n",
     "    \n",
     "N1  = 1-(x-xi)/(dx)\n",
     "N2  = (x-xi)/(dx)\n",
@@ -45,132 +93,96 @@
     "E21 = integrate(diff(N2,x)*k*diff(N1,x), ( x, 0, dx))\n",
     "E22 = integrate(diff(N2,x)*k*diff(N2,x), ( x, 0, dx))\n",
     "\n",
-    "Ael = Matrix([[E11, E12], [E21, E22]])\n"
+    "Ael = Matrix([[E11, E12], [E21, E22]])\n",
+    "Ael"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9032e0cc",
+   "metadata": {},
+   "source": [
+    "Now we build the global stiffness matrix by adding all element stiffness matrices to the big global stiffness matrix. Unfortunately, the indexing in sympy matrices is a bit different to normal numpy indexing. \n",
+    "\n",
+    "We there have to use a little trick that is described here:\n",
+    "https://www.reddit.com/r/learnpython/comments/f7uxn6/question_how_to_add_matrix_to_submatrix_in_sympy/\n",
+    "\n",
+    "We simply identify the upper left index on the left-hand side and use list indexing on the right-hand side when adding the small matrices to the big one."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 7,
-   "id": "19709773",
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}\\frac{k}{dx} & - \\frac{k}{dx}\\\\- \\frac{k}{dx} & \\frac{k}{dx}\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "Matrix([\n",
-       "[ k/dx, -k/dx],\n",
-       "[-k/dx,  k/dx]])"
-      ]
-     },
-     "execution_count": 7,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 20,
-   "id": "6ac008a8",
+   "execution_count": 143,
+   "id": "24c4fad7",
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "[1 2]\n"
+      "[[1 2 3 4]\n",
+      " [2 3 4 5]]\n"
      ]
     },
     {
      "data": {
       "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}0 & 0 & 0\\\\0 & 0 & 0\\\\0 & 0 & 0\\end{matrix}\\right]$"
+       "$\\displaystyle \\left[\\begin{matrix}\\frac{k}{dx} & - \\frac{k}{dx} & 0 & 0 & 0\\\\- \\frac{k}{dx} & \\frac{2 k}{dx} & - \\frac{k}{dx} & 0 & 0\\\\0 & - \\frac{k}{dx} & \\frac{2 k}{dx} & - \\frac{k}{dx} & 0\\\\0 & 0 & - \\frac{k}{dx} & \\frac{2 k}{dx} & - \\frac{k}{dx}\\\\0 & 0 & 0 & - \\frac{k}{dx} & \\frac{k}{dx}\\end{matrix}\\right]$"
       ],
       "text/plain": [
        "Matrix([\n",
-       "[0, 0, 0],\n",
-       "[0, 0, 0],\n",
-       "[0, 0, 0]])"
+       "[ k/dx,  -k/dx,      0,      0,     0],\n",
+       "[-k/dx, 2*k/dx,  -k/dx,      0,     0],\n",
+       "[    0,  -k/dx, 2*k/dx,  -k/dx,     0],\n",
+       "[    0,      0,  -k/dx, 2*k/dx, -k/dx],\n",
+       "[    0,      0,      0,  -k/dx,  k/dx]])"
       ]
      },
-     "execution_count": 20,
+     "execution_count": 143,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "B = np.array([np.arange(1,19), np.arange(2,20)])\n",
-    "B.shape\n",
-    "print(B[:,0])\n",
-    "A = zeros(3, 3)\n",
-    "A"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 37,
-   "id": "fe414b09",
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "[[1 2 3]\n",
-      " [2 3 4]]\n"
-     ]
-    },
-    {
-     "ename": "ValueError",
-     "evalue": "The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
-      "\u001b[0;32m~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/dense.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, key)\u001b[0m\n\u001b[1;32m    100\u001b[0m             \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 101\u001b[0;31m                 \u001b[0mi\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mj\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mkey2ij\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    102\u001b[0m                 \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_mat\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcols\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0mj\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/matrices.py\u001b[0m in \u001b[0;36mkey2ij\u001b[0;34m(self, key)\u001b[0m\n\u001b[1;32m   1832\u001b[0m             return [a2idx_(i, n) if not isinstance(i, slice) else i\n\u001b[0;32m-> 1833\u001b[0;31m                     for i, n in zip(key, self.shape)]\n\u001b[0m\u001b[1;32m   1834\u001b[0m         \u001b[0;32melif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mslice\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/matrices.py\u001b[0m in \u001b[0;36m<listcomp>\u001b[0;34m(.0)\u001b[0m\n\u001b[1;32m   1832\u001b[0m             return [a2idx_(i, n) if not isinstance(i, slice) else i\n\u001b[0;32m-> 1833\u001b[0;31m                     for i, n in zip(key, self.shape)]\n\u001b[0m\u001b[1;32m   1834\u001b[0m         \u001b[0;32melif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mslice\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/common.py\u001b[0m in \u001b[0;36ma2idx\u001b[0;34m(j, n)\u001b[0m\n\u001b[1;32m   3218\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mjindex\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 3219\u001b[0;31m             \u001b[0mj\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mjindex\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   3220\u001b[0m         \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;31mTypeError\u001b[0m: only integer scalar arrays can be converted to a scalar index",
-      "\nDuring handling of the above exception, another exception occurred:\n",
-      "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
-      "\u001b[0;32m<ipython-input-37-87a37cea7df8>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m     16\u001b[0m     \u001b[0;31m#i = EL2NOD[:,iel]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     17\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 18\u001b[0;31m     \u001b[0mA\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mEL2NOD\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0miel\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mEL2NOD\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0miel\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     19\u001b[0m \u001b[0mend\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/dense.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, key)\u001b[0m\n\u001b[1;32m    121\u001b[0m                 \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    122\u001b[0m                     \u001b[0mj\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0mj\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 123\u001b[0;31m                 \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mextract\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mj\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    124\u001b[0m         \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    125\u001b[0m             \u001b[0;31m# row-wise decomposition of matrix\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda2/envs/py37_htf_class/lib/python3.7/site-packages/sympy/matrices/common.py\u001b[0m in \u001b[0;36mextract\u001b[0;34m(self, rowsList, colsList)\u001b[0m\n\u001b[1;32m    366\u001b[0m             \u001b[0;32mraise\u001b[0m \u001b[0mTypeError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"rowsList and colsList must be iterable\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    367\u001b[0m         \u001b[0;31m# ensure rowsList and colsList are lists of integers\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 368\u001b[0;31m         \u001b[0;32mif\u001b[0m \u001b[0mrowsList\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mall\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mbool\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mi\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mrowsList\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    369\u001b[0m             \u001b[0mrowsList\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0mindex\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mindex\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mitem\u001b[0m \u001b[0;32min\u001b[0m \u001b[0menumerate\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mrowsList\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mif\u001b[0m \u001b[0mitem\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    370\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mcolsList\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mall\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mbool\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mi\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mcolsList\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;31mValueError\u001b[0m: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
-     ]
-    }
-   ],
-   "source": [
-    "nel     = 4\n",
-    "nnodel  = 2\n",
-    "nnod    = nel+1\n",
+    "# numerical paramters\n",
+    "nel     = 4       # number of elements\n",
+    "nnodel  = 2       # nodes per element \n",
+    "nnod    = nel+1   # number of nodes\n",
     "\n",
-    "EL2NOD  = np.array([np.arange(1,nnod-1), np.arange(2,nnod)])\n",
-    "\n",
+    "EL2NOD  = np.array([np.arange(1,nnod), np.arange(2,nnod+1)])  # connectivity matrix\n",
     "print(EL2NOD)\n",
-    "#iel = 1\n",
-    "#A[(EL2NOD[:,iel])\n",
     "\n",
-    "# global matrix assemly?\n",
+    "# global matrix assemly\n",
     "A = zeros(nnod, nnod)\n",
-    "#\n",
-    "for iel in range(0,nel-1):\n",
-    "    \n",
-    "    #i = EL2NOD[:,iel]\n",
-    "    \n",
-    "    A[EL2NOD[iel,:], EL2NOD[iel,:]]\n",
-    "end\n"
+    "for iel in range(0,nel):\n",
+    "    A[EL2NOD[0,iel]-1,EL2NOD[0,iel]-1] = A[list(EL2NOD[:,iel]-1), list(EL2NOD[:,iel]-1)] + Ael\n",
+    "\n",
+    "A\n"
    ]
   },
   {
    "cell_type": "code",
+   "execution_count": 122,
+   "id": "fd40a8a4",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 122,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": []
+  },
+  {
+   "cell_type": "code",
    "execution_count": null,
-   "id": "89c08160",
+   "id": "f6adccb5",
    "metadata": {},
    "outputs": [],
    "source": []
@@ -178,7 +190,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "a0c27cca",
+   "id": "57c89b7e",
    "metadata": {},
    "outputs": [],
    "source": []
@@ -186,15 +198,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "84699542",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "57e2f5c4",
+   "id": "a68551fd",
    "metadata": {},
    "outputs": [],
    "source": []
