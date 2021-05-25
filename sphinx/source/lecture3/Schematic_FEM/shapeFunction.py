@@ -17,8 +17,13 @@ C_DEFAULT = attr('reset')
 #===============================================================
 import linecache
 import numpy as np
+import meshio
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+from matplotlib import cm
+from matplotlib.colors import LightSource
+from nice import niceAxis,text3d
+
 mpl.rcParams['font.family'] = 'Arial'  #default font family
 mpl.rcParams['mathtext.fontset'] = 'cm' #font for math
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,AutoMinorLocator)
@@ -87,8 +92,142 @@ def Linear1D():
         figname=str('%s/shapeFunction_Linear_1D.%s'%(figpath,fmt))
         plt.savefig(figname, bbox_inches='tight')
 
-def main(argv):
-    Linear1D()
+def loadMesh2D(gmshfile):
+    mesh=meshio.read(gmshfile)
+    GCOORD=mesh.points[:,0:2]
+    el2node=[]
+    for cells in mesh.cells:
+        if(cells.type=='quad'):
+            el2node=cells.data
+    return {'GCOORD':GCOORD, 'EL2NOD':el2node}
+def plotMesh_2D(mesh):
+    x,y=mesh['GCOORD'][:,0],mesh['GCOORD'][:,1]
+    el2nod=mesh['EL2NOD']
+    len_x,len_y=x.max()-x.min(),y.max()-y.min()
+    figwidth=12
+    figheight=len_y/len_x*figwidth
+    fig=plt.figure(figsize=(figwidth,figheight))
+    ax=plt.gca()
+    # plot element
+    for element in el2nod:
+        ind=np.append(element,element[0])
+        ax.fill(x[ind],y[ind])
+    # plot node
+    for nod in np.unique(el2nod.reshape(-1)):
+        ax.plot(x[nod],y[nod],marker='o',ms=20,mfc='w',mec='k')
+        ax.text(x[nod],y[nod],'%d'%(nod+1),ha='center',va='center')
+    plt.show()
+# shape function
+def shapes(s1, s2):
+    N1 = 0.25*(1-s1)*(1-s2)
+    N2 = 0.25*(1+s1)*(1-s2)
+    N3 = 0.25*(1+s1)*(1+s2)
+    N4 = 0.25*(1-s1)*(1+s2)
+    return N1, N2, N3, N4
+def write2VTU(vtufile, xx,yy,zz):
+    ncols=xx.shape[0]
+    nrows=xx.shape[1]
+    x=xx.reshape(-1)
+    y=yy.reshape(-1)
+    z=zz.reshape(-1)
+    npoints=len(x)
+    nCells=(ncols-1)*(nrows-1)
+    VTK_CELLTYPE=9 #四边形
+    np_per_cell=4
+    fpout=open(vtufile,'w')
+    fpout.write('<VTKFile type="UnstructuredGrid" version="1.0" byte_order="LittleEndian" header_type="UInt64">\n')
+    fpout.write('  <UnstructuredGrid>\n')
+    fpout.write('    <Piece NumberOfPoints="%.0f" NumberOfCells="%.0f">\n'%(npoints,nCells))
+    fpout.write('      <PointData Scalars="ShapeFunction">\n')
+    fpout.write('        <DataArray type="Float64" Name="ShapeFunction" format="ascii">\n')
+    fpout.write('          ')
+    # Info('Writing ShapeFunction field ...')
+    for i in range(0,len(z)):
+        fpout.write('%f '%(z[i]))
+    fpout.write('\n        </DataArray>\n')
+    fpout.write('      </PointData>\n')
+    fpout.write('      <CellData>\n')
+    fpout.write('      </CellData>\n')
+    fpout.write('      <Points>\n')
+    fpout.write('        <DataArray type="Float32" Name="Points" NumberOfComponents="3" format="ascii">\n')
+    # Info('Writing xyz data ...')
+    for i in range(0,len(x)):
+        fpout.write('          %f %f %f\n'% (x[i],y[i],z[i]))
+    fpout.write('        </DataArray>\n')
+    fpout.write('      </Points>\n')
+    fpout.write('      <Cells>\n')
+    fpout.write('        <DataArray type="Int64" Name="connectivity" format="ascii">\n')
+    # Info('Writing connectivity ...')
+    for nrow in range(0,nrows-1):
+        for ncol in range(0,ncols-1):
+            LL=ncol + nrow*ncols
+            fpout.write('          %.0f %.0f %.0f %.0f\n'%(LL, LL+1, LL+1+ncols, LL+ncols))
+    fpout.write('        </DataArray>\n')
+    fpout.write('        <DataArray type="Int64" Name="offsets" format="ascii">\n')
+    fpout.write('          ')
+    # Info('Writing offsets ...')
+    for i in range(0,nCells):
+        fpout.write('%.0f '%(i*np_per_cell))
+    fpout.write('        </DataArray>\n')
+    fpout.write('        <DataArray type="UInt8" Name="types" format="ascii">\n')
+    fpout.write('          ')
+    # Info('Writing cell type ...')
+    for i in range(0,nCells):
+        fpout.write('%.0f '%(VTK_CELLTYPE))
+    fpout.write('        </DataArray>\n')
+    fpout.write('      </Cells>\n')
+    fpout.write('    </Piece>\n')
+    fpout.write('  </UnstructuredGrid>\n')
+    fpout.write('</VTKFile>\n')
+    # Info('xyz to vtu Done')
+    fpout.close()
+    # Info('Converting ASCII to binary')
+    os.system('meshio-binary '+vtufile)
+def Linear2D_Quad(xmin=0,dx=1,ymin=0,dy=1):
+    nip     = 4
+    gauss   = np.array([[-1, 1, 1, -1], [-1, -1, 1, 1]]) * np.sqrt(1.0/3.0)
+    shapes(gauss[0,1],gauss[1,1])
+    x=np.linspace(-1,1,50)
+    y=np.linspace(-1,1,50)
+    xx,yy=np.meshgrid(x,y)
+    N1, N2, N3, N4=shapes(xx,yy)
+    # fig,axes=plt.subplots(2,2)
+    # for ax,N in zip([axes[0][0],axes[0][1],axes[1][0],axes[1][1]], [N1, N2, N3, N4]):
+    #     CS=ax.contourf(xx,yy,N, cmap='jet')
+    #     plt.colorbar(CS)
+    # plt.show()
 
+    # write2VTU('N1.vtu',xx,yy,N1)
+    # write2VTU('N2.vtu',xx,yy,N2)
+    # write2VTU('N3.vtu',xx,yy,N3)
+    # write2VTU('N4.vtu',xx,yy,N4)
+
+    fig = plt.figure(figsize=(16,8))
+    for i, N in enumerate([N1, N2, N3, N4]):
+        ax = fig.add_subplot(1,4,i+1, projection='3d')
+        ls = LightSource(270, 45)
+        rgb = ls.shade(N, cmap=cm.plasma, vert_exag=0.1, blend_mode='soft')
+        CS=ax.plot_surface(xx, yy, N, rstride=1, cstride=1, facecolors=rgb,
+        linewidth=0, antialiased=True, shade=False)
+        # ax.set_xlabel('x axis',labelpad=0)
+        # ax.set_ylabel('y axis',labelpad=-5)
+        ax.set_zlabel('Shape function',labelpad=-3)
+        ax.zaxis.set_minor_locator(MultipleLocator(0.1))
+        ax.set_xlim(-1,1)
+        ax.set_ylim(-1,1)
+        ax.set_zlim(0,1)
+        ax.xaxis.set_ticks([])
+        ax.yaxis.set_ticks([])
+        ax.zaxis.set_ticks([0,1])
+        ax.set_title('N$_{\mathregular{%d}}$'%(i+1))
+        # 重新自定义坐标轴属性
+        niceAxis(ax,fill_pane=False,label3D=True,fs_label=0.08, scaled=False)
+    plt.subplots_adjust(wspace=0)
+    for fmt in fmt_figs:
+        figname=str('%s/shapeFunction_2D_Q1.%s'%(figpath,fmt))
+        plt.savefig(figname, bbox_inches='tight')
+def main(argv):
+    # Linear1D()
+    Linear2D_Quad()
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

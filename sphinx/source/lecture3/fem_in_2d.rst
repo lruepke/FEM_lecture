@@ -21,6 +21,12 @@ We now use 2-D shape functions in our approximate solution:
 
 where the shape functions :math:`N_j(x,y)` are now function of both spatial dimensions. An example of a 2-D FEM mesh and associated shape functions are shown in Fi. X. Note that the structured quad mesh and the bi-linear shape functions are just one possibility of using the FEM in 2-D. There are many other possibility, like unstructured triangle meshes and higher order shape functions.
 
+.. figure:: Schematic_FEM/shapeFunction_2D_Q1.svg
+    :name: fig:shapeFunc:2D:linear
+    :align: center
+
+    Example of 2D linear finite element shape functions
+
 We proceed by substituting :eq:`eq:fem_aprox_funcion_2d` into :eq:`eq:fem_2d_strong` and by using the Galerkin method. This results in:
 
 .. math::
