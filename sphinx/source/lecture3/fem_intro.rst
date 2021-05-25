@@ -111,11 +111,11 @@ Let’s look at a single 1-D element. If we use linear shape functions, one 1-D 
     
 We get a :math:`2x2` so-called stiffness matrix for every element. In the end we will have to sum the contributions from every element into a global stiffness matrix, which will again be :math:`[n x n]`.  Note: The node numbering in :eq:`eq:fem_1d_single_element` is local! I.e. node number 1 is the first node of an element k and has the global node number k, while node number 2 is the second node of the element and has the global node number k+1!
 
-We have two linear shape functions for the points i and i+1 of each element:
+We have two linear shape functions for the points i and i+1 of each element (see :numref:`fig:shapeFunc:1D:linear`):
 
 .. math::
     :label: eq:fem_1d_shape_elem
-
+    
     \begin{align}
     \begin{split}
     N_i(x) = 1 - \frac{x-x_i}{x_{i+1} - x_i} &= 1 - \frac{x-x_i}{\Delta x}\\
@@ -123,6 +123,11 @@ We have two linear shape functions for the points i and i+1 of each element:
     \end{split}
     \end{align}
 
+.. figure:: Schematic_FEM/shapeFunction_Linear_1D.svg
+    :name: fig:shapeFunc:1D:linear
+    :align: center
+
+    Example of 1D linear finite element shape functions
 
 Excercise
 ----------
