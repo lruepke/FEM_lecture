@@ -23,9 +23,12 @@ import matplotlib as mpl
 from matplotlib import cm
 from matplotlib.colors import LightSource
 from nice import niceAxis,text3d
+from matplotlib.collections import PolyCollection
 
 mpl.rcParams['font.family'] = 'Arial'  #default font family
 mpl.rcParams['mathtext.fontset'] = 'cm' #font for math
+# mpl.rcParams['text.usetex'] = True
+# mpl.rcParams['text.latex.preamble'] = r'\usepackage{{amsmath}}'
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,AutoMinorLocator)
 figpath='.'
 fmt_figs=['pdf','svg']
@@ -206,7 +209,7 @@ def plotConnectivityMatrix_2D(mesh,colorsName='tab20',figname='Matrix2D_structur
         figurename=str('%s/%s.%s'%(figpath,figname,fmt))
         plt.savefig(figurename, bbox_inches='tight')
 # shape function
-def shapes(xi, eta, fem='Q1'):
+def shapes_Quad(xi, eta, fem='Q1'):
     if(fem=='Q1'):
         N1, f1, x1, y1 = 0.25*(1-xi)*(1-eta), '$\\frac{1}{4}(1-\\xi)(1-\\eta)$', -1, -1
         N2, f2, x2, y2 = 0.25*(1+xi)*(1-eta), '$\\frac{1}{4}(1+\\xi)(1-\\eta)$', 1, -1
@@ -231,6 +234,105 @@ def shapes(xi, eta, fem='Q1'):
     else:
         print('Undefined fem')
         exit()
+def triangulate_polygon(x,y,num=40):
+    # using gmsh to triangulate a polygon
+    geofile,mshfile='tmp.geo','tmp.msh'
+    fpout=open(geofile,'w')
+    lc_x,lc_y=(x.max()-x.min())/num,(y.max()-y.min())/num
+    lc=np.max([lc_x, lc_y])
+    nnod=len(x)
+    fpout.write('lc=%f;\n'%(lc))
+    for i in range(0,nnod):
+        fpout.write('Point(%d)={%f, %f, 0, lc};\n'%(i,x[i],y[i]))
+    for i in range(0,nnod-1):
+        fpout.write('Line(%d)={%d, %d};\n'%(i,i,i+1))
+    fpout.write('Line(%d)={%d, %d};\n'%(nnod-1,nnod-1,0))
+    # fpout.write('Line(%d)={%d, %d};\n'%(i,i,i+1))
+    fpout.write('Curve Loop(1) = {%d:%d};\n'%(0,nnod-1))
+    fpout.write('Plane Surface(1) = {1};\n')
+    fpout.close()
+    # meshing
+    cmd='gmsh %s -2 -o %s'%(geofile,mshfile)
+    print(cmd)
+    os.system(cmd)
+    # read mesh
+    mesh=meshio.read(mshfile)
+    triangles=[]
+    for cells in mesh.cells:
+        if(cells.type=='triangle'):
+            triangles=cells.data
+    # remove tmp files
+    os.system('rm %s %s'%(geofile,mshfile))
+    return {'GCOORD':mesh.points[:,0:2],'EL2NOD':triangles}
+def shapes_Triangle(x,y, fem='Q1'):
+    # see also https://www.iue.tuwien.ac.at/phd/nentchev/node25.html
+    # see also http://www.sd.ruhr-uni-bochum.de/downloads/Shape_funct.pdf
+    J=np.array([[1, x[0], y[0]],[1, x[1], y[1]],[1, x[2], y[2]]],dtype=float)
+    detJ=np.linalg.det(J)
+    mesh=triangulate_polygon(x,y)
+    xi,eta=mesh['GCOORD'][:,0],mesh['GCOORD'][:,1]
+    tris=mesh['EL2NOD']
+    # shape function
+    A = np.abs(detJ/2) # area of the triangle element
+    xi0, xi1, xi2 = np.zeros_like(xi),np.zeros_like(xi),np.zeros_like(xi)
+    for i in range(0,len(xi)):
+        x0,y0=xi[i],eta[i]
+        J0=np.array([[1, x0, y0],[1, x[1], y[1]],[1, x[2], y[2]]],dtype=float)
+        J1=np.array([[1, x0, y0],[1, x[0], y[0]],[1, x[2], y[2]]],dtype=float)
+        J2=np.array([[1, x0, y0],[1, x[1], y[1]],[1, x[0], y[0]]],dtype=float)
+        A0=np.abs(np.linalg.det(J0))/2.0
+        A1=np.abs(np.linalg.det(J1))/2.0
+        A2=np.abs(np.linalg.det(J2))/2.0
+        xi0[i]=A0/A 
+        xi1[i]=A1/A 
+        xi2[i]=A2/A
+    N,f,x_nods,y_nods,ind_axis,name=[],[],[],[],[],''
+    if(fem=='Q1'):
+        N1, N2, N3 = 1-xi1-xi2, xi1, xi2
+        f1,f2,f3='$1-\\xi_1-\\xi_2$','$\\xi_1$','$\\xi_2$'
+        N,f=[N1,N2,N3],[f1,f2,f3]
+        x_nods,y_nods=x,y
+        ind_axis=[2,3,4]
+        name='3-node triangle'
+    elif(fem=='Q2'):
+        N1, N2, N3 = (1-xi1-xi2)*(1-2*xi1-2*xi2), xi1*(2*xi1-1), xi2*(2*xi2-1)
+        f1,f2,f3='$(1-\\xi_1-\\xi_2)(1-2\\xi_1-2\\xi_2)$', '$\\xi_1(2\\xi1-1)$', '$\\xi_2(2\\xi_2-1)$'
+        ci=4
+        N4, N5, N6 = ci*xi1*(1-xi1-xi2), ci*xi1*xi2, ci*xi2*(1-xi1-xi2)
+        f4,f5,f6 = '$4\\xi_1(1-\\xi_1-\\xi_2$)', '$4\\xi_1\\xi_2$', '$4\\xi_2(1-\\xi_1-\\xi_2)$'
+        N,f=[N1,N2,N3,N4, N5, N6],[f1,f2,f3,f4,f5,f6]
+        x_nods=[x[0], x[1], x[2], (x[0]+x[1])/2.0, (x[1]+x[2])/2.0, (x[2]+x[0])/2.0]
+        y_nods=[y[0], y[1], y[2], (y[0]+y[1])/2.0, (y[1]+y[2])/2.0, (y[2]+y[0])/2.0]
+        ind_axis=[2,3,4,6,7,8]
+        name='6-node triangle'
+    elif(fem=='Q3'):
+        c1=0.5
+        N1 = c1*(1-3*xi1-3*xi2)*(2-3*xi1-3*xi2)*(1-xi1-xi2)
+        c2=4.5
+        N2 = c2*xi1*(xi1-1/3.0)*(xi1-2.0/3.0)
+        N3 = c2*xi2*(xi2-1/3.0)*(xi2-2.0/3.0)
+        N4 = c2*xi1*(2-3*xi1-3*xi2)*(1-xi1-xi2)
+        N5 = c2*xi1*xi2*(3*xi1-1)
+        N6 = c2*xi2*(3*xi2-1)*(1-xi1-xi2)
+        N7 = c2*xi1*(3*xi1-1)*(1-xi1-xi2)
+        N8 = c2*xi1*xi2*(3*xi2-1)
+        N9 = c2*xi2*(2-3*xi1-3*xi2)*(1-xi1-xi2)
+        N10= 27*xi1*xi2*(1-xi1-xi2)
+        N=[N1,N2,N3,N4,N5,N6,N7,N8,N9,N10]
+        f=['']*10
+
+        x_nods=[x[0],x[1],x[2], x[0]+(x[1]-x[0])/3.0, x[1]+(x[2]-x[1])/3.0, x[2]+(x[0]-x[2])/3.0, 
+                x[0]+2*(x[1]-x[0])/3.0, x[1]+2*(x[2]-x[1])/3.0, x[2]+2*(x[0]-x[2])/3.0, x.mean()]
+        y_nods=[y[0],y[1],y[2], y[0]+(y[1]-y[0])/3.0, y[1]+(y[2]-y[1])/3.0, y[2]+(y[0]-y[2])/3.0, 
+                y[0]+2*(y[1]-y[0])/3.0, y[1]+2*(y[2]-y[1])/3.0, y[2]+2*(y[0]-y[2])/3.0, y.mean()]
+        ind_axis=[2,3,4,6,7,8,10,11,12,9]
+        name='10-node triangle'
+    else:
+        print('Undefined fem')
+        exit()
+    return {'name':name, 'shapes':N,'formula':f, 
+            'x':x_nods,'y':y_nods, 'ind_axis':ind_axis,
+            'triangles':mpl.tri.Triangulation(xi,eta,tris)}
 def write2VTU(vtufile, xx,yy,zz):
     ncols=xx.shape[0]
     nrows=xx.shape[1]
@@ -290,16 +392,13 @@ def write2VTU(vtufile, xx,yy,zz):
     fpout.close()
     # Info('Converting ASCII to binary')
     os.system('meshio-binary '+vtufile)
-def FE_Q1_Quad(fem='Q1',cmap=cm.GnBu):
+def FE_Quad(fem='Q1',cmap=cm.GnBu):
     xi=np.linspace(-1,1,50)
     eta=np.linspace(-1,1,50)
     xi,eta=np.meshgrid(xi,eta)
     # get shape function of each node
-    shapefunc=shapes(xi,eta,fem=fem)
+    shapefunc=shapes_Quad(xi,eta,fem=fem)
     nip=len(shapefunc['shapes'])
-    # print(nip)
-    # exit()
-    from cmaptools import readcpt, joincmap, DynamicColormap
     cols=5
     rows=int(nip/5)+1
     fig = plt.figure(figsize=(16,8))
@@ -340,7 +439,62 @@ def FE_Q1_Quad(fem='Q1',cmap=cm.GnBu):
     for fmt in fmt_figs:
         figurename=str('%s/shapeFunction_2D_%s.%s'%(figpath,fem,fmt))
         plt.savefig(figurename, bbox_inches='tight')
+def FE_Tri(fem='Q1',cmap=cm.Spectral_r):
+    mesh=loadMesh2D('mesh/unstructure.msh')
+    tri=mesh['EL2NOD'][0]
+    x,y=mesh['GCOORD'][:,0],mesh['GCOORD'][:,1]
+    x_tri,y_tri=x[tri],y[tri]
+    shapefunc=shapes_Triangle(x_tri,y_tri,fem=fem)
 
+    nip=len(shapefunc['shapes'])
+    triangles=shapefunc['triangles']
+    # plot 
+    cols=4
+    rows=int(nip/cols)+1
+    fig = plt.figure(figsize=(16,4*rows))
+    # plot element
+    ax_el=fig.add_subplot(rows,cols,1, facecolor='None')
+    ax_el.axis('scaled')
+    ax_el.set_xlim(x_tri.min(),x_tri.max())
+    ax_el.set_ylim(y_tri.min(),y_tri.max())
+    ax_el.fill(x_tri,y_tri,color='lightgray',ec='k',lw=3,closed=True,clip_on=False)
+    ax_el.text(0,1,'%s\nElement'%(shapefunc['name']),ha='left',va='top',transform=ax_el.transAxes,fontweight='bold',fontsize=14)
+    ax_el.axis('off')
+    for i, ind_axis,N, formula, x0,y0 in zip(range(0,nip),shapefunc['ind_axis'],shapefunc['shapes'],shapefunc['formula'],shapefunc['x'],shapefunc['y']):
+        # write to VTU
+        # write2VTU('N%d.vtu'%(i),xx,yy,N)
+        # node on element
+        l_node,=ax_el.plot(x0,y0,marker='o',mec='w',clip_on=False,ms=15)
+        ax_el.text(x0,y0,'%d'%(i),color='w',ha='center',va='center',fontweight='bold')
+        # shape function
+        ax = fig.add_subplot(rows,cols,ind_axis, projection='3d',facecolor='None')
+        ax.view_init(elev=45, azim=-70)
+        norm = mpl.colors.TwoSlopeNorm(vmin=N.min()-1E-5, vcenter=0, vmax=N.max())
+        ax.plot_trisurf(triangles.x, triangles.y, N, triangles=triangles.triangles, 
+            cmap=cmap,edgecolor=(0,0,0,0.5),linewidth=0,alpha=0.9,zorder=11)
+        # plot element
+        ax.plot(x_tri[[0,1,2]],y_tri[[0,1,2]],[0]*3,color='k',zorder=11)
+        ax.plot(x_tri[[2,0]],y_tri[[2,0]],[0,0],color='k',ls='dashed')
+        ax.plot(x0,y0,0,marker='o',mec='w',clip_on=False,ms=15,color=l_node.get_color(),zorder=12,alpha=0.8)
+        # poly = PolyCollection([[(x_tri[0],y_tri[0]), (x_tri[1],y_tri[1]), (x_tri[2],y_tri[2])]], 
+        #     facecolors='lightgray', alpha=0.7,edgecolors='k')
+        # ax.add_collection3d(poly, zs=0, zdir='z')
+        # make 3d cylinder
+        for tmpx,tmpy in zip(x_tri,y_tri):
+            ax.plot([tmpx, tmpx],[tmpy,tmpy],[0,1],ls='solid',color='g',zorder=10)
+        ax.plot([x0,x0],[y0,y0],[0,1],color='k',lw=2,zorder=10)
+        ax.plot(x_tri[[0,1,2,0]],y_tri[[0,1,2,0]],[1]*4,color='g',zorder=10)
+        # set axis
+        ax.set_xlim(x_tri.min(),x_tri.max())
+        ax.set_ylim(y_tri.min(),y_tri.max())
+        ax.set_zlim(0,1)
+        ax.axis('off')
+        ax.set_title('N$_{%d}$ = %s'%(i,formula),color=l_node.get_color(),fontweight='bold',fontsize=14)
+        
+    plt.subplots_adjust(wspace=0)
+    for fmt in fmt_figs:
+        figurename=str('%s/shapeFunction_2D_triangle_%s.%s'%(figpath,fem,fmt))
+        plt.savefig(figurename, bbox_inches='tight')
 def connectivity():
     # 1. structured mesh with structured indexing
     mesh=createMesh_2D()
@@ -356,9 +510,16 @@ def connectivity():
     plotConnectivityMatrix_2D(mesh,figname='Matrix2D_unstructured')
 
 def main(argv):
+    # # 1. 1D element
     # Linear1D()
-    FE_Q1_Quad(fem='Q1',cmap=cm.plasma)
-    # FE_Q1_Quad(fem='Q2',cmap=cm.Spectral_r)
+    # # 2. 2D Quad element
+    # FE_Quad(fem='Q1',cmap=cm.plasma)
+    # FE_Quad(fem='Q2',cmap=cm.Spectral_r)
+    # 3. 2D triangle element
+    FE_Tri(fem='Q1')
+    FE_Tri(fem='Q2')
+    FE_Tri(fem='Q3')
+    # # 4. matrix connectivity of 2D mesh 
     # connectivity()
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
