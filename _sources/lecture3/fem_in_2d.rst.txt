@@ -92,7 +92,7 @@ Every element has an element number and a certain number of nodes. We will initi
         :name: fig:mesh:2D:structured:usi
         :align: center
     
-        Structured mesh example of 2D finite element
+        :download:`Structured mesh <Schematic_FEM/mesh/structure.msh>` example of 2D finite element
 
 .. tab:: Unstructured mesh 
 
@@ -100,7 +100,7 @@ Every element has an element number and a certain number of nodes. We will initi
         :name: fig:mesh:2D:unstructured
         :align: center
     
-        Unstructured mesh example of 2D finite element
+        :download:`Unstructured mesh <Schematic_FEM/mesh/unstructure.msh>` example of 2D finite element
 
 We will use a connectivity as shown in :numref:`fig:matrix:2D:structured`. Element 0 has, for example, the global nodes 0, 1, 6, 5. Note that the local element numbering is always counterclockwise (in this class). It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribution of all elements is added/assembled into the glob
 
