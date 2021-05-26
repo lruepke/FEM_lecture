@@ -125,8 +125,7 @@ def plotMesh_2D(mesh,colorsName='tab20',figname='mesh2D_structured',extend_x=0):
     ax=plt.gca()
     # plot element
     for i,element in enumerate(el2nod):
-        ind=np.append(element,element[0])
-        ax.fill(x[ind],y[ind],color=colors[i%len(colors)])
+        ax.fill(x[element],y[element],color=colors[i%len(colors)],closed=True,ec='k',clip_on=False)
         ax.text(x[element].mean(),y[element].mean(),'Element %d'%(i),ha='center',va='center',bbox={'fc':'lightgray','ec':'None','boxstyle':'round'})
     # plot node
     nodes=[]
@@ -207,12 +206,31 @@ def plotConnectivityMatrix_2D(mesh,colorsName='tab20',figname='Matrix2D_structur
         figurename=str('%s/%s.%s'%(figpath,figname,fmt))
         plt.savefig(figurename, bbox_inches='tight')
 # shape function
-def shapes(s1, s2):
-    N1 = 0.25*(1-s1)*(1-s2)
-    N2 = 0.25*(1+s1)*(1-s2)
-    N3 = 0.25*(1+s1)*(1+s2)
-    N4 = 0.25*(1-s1)*(1+s2)
-    return N1, N2, N3, N4
+def shapes(xi, eta, fem='Q1'):
+    if(fem=='Q1'):
+        N1, f1, x1, y1 = 0.25*(1-xi)*(1-eta), '$\\frac{1}{4}(1-\\xi)(1-\\eta)$', -1, -1
+        N2, f2, x2, y2 = 0.25*(1+xi)*(1-eta), '$\\frac{1}{4}(1+\\xi)(1-\\eta)$', 1, -1
+        N3, f3, x3, y3 = 0.25*(1+xi)*(1+eta), '$\\frac{1}{4}(1+\\xi)(1+\\eta)$', 1, 1
+        N4, f4, x4, y4 = 0.25*(1-xi)*(1+eta), '$\\frac{1}{4}(1-\\xi)(1+\\eta)$', -1, 1
+        return {'name':'4-node quadrilateral', 'shapes':[N1, N2, N3, N4],'formula':[f1,f2,f3,f4], 'x':[x1,x2,x3,x4],'y':[y1,y2,y3,y4]}
+    elif(fem=='Q2'):
+        N1, f1, x1, y1 = 0.25*(xi-1)*(eta-1)*xi*eta, '$\\frac{1}{4}(\\xi-1)(\\eta-1)\\xi\\eta$', -1, -1
+        N2, f2, x2, y2 = 0.25*(xi+1)*(eta-1)*xi*eta, '$\\frac{1}{4}(\\xi+1)(\\eta-1)\\xi\\eta$', 1, -1
+        N3, f3, x3, y3 = 0.25*(xi+1)*(eta+1)*xi*eta, '$\\frac{1}{4}(\\xi+1)(\\eta+1)\\xi\\eta$', 1, 1
+        N4, f4, x4, y4 = 0.25*(xi-1)*(eta+1)*xi*eta, '$\\frac{1}{4}(\\xi-1)(\\eta+1)\\xi\\eta$', -1, 1
+        N5, f5, x5, y5 = 0.5*(1-xi**2)*eta*(eta-1), '$\\frac{1}{2}(1-\\xi^2)\\eta(\\eta-1)$', 0, -1
+        N6, f6, x6, y6 = 0.5*(1-eta**2)*xi*(xi+1),  '$\\frac{1}{2}(1-\\eta^2)\\xi(\\xi+1)$',  1, 0
+        N7, f7, x7, y7 = 0.5*(1-xi**2)*eta*(eta+1), '$\\frac{1}{2}(1-\\xi^2)\\eta(\\eta+1)$', 0, 1
+        N8, f8, x8, y8 = 0.5*(1-eta**2)*xi*(xi-1),  '$\\frac{1}{2}(1-\\eta^2)\\xi(\\xi-1)$', -1, 0
+        N9, f9, x9, y9 = (1-xi**2)*(1-eta**2), '$(1-\\xi^2)(1-\\eta^2)$', 0, 0
+        return {'name':'9-node quadrilateral', 
+                'shapes': [N1, N2, N3, N4, N5, N6, N7, N8, N9],
+                'formula':[f1, f2, f3, f4, f5, f6, f7, f8, f9], 
+                'x':      [x1, x2, x3, x4, x5, x6, x7, x8, x9],
+                'y':      [y1, y2, y3, y4, y5, y6, y7, y8, y9]}
+    else:
+        print('Undefined fem')
+        exit()
 def write2VTU(vtufile, xx,yy,zz):
     ncols=xx.shape[0]
     nrows=xx.shape[1]
@@ -272,33 +290,41 @@ def write2VTU(vtufile, xx,yy,zz):
     fpout.close()
     # Info('Converting ASCII to binary')
     os.system('meshio-binary '+vtufile)
-def Linear2D_Quad(xmin=0,dx=1,ymin=0,dy=1):
-    nip     = 4
-    gauss   = np.array([[-1, 1, 1, -1], [-1, -1, 1, 1]]) * np.sqrt(1.0/3.0)
-    shapes(gauss[0,1],gauss[1,1])
-    x=np.linspace(-1,1,50)
-    y=np.linspace(-1,1,50)
-    xx,yy=np.meshgrid(x,y)
-    N1, N2, N3, N4=shapes(xx,yy)
-    # fig,axes=plt.subplots(2,2)
-    # for ax,N in zip([axes[0][0],axes[0][1],axes[1][0],axes[1][1]], [N1, N2, N3, N4]):
-    #     CS=ax.contourf(xx,yy,N, cmap='jet')
-    #     plt.colorbar(CS)
-    # plt.show()
-
-    # write2VTU('N1.vtu',xx,yy,N1)
-    # write2VTU('N2.vtu',xx,yy,N2)
-    # write2VTU('N3.vtu',xx,yy,N3)
-    # write2VTU('N4.vtu',xx,yy,N4)
-    sign_shapefunc=[['-','-'],['+','-'],['+','+'],['-','+']]
-    formula_shapefunc = lambda signs : '$\\frac{1}{4}(1%s\\xi)(1%s\\eta)$'%(signs[0],signs[1])
+def FE_Q1_Quad(fem='Q1',cmap=cm.GnBu):
+    xi=np.linspace(-1,1,50)
+    eta=np.linspace(-1,1,50)
+    xi,eta=np.meshgrid(xi,eta)
+    # get shape function of each node
+    shapefunc=shapes(xi,eta,fem=fem)
+    nip=len(shapefunc['shapes'])
+    # print(nip)
+    # exit()
+    from cmaptools import readcpt, joincmap, DynamicColormap
+    cols=5
+    rows=int(nip/5)+1
     fig = plt.figure(figsize=(16,8))
-    for i, N in enumerate([N1, N2, N3, N4]):
-        ax = fig.add_subplot(1,4,i+1, projection='3d',facecolor='None')
+    # plot element
+    ax_el=fig.add_subplot(rows,cols,1, facecolor='None')
+    ax_el.axis('scaled')
+    ax_el.set_xlim(-1,1)
+    ax_el.set_ylim(-1,1)
+    ax_el.fill([-1,1,1,-1],[-1,-1,1,1],color='lightgray',ec='k',lw=3,closed=True)
+    ax_el.text(0.5,0.25,'%s\nElement'%(shapefunc['name']),ha='center',va='center',transform=ax_el.transAxes,fontweight='bold',fontsize=14)
+    ax_el.axis('off')
+    # plot shape function of each node
+    for i, N, formula, x0,y0 in zip(range(0,nip),shapefunc['shapes'],shapefunc['formula'],shapefunc['x'],shapefunc['y']):
+        # write to VTU
+        # write2VTU('N%d.vtu'%(i),xx,yy,N)
+        # node on element
+        l_node,=ax_el.plot(x0,y0,marker='o',mec='w',clip_on=False,ms=15)
+        ax_el.text(x0,y0,'%d'%(i),color='w',ha='center',va='center',fontweight='bold')
+        # shape function
+        ax = fig.add_subplot(rows,cols,i+2, projection='3d',facecolor='None')
         ls = LightSource(270, 45)
-        rgb = ls.shade(N, cmap=cm.plasma, vert_exag=0.1, blend_mode='soft')
-        CS=ax.plot_surface(xx, yy, N, rstride=1, cstride=1, facecolors=rgb,
-        linewidth=0, antialiased=True, shade=False)
+        norm = mpl.colors.TwoSlopeNorm(vmin=N.min()-1E-5, vcenter=0, vmax=N.max())
+        rgb = ls.shade(N, cmap=cmap, norm=norm, vert_exag=0.1, blend_mode='soft')
+        CS=ax.plot_surface(xi,eta, N, rstride=1, cstride=1, facecolors=rgb, alpha=0.9, linewidth=0)
+        # CS=ax.plot_surface(xi,eta, N, rstride=1, cstride=1, cmap=cmap, norm=norm,linewidth=0.01,edgecolor='k', shade=False,vmin=-1,vmax=1)
         ax.set_xlabel('$\\xi$',labelpad=0)
         ax.set_ylabel('$\\eta$',labelpad=0)
         ax.set_zlabel('Shape function',labelpad=-3)
@@ -306,16 +332,15 @@ def Linear2D_Quad(xmin=0,dx=1,ymin=0,dy=1):
         ax.set_xlim(-1,1)
         ax.set_ylim(-1,1)
         ax.set_zlim(0,1)
-        # ax.xaxis.set_ticks([])
-        # ax.yaxis.set_ticks([])
         ax.zaxis.set_ticks([0,1])
-        ax.set_title('N$_{\mathregular{%d}}=$%s'%(i,formula_shapefunc(sign_shapefunc[i])))
+        ax.set_title('N$_{\mathregular{%d}}=$%s'%(i,formula),color=l_node.get_color(),fontweight='bold',fontsize=14)
         # 重新自定义坐标轴属性
         niceAxis(ax,fill_pane=False,label3D=True,fs_label=0.1, scaled=False)
     plt.subplots_adjust(wspace=0)
     for fmt in fmt_figs:
-        figurename=str('%s/shapeFunction_2D_Q1.%s'%(figpath,fmt))
+        figurename=str('%s/shapeFunction_2D_%s.%s'%(figpath,fem,fmt))
         plt.savefig(figurename, bbox_inches='tight')
+
 def connectivity():
     # 1. structured mesh with structured indexing
     mesh=createMesh_2D()
@@ -329,10 +354,11 @@ def connectivity():
     mesh=loadMesh2D('mesh/unstructure.msh')
     plotMesh_2D(mesh,figname='mesh2D_unstructured')
     plotConnectivityMatrix_2D(mesh,figname='Matrix2D_unstructured')
-    
+
 def main(argv):
     # Linear1D()
-    Linear2D_Quad()
+    FE_Q1_Quad(fem='Q1',cmap=cm.plasma)
+    # FE_Q1_Quad(fem='Q2',cmap=cm.Spectral_r)
     # connectivity()
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

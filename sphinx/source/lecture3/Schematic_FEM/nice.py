@@ -104,12 +104,12 @@ def niceAxis(ax, lw_major=0.5,lw_minor=0.25,color_major="0.50",color_minor="0.75
         text3d(ax, (xmax+length*offset_axislabel*minLen_axis,ymax, (zmin+zmax)/2), ax.get_zlabel(),zdir='y',
                size=fs_label*minLen_axis, fc=label.get_color(), ec="None",ha='center',va='top',angle=90)
     if(frame_on==True):
-        ax.plot([xmin,xmin,xmin,xmax,xmax],[ymin,ymin,ymax,ymax,ymax],[zmin,zmax,zmax,zmax,zmin],color=label.get_color(),lw=linewidth)
+        ax.plot([xmin,xmin,xmin,xmax,xmax],[ymin,ymin,ymax,ymax,ymax],[zmin,zmax,zmax,zmax,zmin],color=label.get_color(),lw=linewidth, zorder=10)
         ax.plot([xmin,xmin,xmin],[ymin,ymax,ymax],[zmin,zmin,zmax],color=label.get_color(),lw=linewidth,ls='dashed')
         ax.plot([xmin,xmax],[ymax,ymax],[zmin,zmin],color=label.get_color(),lw=linewidth,ls='dashed')
-        ax.plot([xmin,xmax,xmax],[ymin,ymin,ymax],[zmax,zmax,zmax],color=label.get_color(),lw=linewidth)
-        ax.plot([xmin,xmax,xmax],[ymin,ymin,ymax],[zmin,zmin,zmin],color=label.get_color(),lw=linewidth)
-        ax.plot([xmax,xmax],[ymin,ymin],[zmin,zmax],color=label.get_color(),lw=linewidth)
+        ax.plot([xmin,xmax,xmax],[ymin,ymin,ymax],[zmax,zmax,zmax],color=label.get_color(),lw=linewidth, zorder=10)
+        ax.plot([xmin,xmax,xmax],[ymin,ymin,ymax],[zmin,zmin,zmin],color=label.get_color(),lw=linewidth, zorder=10)
+        ax.plot([xmax,xmax],[ymin,ymin],[zmin,zmax],color=label.get_color(),lw=linewidth, zorder=10)
     # 副刻度线
     linewidth, color, length = lw_minor, color_minor,length_minor
     # # x轴
