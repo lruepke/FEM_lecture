@@ -79,7 +79,7 @@ We go on and split the modeling domain into finite elements and the first integr
 The basic concept of the finite element method is to solve/assemble the system of equations, for e.g. heat diffusion, on each element and add all element contributions together to obtain the global matrix equation.
 Every element has an element number and a certain number of nodes. We will initially use quadratic elements with four nodes. For the connectivity between elements we will need two matrices: a CGCOORD matrix that has the size [nnod,2], where 2 is the number of dimensions (x,y) and nnod is the total number of nodes in the mesh, and ELEM2NODE, which has the size [nel, nnodel] (nel is the total number of elements and nnodel is the number of nodes per element, i.e. 4). We had already used this matrices in 1-D but now their meaning becomes clear.
 
-We will use a connectivity as shown in Fg. X. Element 1 has, for example, the global nodes 1, 2, 3, 4. It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribuation of all elements is added/assembled into the global stiffness matrix and the global force vector.
+We will use a connectivity as shown in Fg. X. Element 0 has, for example, the global nodes 0, 1, 6, 5. Note that the local element numbering is always counterclockwise (in this class). It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribution of all elements is added/assembled into the global stiffness matrix and the global force vector.
 
 Excercise
 ^^^^^^^^^^
@@ -230,3 +230,35 @@ We have now all the information we need to solve the integral in :eq:`eq:fem_2d_
 
     \int_{\Omega_{e}} \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y}  \right ) d\Omega_{e} T_j \approx \\ \left [ \sum_{ip} \left ( \frac{N_i(\xi_{ip},\eta_{ip})}{\partial x} k \frac{N_j(\xi_{ip},\eta_{ip})}{\partial x} + \frac{N_i(\xi_{ip},\eta_{ip})}{\partial y} k \frac{N_j(\xi_{ip},\eta_{ip})}{\partial y}
     \right ) W_{ip} det(J) \right ] T_j
+
+It should be noted that the transformation of a quadrilateral element of a mesh to a master element :math:`\hat{\Omega}` is solely for the purpose of numerically evaluating the integrals in :eq:`eq:fem_2d_weak_num_int` . No transformation of the physical domain or elements is involved in the finite element analysis.
+
+Shape functions
+----------------
+
+By now we have learned how to solve integrals of shape functions and transform shape functions between different coordinate systems. It is really time that we learn what these shape functions are! We will use four-node rectangular element with bilinear shape functions. Remember that these shape functions look like this:
+
+.. figure:: Schematic_FEM/shapeFunction_2D_Q1.svg
+    :name: fig:shapeFunc:2D:linear_1
+    :align: center
+
+    Shape of 2-D bi-linear element shape functions
+
+A shape function has the value 1 at its node, zero at all the others, varies linearly between them and the sum of all shape functions is always 1. A simple way to think about this is in 1D (remember the last script)! With these conventions we can now spell out a general interpolation scheme using shape functions:
+
+
+.. math::
+    :label: eq:shape_functions
+
+    \begin{align}
+    \begin{split}
+    \tilde{T(x,y)} = \sum_{j=1}^{n} N_jT_J = N_jT_J = NT \\
+    NT &= \begin{bmatrix} N_1 & N_2 & N_3 & N_4 \end{bmatrix} \begin{bmatrix} T_1 \\ T_2 \\ T_3 \\ T_4 \end{bmatrix}\\
+    N_1 & = 0.25(1-\xi)(1-\eta) \\
+    N_2 & = 0.25(1+\xi)(1-\eta) \\
+    N_3 & = 0.25(1+\xi)(1+\eta) \\
+    N_4 & = 0.25(1-\xi)(1+\eta) \\
+    \end{split}
+    \end{align}
+
+where :math:`T_{j=1..4}` are the four nodal temperatures, :math:`\tilde{T}` is the temperature at an (integration) point inside the element, :math:`N` are the four shape functions, and :math:`(\xi,\eta)` are the two local coordinates between -1 and 1.
