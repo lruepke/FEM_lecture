@@ -14,20 +14,20 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-
+      # new version (4.0.2) of sphinx has bugs of Jinjia2 when parsing Jupyter notebook, so change to 4.0.1
       - name: Install tools
         run: |
-          pip3 install sphinx
+          pip3 install sphinx==4.0.1
           pip3 install sphinx_rtd_theme sphinxcontrib-bibtex matplotlib pandas numpy nbconvert ipykernel sphinx_inline_tabs 
           sudo apt-get install pandoc
 
-      # debug workflows: you could use ssh to login the github runner and test something
-      - name: install oh my zsh
-        run: |
-          sudo apt-get install zsh
-          sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      # # debug workflows: you could use ssh to login the github runner and test something
+      # - name: install oh my zsh
+      #   run: |
+      #     sudo apt-get install zsh
+      #     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
 
       
       - name: Generate sphinx pages and pdf 
