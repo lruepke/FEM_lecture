@@ -17,7 +17,13 @@ This is called the strong form of the governing equation and the function :math:
 
 In FEM we divide our computational domain into simple geometeric entities, the finite elements, and those finite elements have grid points. For example, in 2-D we can divide the domain in triangles with three nodes and in 1-D in simple lines with two nodes each. Think of our simple FD descritization, if we were to use the same descritization in FEM, the intervals between grid points would be our finite elements.
 
-These linear independent functions :math:`N`, called shape functions in FEM, are associated with the chosen discretization. Each node is associated with one shape function and that shape function has the value :math:`1` at that node and is zero at every other node. In our simple 1-D case, the shape functions vary linearly from one to zero over the adjacent elements of each node. With these properties, the sum over all all shape functions is always one, and the coefficients of those shape functions happen to be the unknown variable values at the nodes, the nodal temperatures in our case.
+.. figure:: Schematic_FEM/shapeFunction_Linear_1D.svg
+    :name: fig:shapeFunc:1D:linear
+    :align: center
+
+    Example of 1D linear finite element shape functions
+
+These linear independent functions :math:`N`, called shape functions in FEM, are associated with the chosen discretization (:numref:`fig:shapeFunc:1D:linear`). Each node is associated with one shape function and that shape function has the value :math:`1` at that node and is zero at every other node. In our simple 1-D case, the shape functions vary linearly from one to zero over the adjacent elements of each node. With these properties, the sum over all all shape functions is always one, and the coefficients of those shape functions happen to be the unknown variable values at the nodes, the nodal temperatures in our case.
 
 Let's plug the approximated solution into the strong form of our equation:
 
@@ -123,11 +129,6 @@ We have two linear shape functions for the points i and i+1 of each element (see
     \end{split}
     \end{align}
 
-.. figure:: Schematic_FEM/shapeFunction_Linear_1D.svg
-    :name: fig:shapeFunc:1D:linear
-    :align: center
-
-    Example of 1D linear finite element shape functions
 
 Excercise
 ----------

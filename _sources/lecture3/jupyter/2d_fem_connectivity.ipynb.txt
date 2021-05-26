@@ -10,12 +10,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 4,
    "id": "12d98e89",
    "metadata": {},
    "outputs": [],
    "source": [
-    "import numpy as np"
+    "import numpy as np\n",
+    "from tabulate import tabulate"
    ]
   },
   {
@@ -23,52 +24,167 @@
    "id": "b5397adc",
    "metadata": {},
    "source": [
-    "Let's first create the global coordinate vector. The columns refer to the nodes, and the rows to the x,y coordinates. "
+    "Let's first create the global coordinate vector. The columns refer to the nodes, and the rows to the x,y coordinates. \n",
+    "\n",
+    "One issue is the index counting in python. Remember that the first element in an array is stored at index 0. We have two options: if we want to start counting our elements/nodes at 1, we always have to substrat 1 to get the storage index; or we use the less intuitive way of counting and have the first node/element be 0. Let's use the second option.\n",
+    "\n",
+    "Another is the direction in which we count. We can either count in the row direction, or in the collumn direction. These two ways are called **column major** or **row major**. Related to this is the way that data is stored in the memory. If the data is stored **F contiguous**, the data is stored in the column direction; if it is **C contiguous** then in the row direction. Matlab is **F contiguous**, while python is **C contiguous** (by default, it can handle both).\n",
+    "\n",
+    "You can find more info here: https://stackoverflow.com/questions/26998223/what-is-the-difference-between-contiguous-and-non-contiguous-arrays\n",
+    "\n",
+    "Bottom line is, in python we should count in the row direction.\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "35f99cf4",
+   "metadata": {},
+   "source": [
+    "Let's make some simple examples:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 72,
-   "id": "4e47179e",
+   "execution_count": 43,
+   "id": "7e865cc6",
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "[[0.         0.        ]\n",
-      " [0.33333333 0.        ]\n",
-      " [0.66666667 0.        ]\n",
-      " [1.         0.        ]\n",
-      " [0.         0.33333333]\n",
-      " [0.33333333 0.33333333]\n",
-      " [0.66666667 0.33333333]\n",
-      " [1.         0.33333333]\n",
-      " [0.         0.66666667]\n",
-      " [0.33333333 0.66666667]\n",
-      " [0.66666667 0.66666667]\n",
-      " [1.         0.66666667]\n",
-      " [0.         1.        ]\n",
-      " [0.33333333 1.        ]\n",
-      " [0.66666667 1.        ]\n",
-      " [1.         1.        ]]\n"
+      "[1 2 3 4 5 6 7 8 9]\n",
+      "  C_CONTIGUOUS : True\n",
+      "  F_CONTIGUOUS : True\n",
+      "  OWNDATA : True\n",
+      "  WRITEABLE : True\n",
+      "  ALIGNED : True\n",
+      "  WRITEBACKIFCOPY : False\n",
+      "  UPDATEIFCOPY : False\n",
+      "\n",
+      "[[1 2 3]\n",
+      " [4 5 6]\n",
+      " [7 8 9]]\n",
+      "  C_CONTIGUOUS : True\n",
+      "  F_CONTIGUOUS : False\n",
+      "  OWNDATA : False\n",
+      "  WRITEABLE : True\n",
+      "  ALIGNED : True\n",
+      "  WRITEBACKIFCOPY : False\n",
+      "  UPDATEIFCOPY : False\n",
+      "\n",
+      "5\n"
      ]
-    },
-    {
-     "data": {
-      "text/plain": [
-       "(16, 2)"
-      ]
-     },
-     "execution_count": 72,
-     "metadata": {},
-     "output_type": "execute_result"
     }
    ],
    "source": [
+    "A = np.arange(1,10)\n",
+    "print(A)\n",
+    "print(A.flags)\n",
+    "\n",
+    "B = np.reshape(A,(3,3))\n",
+    "print(B)\n",
+    "print(B.flags)\n",
+    "print(np.take(B, 4)) # linear index\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "90bee02f",
+   "metadata": {},
+   "source": [
+    "Array B is **C_CONTIGUOUS** and the natural way to store the data and to not make mistakes during reshapes is to count in the row direction.\n",
+    "\n",
+    "Here are some useful links on indexing:\n",
+    "https://kanoki.org/2020/07/05/numpy-index-array-with-another-array/\n",
+    "https://realpython.com/numpy-array-programming/\n",
+    "\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "480f766a",
+   "metadata": {},
+   "source": [
+    "Alright, let's do the coordinate vector. First node should have the index **0** and we count in row direction!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "id": "4e47179e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
     "lx          = 1\n",
     "ly          = 1\n",
-    "nx          = 4\n",
+    "nx          = 5\n",
+    "ny          = 4\n",
+    "nnodel      = 4\n",
+    "dx          = lx/(nx-1)\n",
+    "dy          = ly/(ny-1)\n",
+    "\n",
+    "nex         = nx-1\n",
+    "ney         = ny-1\n",
+    "nnod        = nx*ny\n",
+    "nel         = nex*ney\n",
+    "GCOORD      = np.zeros((nnod,2))\n",
+    "\n",
+    "id = 0\n",
+    "\n",
+    "#for i in ??:\n",
+    "#    for j in ??:\n",
+    "#        GCOORD[id,0] = ??\n",
+    "#        GCOORD[id,1] = ??\n",
+    "#        id          = id + 1\n",
+    "                       \n",
+    "#print(tabulate(GCOORD, headers=['Node #', 'X', 'Y'], showindex=True))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "id": "b1b7b24b",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "  Node #     X         Y\n",
+      "--------  ----  --------\n",
+      "       0  0     0\n",
+      "       1  0.25  0\n",
+      "       2  0.5   0\n",
+      "       3  0.75  0\n",
+      "       4  1     0\n",
+      "       5  0     0.333333\n",
+      "       6  0.25  0.333333\n",
+      "       7  0.5   0.333333\n",
+      "       8  0.75  0.333333\n",
+      "       9  1     0.333333\n",
+      "      10  0     0.666667\n",
+      "      11  0.25  0.666667\n",
+      "      12  0.5   0.666667\n",
+      "      13  0.75  0.666667\n",
+      "      14  1     0.666667\n",
+      "      15  0     1\n",
+      "      16  0.25  1\n",
+      "      17  0.5   1\n",
+      "      18  0.75  1\n",
+      "      19  1     1\n"
+     ]
+    }
+   ],
+   "source": [
+    "# hide\n",
+    "lx          = 1\n",
+    "ly          = 1\n",
+    "nx          = 5\n",
     "ny          = 4\n",
     "nnodel      = 4\n",
     "dx          = lx/(nx-1)\n",
@@ -88,8 +204,7 @@
     "        GCOORD[id,1] = i*dy;\n",
     "        id          = id + 1;\n",
     "                       \n",
-    "print(GCOORD)\n",
-    "GCOORD.shape\n"
+    "print(tabulate(GCOORD, headers=['Node #', 'X', 'Y'], showindex=True))"
    ]
   },
   {
@@ -97,171 +212,96 @@
    "id": "3cf4cb2e",
    "metadata": {},
    "source": [
-    "Now we do the connectivity:"
+    "Now we do the connectivity. Here again the first element will have index **0** and we count in the row direction!"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 73,
+   "execution_count": 47,
    "id": "b388b4e9",
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "[[ 0  4  5  1]\n",
-      " [ 1  5  6  2]\n",
-      " [ 2  6  7  3]\n",
-      " [ 4  8  9  5]\n",
-      " [ 5  9 10  6]\n",
-      " [ 6 10 11  7]\n",
-      " [ 8 12 13  9]\n",
-      " [ 9 13 14 10]\n",
-      " [10 14 15 11]]\n",
-      "(9, 4)\n",
-      "[0.         0.         0.33333333 0.33333333]\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
-    "E2N   = np.zeros((nel,nnodel), dtype=int)\n",
+    "#E2N   = np.zeros((nel,nnodel), dtype=int) # connectivity matrix\n",
     "\n",
-    "for iel in range(0,nel):\n",
-    "    col        = np.ceil((iel+1)/ney)\n",
-    "    ind        = iel + col-1\n",
-    "    E2N[iel,:] = [ind, ind+ny, ind+ny+1, ind+1]\n",
+    "#for iel in range(0,nel):\n",
+    "#    row        = ???\n",
+    "#    ind        = ???\n",
+    "#    E2N[iel,:] = [?, ?, ?, ?]\n",
     "\n",
-    "\n",
-    "print(E2N)\n",
-    "print(E2N.shape)\n",
-    "# x coordinates of first element\n",
-    "# insights into indexing: https://kanoki.org/2020/07/05/numpy-index-array-with-another-array/\n",
-    "# https://realpython.com/numpy-array-programming/\n",
-    "# and something on ordering arrays\n",
-    "# https://stackoverflow.com/questions/26998223/what-is-the-difference-between-contiguous-and-non-contiguous-arrays\n",
-    "print(np.take(GCOORD[:,0], E2N[0,:]))\n",
-    "\n",
+    "#print(tabulate(E2N, headers=['Element #', 'Node 1', 'Node 2', 'Node 3', 'Node 4'], showindex=True))\n",
     "  "
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 53,
-   "id": "d1cefad9",
+   "execution_count": 48,
+   "id": "7d873a9c",
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "(5, 5)\n"
+      "  Element #    Node 1    Node 2    Node 3    Node 4\n",
+      "-----------  --------  --------  --------  --------\n",
+      "          0         0         1         6         5\n",
+      "          1         1         2         7         6\n",
+      "          2         2         3         8         7\n",
+      "          3         3         4         9         8\n",
+      "          4         5         6        11        10\n",
+      "          5         6         7        12        11\n",
+      "          6         7         8        13        12\n",
+      "          7         8         9        14        13\n",
+      "          8        10        11        16        15\n",
+      "          9        11        12        17        16\n",
+      "         10        12        13        18        17\n",
+      "         11        13        14        19        18\n"
      ]
     }
    ],
    "source": [
-    "A = np.array([[0.32, 0.35, 0.88, 0.63, 1.  ],\n",
-    "              [0.23, 0.69, 0.98, 0.22, 0.96],\n",
-    "              [0.7 , 0.51, 0.09, 0.58, 0.19],\n",
-    "              [0.98, 0.42, 0.62, 0.94, 0.46],\n",
-    "              [0.48, 0.59, 0.17, 0.23, 0.98]])\n",
-    "print(A.shape)\n",
-    "B = np.array([[4, 0, 3, 2, 1],\n",
-    "              [3, 2, 4, 1, 0],\n",
-    "              [4, 3, 0, 2, 1],\n",
-    "              [4, 2, 0, 3, 1],\n",
-    "              [0, 3, 1, 2, 4]])"
+    "#hide\n",
+    "E2N   = np.zeros((nel,nnodel), dtype=int) # connectivity matrix\n",
+    "\n",
+    "for iel in range(0,nel):\n",
+    "    row        = np.ceil((iel+1)/nex)\n",
+    "    ind        = iel + row-1\n",
+    "    E2N[iel,:] = [ind, ind+1, ind+nx+1, ind+nx]\n",
+    "\n",
+    "print(tabulate(E2N, headers=['Element #', 'Node 1', 'Node 2', 'Node 3', 'Node 4'], showindex=True))\n",
+    "  "
    ]
   },
   {
-   "cell_type": "code",
-   "execution_count": 56,
-   "id": "ab38f1c5",
+   "cell_type": "markdown",
+   "id": "9ccde43a",
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "array([[1.  , 0.32, 0.63, 0.88, 0.35],\n",
-       "       [0.22, 0.98, 0.96, 0.69, 0.23],\n",
-       "       [0.19, 0.58, 0.7 , 0.09, 0.51],\n",
-       "       [0.46, 0.62, 0.98, 0.94, 0.42],\n",
-       "       [0.48, 0.23, 0.59, 0.17, 0.98]])"
-      ]
-     },
-     "execution_count": 56,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
    "source": [
-    "m,n = A.shape\n",
-    "B + n*np.arange(m)[:,None]\n",
-    "np.take(A,B + n*np.arange(m)[:,None])"
+    "If we now want to get the coordinates of a specific element, we can do the following"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 49,
-   "id": "3d9ef2a3",
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "array([[ 4,  0,  3,  2,  1],\n",
-       "       [ 8,  7,  9,  6,  5],\n",
-       "       [14, 13, 10, 12, 11],\n",
-       "       [19, 17, 15, 18, 16],\n",
-       "       [20, 23, 21, 22, 24]])"
-      ]
-     },
-     "execution_count": 49,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "B + n*np.arange(m)[:,None]"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 69,
-   "id": "997c2b3d",
+   "execution_count": 35,
+   "id": "dce4bc21",
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "[[0 1]\n",
-      " [2 3]]\n"
+      "[0.25 0.5  0.5  0.25]\n",
+      "[0.33333333 0.33333333 0.66666667 0.66666667]\n"
      ]
     }
    ],
    "source": [
-    "B = np.arange(4)\n",
-    "B = B.reshape(2,2)\n",
-    "print(B)\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 68,
-   "id": "2b65fd13",
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "2\n"
-     ]
-    }
-   ],
-   "source": [
-    "print(B[1,0])"
+    "iel = 5 # current element\n",
+    "\n",
+    "print(np.take(GCOORD[:,0], E2N[iel,:])) # x coordinates\n",
+    "print(np.take(GCOORD[:,1], E2N[iel,:])) # y coordinates\n",
+    "\n"
    ]
   },
   {
@@ -275,9 +315,9 @@
  ],
  "metadata": {
   "kernelspec": {
-   "display_name": "py37_fem_class",
+   "display_name": "py3_htf_class",
    "language": "python",
-   "name": "py37_fem_class"
+   "name": "py3_htf_class"
   },
   "language_info": {
    "codemirror_mode": {

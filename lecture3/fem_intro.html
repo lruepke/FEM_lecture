@@ -261,7 +261,10 @@
 <div class="math notranslate nohighlight" id="equation-eq-fem-aprox-funcion">
 <span class="eqno">(87)<a class="headerlink" href="#equation-eq-fem-aprox-funcion" title="Permalink to this equation">¶</a></span>\[T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j T_j = N_j T_J.\]</div>
 <p>In FEM we divide our computational domain into simple geometeric entities, the finite elements, and those finite elements have grid points. For example, in 2-D we can divide the domain in triangles with three nodes and in 1-D in simple lines with two nodes each. Think of our simple FD descritization, if we were to use the same descritization in FEM, the intervals between grid points would be our finite elements.</p>
-<p>These linear independent functions <span class="math notranslate nohighlight">\(N\)</span>, called shape functions in FEM, are associated with the chosen discretization. Each node is associated with one shape function and that shape function has the value <span class="math notranslate nohighlight">\(1\)</span> at that node and is zero at every other node. In our simple 1-D case, the shape functions vary linearly from one to zero over the adjacent elements of each node. With these properties, the sum over all all shape functions is always one, and the coefficients of those shape functions happen to be the unknown variable values at the nodes, the nodal temperatures in our case.</p>
+<div class="figure align-center" id="fig-shapefunc-1d-linear">
+<img alt="../_images/shapeFunction_Linear_1D.svg" src="../_images/shapeFunction_Linear_1D.svg" /><p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Example of 1D linear finite element shape functions</span><a class="headerlink" href="#fig-shapefunc-1d-linear" title="Permalink to this image">¶</a></p>
+</div>
+<p>These linear independent functions <span class="math notranslate nohighlight">\(N\)</span>, called shape functions in FEM, are associated with the chosen discretization (<a class="reference internal" href="#fig-shapefunc-1d-linear"><span class="std std-numref">Fig. 4</span></a>). Each node is associated with one shape function and that shape function has the value <span class="math notranslate nohighlight">\(1\)</span> at that node and is zero at every other node. In our simple 1-D case, the shape functions vary linearly from one to zero over the adjacent elements of each node. With these properties, the sum over all all shape functions is always one, and the coefficients of those shape functions happen to be the unknown variable values at the nodes, the nodal temperatures in our case.</p>
 <p>Let’s plug the approximated solution into the strong form of our equation:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-r">
 <span class="eqno">(88)<a class="headerlink" href="#equation-eq-fem-1d-r" title="Permalink to this equation">¶</a></span>\[R = \frac{\partial}{\partial x}k\frac{\partial N_j T_j }{\partial x}\neq 0.\]</div>
@@ -323,9 +326,6 @@ N_i(x) = 1 - \frac{x-x_i}{x_{i+1} - x_i} &amp;= 1 - \frac{x-x_i}{\Delta x}\\
 N_{i+1}(x) = \frac{x-x_i}{x_{i+1} - x_i} &amp;= \frac{x-x_i}{\Delta x}\\
 \end{split}
 \end{align}\end{split}\]</div>
-<div class="figure align-center" id="fig-shapefunc-1d-linear">
-<img alt="../_images/shapeFunction_Linear_1D.svg" src="../_images/shapeFunction_Linear_1D.svg" /><p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Example of 1D linear finite element shape functions</span><a class="headerlink" href="#fig-shapefunc-1d-linear" title="Permalink to this image">¶</a></p>
-</div>
 </div>
 <div class="section" id="excercise">
 <h2>Excercise<a class="headerlink" href="#excercise" title="Permalink to this headline">¶</a></h2>
