@@ -309,3 +309,13 @@ A shape function has the value 1 at its node, zero at all the others, varies lin
     \end{align}
 
 where :math:`T_{j=1..4}` are the four nodal temperatures, :math:`\tilde{T}` is the temperature at an (integration) point inside the element, :math:`N` are the four shape functions, and :math:`(\xi,\eta)` are the two local coordinates between -1 and 1.
+
+Excercise
+^^^^^^^^^^
+
+Let’s try this interpolation scheme out on a single element with coordinates -1,-1 to 1,1.
+
+.. toctree::
+    :maxdepth: 2
+
+    jupyter/FEM_2d_shapes_excercise.ipynb
