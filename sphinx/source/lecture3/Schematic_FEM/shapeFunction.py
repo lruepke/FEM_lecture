@@ -332,7 +332,7 @@ def connectivity():
     
 def main(argv):
     # Linear1D()
-    # Linear2D_Quad()
-    connectivity()
+    Linear2D_Quad()
+    # connectivity()
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
