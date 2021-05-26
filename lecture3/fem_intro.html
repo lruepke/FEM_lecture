@@ -259,7 +259,7 @@
 <span class="eqno">(86)<a class="headerlink" href="#equation-eq-fem-1d-strong" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}=0.\]</div>
 <p>This is called the strong form of the governing equation and the function <span class="math notranslate nohighlight">\(T_{ex}(x)\)</span> by a (simpler) approximation (cf. Fig. 1):</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-aprox-funcion">
-<span class="eqno">(87)<a class="headerlink" href="#equation-eq-fem-aprox-funcion" title="Permalink to this equation">¶</a></span>\[T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j T_j = N_j T_J.\]</div>
+<span class="eqno">(87)<a class="headerlink" href="#equation-eq-fem-aprox-funcion" title="Permalink to this equation">¶</a></span>\[T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j T_j = N_j T_j.\]</div>
 <p>In FEM we divide our computational domain into simple geometeric entities, the finite elements, and those finite elements have grid points. For example, in 2-D we can divide the domain in triangles with three nodes and in 1-D in simple lines with two nodes each. Think of our simple FD descritization, if we were to use the same descritization in FEM, the intervals between grid points would be our finite elements.</p>
 <div class="figure align-center" id="fig-shapefunc-1d-linear">
 <img alt="../_images/shapeFunction_Linear_1D.svg" src="../_images/shapeFunction_Linear_1D.svg" /><p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Example of 1D linear finite element shape functions</span><a class="headerlink" href="#fig-shapefunc-1d-linear" title="Permalink to this image">¶</a></p>
@@ -373,7 +373,7 @@ N_{i+1}(x) = \frac{x-x_i}{x_{i+1} - x_i} &amp;= \frac{x-x_i}{\Delta x}\\
 <h2>Example: 1-D heat diffusion numerical FEM solution<a class="headerlink" href="#example-1-d-heat-diffusion-numerical-fem-solution" title="Permalink to this headline">¶</a></h2>
 <p>Let’s put everything together and write our first finite element code! We will do this by programming a FEM solution to the steady-state heat diffusion equation but this time with a source term.</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-strong-ex">
-<span class="eqno">(99)<a class="headerlink" href="#equation-eq-fem-1d-strong-ex" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}-Q=0.\]</div>
+<span class="eqno">(99)<a class="headerlink" href="#equation-eq-fem-1d-strong-ex" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}+Q=0.\]</div>
 <p>The weak form will then look like this (signs get flipped during partial integration):</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-weak-simple-ex1">
 <span class="eqno">(100)<a class="headerlink" href="#equation-eq-fem-1d-weak-simple-ex1" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}

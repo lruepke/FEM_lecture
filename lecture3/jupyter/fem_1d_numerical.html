@@ -470,7 +470,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Numerical-1-D-FEM-solution-of-the-heat-diffusion-equation">
 <h1>Numerical 1-D FEM solution of the heat diffusion equation<a class="headerlink" href="#Numerical-1-D-FEM-solution-of-the-heat-diffusion-equation" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -483,19 +483,19 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">spsolve</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.dpi&#39;</span><span class="p">]</span><span class="o">=</span> <span class="mi">300</span>
-
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
 </pre></div>
 </div>
 </div>
 <p>First we define some numerical constants and define the problem</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1">#constants</span>
 <span class="n">lx</span>          <span class="o">=</span> <span class="mi">10</span>           <span class="c1">#width</span>
-<span class="n">nnod</span>        <span class="o">=</span> <span class="mi">21</span>            <span class="c1">#number of nodes</span>
+<span class="n">nnod</span>        <span class="o">=</span> <span class="mi">11</span>            <span class="c1">#number of nodes</span>
 <span class="n">nnodel</span>      <span class="o">=</span> <span class="mi">2</span>            <span class="c1">#nodes per element</span>
 <span class="n">k</span>           <span class="o">=</span> <span class="mi">1</span>            <span class="c1">#conductivity</span>
 <span class="n">Q</span>           <span class="o">=</span> <span class="mi">1</span>            <span class="c1">#source term</span>
@@ -508,19 +508,40 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <p>Now we make our FEM mesh and element connectivity</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">Gcoord</span><span class="p">,</span> <span class="n">dx</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">lx</span><span class="p">,</span><span class="n">nnod</span><span class="p">,</span>   <span class="n">retstep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#global coordinates</span>
-<span class="n">EL2NOD</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nnod</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nnod</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>  <span class="c1"># connectivity matrix</span>
+<span class="n">EL2NOD</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nnod</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nnod</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># connectivity matrix</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Element #&#39;</span><span class="p">,</span> <span class="s1">&#39;Node 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Node 2&#39;</span><span class="p">],</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+  Element #    Node 1    Node 2
+-----------  --------  --------
+          0         0         1
+          1         1         2
+          2         2         3
+          3         3         4
+          4         4         5
+          5         5         6
+          6         6         7
+          7         7         8
+          8         8         9
+          9         9        10
+</pre></div></div>
+</div>
 <p>Now we spell out our analytically-derived element stiffness matrix (see previous sections):</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -530,7 +551,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -539,94 +560,37 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <p>Now we need to loop over all elements and assemble the global stiffness matrix</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">Rhs_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nnod</span><span class="p">)</span>
-<span class="n">I</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">J</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">K</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nel</span><span class="p">,</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">))</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nel</span><span class="p">,</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">))</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nel</span><span class="p">,</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">))</span>
+
 <span class="k">for</span> <span class="n">iel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nel</span><span class="p">):</span>
 
-    <span class="n">I</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">((</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nnodel</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">)))</span>
-    <span class="n">J</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nnodel</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">)))</span>
-    <span class="n">K</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Ael</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">)))</span>
 
-    <span class="n">Rhs_all</span><span class="p">[</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Rhs_el</span>
+    <span class="n">I</span><span class="p">[</span><span class="n">iel</span><span class="p">,:]</span>  <span class="o">=</span>  <span class="p">(</span><span class="n">EL2NOD</span><span class="p">[</span><span class="n">iel</span><span class="p">,:]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nnodel</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">)</span>
+    <span class="n">J</span><span class="p">[</span><span class="n">iel</span><span class="p">,:]</span>  <span class="o">=</span>  <span class="p">(</span><span class="n">EL2NOD</span><span class="p">[</span><span class="n">iel</span><span class="p">,:]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nnodel</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">)</span>
+    <span class="n">K</span><span class="p">[</span><span class="n">iel</span><span class="p">,:]</span>  <span class="o">=</span>  <span class="n">Ael</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">)</span>
+
+    <span class="n">Rhs_all</span><span class="p">[</span><span class="n">EL2NOD</span><span class="p">[</span><span class="n">iel</span><span class="p">,:]]</span> <span class="o">+=</span> <span class="n">Rhs_el</span>
 
 
-<span class="n">I</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
-<span class="n">J</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">J</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
-<span class="n">K</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">K</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">A_all</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">((</span><span class="n">K</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nel</span><span class="o">*</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">),(</span><span class="n">I</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nel</span><span class="o">*</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">),</span><span class="n">J</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nel</span><span class="o">*</span><span class="n">nnodel</span><span class="o">*</span><span class="n">nnodel</span><span class="p">))),</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nnod</span><span class="p">,</span><span class="n">nnod</span><span class="p">))</span>
 
-<span class="n">A_all</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">((</span><span class="n">K</span><span class="p">,(</span><span class="n">I</span><span class="p">,</span><span class="n">J</span><span class="p">)),</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nnod</span><span class="p">,</span><span class="n">nnod</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">A_all</span><span class="p">)</span>
+
+
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-  (0, 0)        2.0
-  (0, 1)        -2.0
-  (1, 0)        -2.0
-  (1, 1)        4.0
-  (1, 2)        -2.0
-  (2, 1)        -2.0
-  (2, 2)        4.0
-  (2, 3)        -2.0
-  (3, 2)        -2.0
-  (3, 3)        4.0
-  (3, 4)        -2.0
-  (4, 3)        -2.0
-  (4, 4)        4.0
-  (4, 5)        -2.0
-  (5, 4)        -2.0
-  (5, 5)        4.0
-  (5, 6)        -2.0
-  (6, 5)        -2.0
-  (6, 6)        4.0
-  (6, 7)        -2.0
-  (7, 6)        -2.0
-  (7, 7)        4.0
-  (7, 8)        -2.0
-  (8, 7)        -2.0
-  (8, 8)        4.0
-  :     :
-  (12, 12)      4.0
-  (12, 13)      -2.0
-  (13, 12)      -2.0
-  (13, 13)      4.0
-  (13, 14)      -2.0
-  (14, 13)      -2.0
-  (14, 14)      4.0
-  (14, 15)      -2.0
-  (15, 14)      -2.0
-  (15, 15)      4.0
-  (15, 16)      -2.0
-  (16, 15)      -2.0
-  (16, 16)      4.0
-  (16, 17)      -2.0
-  (17, 16)      -2.0
-  (17, 17)      4.0
-  (17, 18)      -2.0
-  (18, 17)      -2.0
-  (18, 18)      4.0
-  (18, 19)      -2.0
-  (19, 18)      -2.0
-  (19, 19)      4.0
-  (19, 20)      -2.0
-  (20, 19)      -2.0
-  (20, 20)      2.0
-</pre></div></div>
-</div>
 <p>Now we apply the boundary conditions in the usual way and solve using a sparse solver!</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -640,8 +604,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -649,66 +613,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-  (0, 0)        1.0
-  (0, 1)        0.0
-  (1, 0)        -2.0
-  (1, 1)        4.0
-  (1, 2)        -2.0
-  (2, 1)        -2.0
-  (2, 2)        4.0
-  (2, 3)        -2.0
-  (3, 2)        -2.0
-  (3, 3)        4.0
-  (3, 4)        -2.0
-  (4, 3)        -2.0
-  (4, 4)        4.0
-  (4, 5)        -2.0
-  (5, 4)        -2.0
-  (5, 5)        4.0
-  (5, 6)        -2.0
-  (6, 5)        -2.0
-  (6, 6)        4.0
-  (6, 7)        -2.0
-  (7, 6)        -2.0
-  (7, 7)        4.0
-  (7, 8)        -2.0
-  (8, 7)        -2.0
-  (8, 8)        4.0
-  :     :
-  (12, 12)      4.0
-  (12, 13)      -2.0
-  (13, 12)      -2.0
-  (13, 13)      4.0
-  (13, 14)      -2.0
-  (14, 13)      -2.0
-  (14, 14)      4.0
-  (14, 15)      -2.0
-  (15, 14)      -2.0
-  (15, 15)      4.0
-  (15, 16)      -2.0
-  (16, 15)      -2.0
-  (16, 16)      4.0
-  (16, 17)      -2.0
-  (17, 16)      -2.0
-  (17, 17)      4.0
-  (17, 18)      -2.0
-  (18, 17)      -2.0
-  (18, 18)      4.0
-  (18, 19)      -2.0
-  (19, 18)      -2.0
-  (19, 19)      4.0
-  (19, 20)      -2.0
-  (20, 19)      0.0
-  (20, 20)      1.0
-</pre></div></div>
-</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -737,12 +643,12 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7fcfd01745d0&gt;
+&lt;matplotlib.legend.Legend at 0x7f86eaf44650&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
