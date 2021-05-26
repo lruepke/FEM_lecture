@@ -17,7 +17,7 @@ We now use 2-D shape functions in our approximate solution:
 .. math::
     :label: eq:fem_aprox_funcion_2d
 
-    T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j(x,y) T_j = N_j T_J, 
+    T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j(x,y) T_j = N_j T_j, 
 
 where the shape functions :math:`N_j(x,y)` are now function of both spatial dimensions. An example of a 2-D FEM mesh and associated shape functions are shown in Fi. X. Note that the structured quad mesh and the bi-linear shape functions are just one possibility of using the FEM in 2-D. There are many other possibility, like unstructured triangle meshes and higher order shape functions.
 
@@ -32,7 +32,7 @@ Note that the 2-D shape functions still sum to :math:`1` everywhere:
 .. math::
     :label: eq:fem_aprox_funcion_2d_2
 
-    \sum_{j=1}^{n} N_j(x,y)  = 0. 
+    \sum_{j=1}^{n} N_j(x,y)  = 1. 
 
 
 
@@ -95,12 +95,12 @@ We will use a connectivity as shown in :numref:`fig:matrix:2D`. Element 0 has, f
 Excercise
 ^^^^^^^^^^
 
-#. Create the global coordinate vector GCOORD. Assume that the length of the box in x direction (lx) is 1 ([0,1]) and the length of box is y direction (ly) is also 1 ([0, 1]). The number of nodes in x is 4 (nx) and the number of nodes in y is 4 (ny).  
+#. Create the global coordinate vector GCOORD. Assume that the length of the box in x direction (lx) is 1 ([0,1]) and the length of box is y direction (ly) is also 1 ([0, 1]). The number of nodes in x is 5 (nx) and the number of nodes in y is 4 (ny).  
 #. Create the connectivity matrix ELEM2NODE. The element numbering should look like this:
 
 .. tip::
 
-    * Hint loop over all nodes and create their respective x and y coordinates. The node numbering should be like in Fig. X (see jupyter notebook for a discussion).
+    * Hint loop over all nodes and create their respective x and y coordinates. The node numbering should be like in :numref:`fig:mesh:2D:structured` (see jupyter notebook for a discussion).
     * Functions like ceil or floor might help you with the connectivity matrix; it might also help to first compute the row we are in and then compute the index of the lower left node and move on from there.
 
 .. tip::
