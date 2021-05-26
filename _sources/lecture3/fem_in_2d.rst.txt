@@ -78,19 +78,55 @@ We go on and split the modeling domain into finite elements and the first integr
 The basic concept of the finite element method is to solve/assemble the system of equations, for e.g. heat diffusion, on each element and add all element contributions together to obtain the global matrix equation.
 Every element has an element number and a certain number of nodes. We will initially use quadratic elements with four nodes. For the connectivity between elements we will need two matrices: a CGCOORD matrix that has the size [nnod,2], where 2 is the number of dimensions (x,y) and nnod is the total number of nodes in the mesh, and ELEM2NODE, which has the size [nel, nnodel] (nel is the total number of elements and nnodel is the number of nodes per element, i.e. 4), see :numref:`fig:mesh:2D:structured`. We had already used this matrices in 1-D but now their meaning becomes clear.
 
-.. figure:: Schematic_FEM/mesh2D_structured.svg
-    :name: fig:mesh:2D:structured
-    :align: center
+.. tab:: Structured mesh 1
+
+    .. figure:: Schematic_FEM/mesh2D_structured.*
+        :name: fig:mesh:2D:structured
+        :align: center
+    
+        Structured mesh example of 2D finite element
+
+.. tab:: Structured mesh 2
+
+    .. figure:: Schematic_FEM/mesh2D_structured_usi.*
+        :name: fig:mesh:2D:structured:usi
+        :align: center
+    
+        Structured mesh example of 2D finite element
+
+.. tab:: Unstructured mesh 
+
+    .. figure:: Schematic_FEM/mesh2D_unstructured.*
+        :name: fig:mesh:2D:unstructured
+        :align: center
+    
+        Unstructured mesh example of 2D finite element
+
+We will use a connectivity as shown in :numref:`fig:matrix:2D:structured`. Element 0 has, for example, the global nodes 0, 1, 6, 5. Note that the local element numbering is always counterclockwise (in this class). It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribution of all elements is added/assembled into the glob
+
+.. tab:: Structured mesh 1
+
+    .. figure:: Schematic_FEM/Matrix2D_structured.svg
+        :name: fig:matrix:2D:structured
+        :align: center
+
+        Connectivity example of 2D finite element with structured mesh
+
+.. tab:: Structured mesh 2
+
+    .. figure:: Schematic_FEM/Matrix2D_structured_usi.svg
+        :name: fig:matrix:2D:structured:usi
+        :align: center
+
+        Connectivity example of 2D finite element with structured mesh
  
-    Structured mesh example of 2D finite element
+.. tab:: Unstructured mesh
 
-We will use a connectivity as shown in :numref:`fig:matrix:2D`. Element 0 has, for example, the global nodes 0, 1, 6, 5. Note that the local element numbering is always counterclockwise (in this class). It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribution of all elements is added/assembled into the glob
+    .. figure:: Schematic_FEM/Matrix2D_unstructured.svg
+        :name: fig:matrix:2D:unstructured
+        :align: center
 
-.. figure:: Schematic_FEM/Matrix2D_structured.svg
-    :name: fig:matrix:2D
-    :align: center
-
-    Connectivity example of 2D finite element
+        Connectivity example of 2D finite element with unstructured mesh
 
 Excercise
 ^^^^^^^^^^

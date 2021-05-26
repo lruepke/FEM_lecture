@@ -295,12 +295,40 @@
 <h2>2-D FEM: connectivity<a class="headerlink" href="#d-fem-connectivity" title="Permalink to this headline">¶</a></h2>
 <p>The basic concept of the finite element method is to solve/assemble the system of equations, for e.g. heat diffusion, on each element and add all element contributions together to obtain the global matrix equation.
 Every element has an element number and a certain number of nodes. We will initially use quadratic elements with four nodes. For the connectivity between elements we will need two matrices: a CGCOORD matrix that has the size [nnod,2], where 2 is the number of dimensions (x,y) and nnod is the total number of nodes in the mesh, and ELEM2NODE, which has the size [nel, nnodel] (nel is the total number of elements and nnodel is the number of nodes per element, i.e. 4), see <a class="reference internal" href="#fig-mesh-2d-structured"><span class="std std-numref">Fig. 6</span></a>. We had already used this matrices in 1-D but now their meaning becomes clear.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">Structured mesh 1</label><div class="tab-content docutils container">
 <div class="figure align-center" id="fig-mesh-2d-structured">
 <img alt="../_images/mesh2D_structured.svg" src="../_images/mesh2D_structured.svg" /><p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Structured mesh example of 2D finite element</span><a class="headerlink" href="#fig-mesh-2d-structured" title="Permalink to this image">¶</a></p>
 </div>
-<p>We will use a connectivity as shown in <a class="reference internal" href="#fig-matrix-2d"><span class="std std-numref">Fig. 7</span></a>. Element 0 has, for example, the global nodes 0, 1, 6, 5. Note that the local element numbering is always counterclockwise (in this class). It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribution of all elements is added/assembled into the glob</p>
-<div class="figure align-center" id="fig-matrix-2d">
-<img alt="../_images/Matrix2D_structured.svg" src="../_images/Matrix2D_structured.svg" /><p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Connectivity example of 2D finite element</span><a class="headerlink" href="#fig-matrix-2d" title="Permalink to this image">¶</a></p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">Structured mesh 2</label><div class="tab-content docutils container">
+<div class="figure align-center" id="fig-mesh-2d-structured-usi">
+<img alt="../_images/mesh2D_structured_usi.svg" src="../_images/mesh2D_structured_usi.svg" /><p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Structured mesh example of 2D finite element</span><a class="headerlink" href="#fig-mesh-2d-structured-usi" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--0-input--3" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--3">Unstructured mesh</label><div class="tab-content docutils container">
+<div class="figure align-center" id="fig-mesh-2d-unstructured">
+<img alt="../_images/mesh2D_unstructured.svg" src="../_images/mesh2D_unstructured.svg" /><p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Unstructured mesh example of 2D finite element</span><a class="headerlink" href="#fig-mesh-2d-unstructured" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<p>We will use a connectivity as shown in <a class="reference internal" href="#fig-matrix-2d-structured"><span class="std std-numref">Fig. 9</span></a>. Element 0 has, for example, the global nodes 0, 1, 6, 5. Note that the local element numbering is always counterclockwise (in this class). It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribution of all elements is added/assembled into the glob</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">Structured mesh 1</label><div class="tab-content docutils container">
+<div class="figure align-center" id="fig-matrix-2d-structured">
+<img alt="../_images/Matrix2D_structured.svg" src="../_images/Matrix2D_structured.svg" /><p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Connectivity example of 2D finite element with structured mesh</span><a class="headerlink" href="#fig-matrix-2d-structured" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">Structured mesh 2</label><div class="tab-content docutils container">
+<div class="figure align-center" id="fig-matrix-2d-structured-usi">
+<img alt="../_images/Matrix2D_structured_usi.svg" src="../_images/Matrix2D_structured_usi.svg" /><p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Connectivity example of 2D finite element with structured mesh</span><a class="headerlink" href="#fig-matrix-2d-structured-usi" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--3" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--3">Unstructured mesh</label><div class="tab-content docutils container">
+<div class="figure align-center" id="fig-matrix-2d-unstructured">
+<img alt="../_images/Matrix2D_unstructured.svg" src="../_images/Matrix2D_unstructured.svg" /><p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">Connectivity example of 2D finite element with unstructured mesh</span><a class="headerlink" href="#fig-matrix-2d-unstructured" title="Permalink to this image">¶</a></p>
+</div>
+</div>
 </div>
 <div class="section" id="excercise">
 <h3>Excercise<a class="headerlink" href="#excercise" title="Permalink to this headline">¶</a></h3>
@@ -412,7 +440,7 @@ J
 <h2>Shape functions<a class="headerlink" href="#shape-functions" title="Permalink to this headline">¶</a></h2>
 <p>By now we have learned how to solve integrals of shape functions and transform shape functions between different coordinate systems. It is really time that we learn what these shape functions are! We will use four-node rectangular element with bilinear shape functions. Remember that these shape functions look like this:</p>
 <div class="figure align-center" id="fig-shapefunc-2d-linear-1">
-<img alt="../_images/shapeFunction_2D_Q1.svg" src="../_images/shapeFunction_2D_Q1.svg" /><p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Shape of 2-D bi-linear element shape functions</span><a class="headerlink" href="#fig-shapefunc-2d-linear-1" title="Permalink to this image">¶</a></p>
+<img alt="../_images/shapeFunction_2D_Q1.svg" src="../_images/shapeFunction_2D_Q1.svg" /><p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text">Shape of 2-D bi-linear element shape functions</span><a class="headerlink" href="#fig-shapefunc-2d-linear-1" title="Permalink to this image">¶</a></p>
 </div>
 <p>A shape function has the value 1 at its node, zero at all the others, varies linearly between them and the sum of all shape functions is always 1. A simple way to think about this is in 1D (remember the last script)! With these conventions we can now spell out a general interpolation scheme using shape functions:</p>
 <div class="math notranslate nohighlight" id="equation-eq-shape-functions">
