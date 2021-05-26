@@ -28,7 +28,7 @@ where the shape functions :math:`N_j(x,y)` are now function of both spatial dime
         :align: center
 
         Example of 2D linear finite element shape functions
-
+ 
 .. tab:: Q2 element
 
     .. figure:: Schematic_FEM/shapeFunction_2D_Q2.svg
