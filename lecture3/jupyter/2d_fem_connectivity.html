@@ -488,7 +488,7 @@ div.rendered_html tbody tr:hover {
 <p>Bottom line is, in python we should count in the row direction.</p>
 <p>Let’s make some simple examples:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -499,7 +499,7 @@ div.rendered_html tbody tr:hover {
 <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">,(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">flags</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span> <span class="c1"># linear index</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="c1"># linear index</span>
 
 
 </pre></div>
@@ -530,7 +530,7 @@ div.rendered_html tbody tr:hover {
   WRITEBACKIFCOPY : False
   UPDATEIFCOPY : False
 
-5
+4
 </pre></div></div>
 </div>
 <p>Array B is <strong>C_CONTIGUOUS</strong> and the natural way to store the data and to not make mistakes during reshapes is to count in the row direction.</p>
@@ -614,9 +614,9 @@ div.rendered_html tbody tr:hover {
 <span></span><span class="c1">#E2N   = np.zeros((nel,nnodel), dtype=int) # connectivity matrix</span>
 
 <span class="c1">#for iel in range(0,nel):</span>
-<span class="c1">#    row        = ???</span>
+<span class="c1">#    row        = ??? np.ceil()  / np.floor</span>
 <span class="c1">#    ind        = ???</span>
-<span class="c1">#    E2N[iel,:] = [?, ?, ?, ?]</span>
+<span class="c1">#    E2N[iel,:] = [ind, ind+1, ?, ?]</span>
 
 <span class="c1">#print(tabulate(E2N, headers=[&#39;Element #&#39;, &#39;Node 1&#39;, &#39;Node 2&#39;, &#39;Node 3&#39;, &#39;Node 4&#39;], showindex=True))</span>
 </pre></div>
