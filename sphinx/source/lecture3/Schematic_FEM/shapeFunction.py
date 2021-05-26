@@ -103,18 +103,18 @@ def Linear1D():
     ax.yaxis.set_major_locator(MultipleLocator(1))
     ax.yaxis.set_minor_locator(MultipleLocator(0.1))
     for fmt in fmt_figs:
-        figname=str('%s/shapeFunction_Linear_1D.%s'%(figpath,fmt))
-        plt.savefig(figname, bbox_inches='tight')
+        figurename=str('%s/shapeFunction_Linear_1D.%s'%(figpath,fmt))
+        plt.savefig(figurename, bbox_inches='tight')
 
 def loadMesh2D(gmshfile):
     mesh=meshio.read(gmshfile)
     GCOORD=mesh.points[:,0:2]
     EL2NOD=[]
     for cells in mesh.cells:
-        if(cells.type=='quad'):
+        if((cells.type=='quad') | (cells.type=='triangle')):
             EL2NOD=cells.data
     return {'GCOORD':GCOORD, 'EL2NOD':EL2NOD}
-def plotMesh_2D(mesh,colorsName='tab20'):
+def plotMesh_2D(mesh,colorsName='tab20',figname='mesh2D_structured',extend_x=0):
     colors=mpl.cm.get_cmap(colorsName).colors
     x,y=mesh['GCOORD'][:,0],mesh['GCOORD'][:,1]
     el2nod=mesh['EL2NOD']
@@ -129,35 +129,41 @@ def plotMesh_2D(mesh,colorsName='tab20'):
         ax.fill(x[ind],y[ind],color=colors[i%len(colors)])
         ax.text(x[element].mean(),y[element].mean(),'Element %d'%(i),ha='center',va='center',bbox={'fc':'lightgray','ec':'None','boxstyle':'round'})
     # plot node
-    for nod in np.unique(el2nod.reshape(-1)):
+    nodes=[]
+    for el in el2nod:
+        for node in el:
+            nodes.append(node)
+    nodes=np.array(nodes,dtype=int)
+    for nod in np.unique(nodes):
         ax.plot(x[nod],y[nod],marker='o',ms=15,mfc='w',mec='k',clip_on=False)
         ax.text(x[nod],y[nod],'%d'%(nod),ha='center',va='center')
     ax.axis('off')
     ax.axis('scaled')
-    ax.set_xlim(-1,5)
-    ax.set_ylim(0,3)
+    ax.set_xlim(x.min()-len_x*extend_x,x.max()+len_x*extend_x)
+    ax.set_ylim(y.min(),y.max())
     for fmt in fmt_figs:
-        figname=str('%s/mesh2D_structured.%s'%(figpath,fmt))
-        plt.savefig(figname, bbox_inches='tight')
-def plotConnectivityMatrix_2D(mesh,colorsName='tab20'):
+        figurename=str('%s/%s.%s'%(figpath,figname,fmt))
+        plt.savefig(figurename, bbox_inches='tight')
+def plotConnectivityMatrix_2D(mesh,colorsName='tab20',figname='Matrix2D_structured'):
     colors=mpl.cm.get_cmap(colorsName).colors
     x,y=mesh['GCOORD'][:,0],mesh['GCOORD'][:,1]
     el2nod=mesh['EL2NOD']
     len_x,len_y=x.max()-x.min(),y.max()-y.min()
-    figwidth=12
-    figheight=len_y/len_x*figwidth
     nnel,nnod=len(el2nod),len(x)
     nnel1=int(np.sqrt(nnel))
     nnel2=int(nnel/nnel1)
     rows=np.min([nnel1,nnel2])
     cols=int(nnel/rows)
     width_ratios=[1]*(cols*2+1)
-    width_ratios[cols]=0.001
-    fig,axes=plt.subplots(rows,cols*2+1, sharex=True, sharey=True,figsize=(figwidth*2,figheight),
+    width_ratios[cols]=0.1
+    figheight=12
+    figwidth=figheight*2.1
+    fig,axes=plt.subplots(rows,cols*2+1, sharex=True, sharey=True,figsize=(figwidth,figheight),
     gridspec_kw={"hspace":0.15,'wspace':0.15,"width_ratios":width_ratios})
     # plot matrix of each element
     gs=axes[0][0].get_gridspec()
     ax_global = fig.add_subplot(gs[:, cols+1:])
+    ax_equal = fig.add_subplot(gs[:,cols])
     for ax in axes[:,cols:]:
         for a in ax:
             a.remove()
@@ -189,16 +195,17 @@ def plotConnectivityMatrix_2D(mesh,colorsName='tab20'):
                     ax_local.plot(1.06,0.5,'P',color='k',transform=ax_local.transAxes,clip_on=False)
                 if((i>0) & (j==0)):
                     ax_local.plot(-0.06,0.5,'P',color='k',transform=ax_local.transAxes,clip_on=False)
-                ax_global.plot([-0.1,-0.15],[0.51,0.51],lw=3,color='k',transform=ax_global.transAxes,clip_on=False)
-                ax_global.plot([-0.1,-0.15],[0.49,0.49],lw=3,color='k',transform=ax_global.transAxes,clip_on=False)
+    ax_equal.plot([0,1],[0.505,0.505],lw=3,color='k',transform=ax_equal.transAxes,clip_on=False)
+    ax_equal.plot([0,1],[0.495,0.495],lw=3,color='k',transform=ax_equal.transAxes,clip_on=False)
+    ax_equal.axis('off')
     # for i,element in enumerate(el2nod):
     #     ind=np.append(element,element[0])
     #     axes[0][0].fill(x[ind],y[ind],color=colors[i%len(colors)])
         # ax.text(x[element].mean(),y[element].mean(),'Element %d'%(i),ha='center',va='center',bbox={'fc':'lightgray','ec':'None','boxstyle':'round'})
     # axes[0].remove()
     for fmt in fmt_figs:
-        figname=str('%s/Matrix2D_structured.%s'%(figpath,fmt))
-        plt.savefig(figname, bbox_inches='tight')
+        figurename=str('%s/%s.%s'%(figpath,figname,fmt))
+        plt.savefig(figurename, bbox_inches='tight')
 # shape function
 def shapes(s1, s2):
     N1 = 0.25*(1-s1)*(1-s2)
@@ -307,16 +314,25 @@ def Linear2D_Quad(xmin=0,dx=1,ymin=0,dy=1):
         niceAxis(ax,fill_pane=False,label3D=True,fs_label=0.1, scaled=False)
     plt.subplots_adjust(wspace=0)
     for fmt in fmt_figs:
-        figname=str('%s/shapeFunction_2D_Q1.%s'%(figpath,fmt))
-        plt.savefig(figname, bbox_inches='tight')
+        figurename=str('%s/shapeFunction_2D_Q1.%s'%(figpath,fmt))
+        plt.savefig(figurename, bbox_inches='tight')
 def connectivity():
-    # mesh=loadMesh2D('mesh/structure.msh')
+    # 1. structured mesh with structured indexing
     mesh=createMesh_2D()
-    plotMesh_2D(mesh)
+    plotMesh_2D(mesh,extend_x=1/3.0)
     plotConnectivityMatrix_2D(mesh)
+    # structured mesh with unstructured indexing
+    mesh=loadMesh2D('mesh/structure.msh')
+    plotMesh_2D(mesh,figname='mesh2D_structured_usi',extend_x=1/3.0)
+    plotConnectivityMatrix_2D(mesh,figname='Matrix2D_structured_usi')
+    # unstructured mesh
+    mesh=loadMesh2D('mesh/unstructure.msh')
+    plotMesh_2D(mesh,figname='mesh2D_unstructured')
+    plotConnectivityMatrix_2D(mesh,figname='Matrix2D_unstructured')
+    
 def main(argv):
     # Linear1D()
-    # Linear2D_Quad()
-    connectivity()
+    Linear2D_Quad()
+    # connectivity()
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
