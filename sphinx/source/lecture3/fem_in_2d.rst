@@ -27,6 +27,15 @@ where the shape functions :math:`N_j(x,y)` are now function of both spatial dime
 
     Example of 2D linear finite element shape functions
 
+Note that the 2-D shape functions still sum to :math:`1` everywhere:
+
+.. math::
+    :label: eq:fem_aprox_funcion_2d_2
+
+    \sum_{j=1}^{n} N_j(x,y)  = 0. 
+
+
+
 We proceed by substituting :eq:`eq:fem_aprox_funcion_2d` into :eq:`eq:fem_2d_strong` and by using the Galerkin method. This results in:
 
 .. math::
@@ -80,8 +89,8 @@ Excercise
 
 .. tip::
 
-    * Hint loop over all nodes and create their respective x and y coordinates. The node numbering should be like in eqn. (20)
-    * Functions like ceil or floor might help you with the connectivity matrix; it might also help to first compute the column we are in and then compute the index of the lower left node and move on from there.
+    * Hint loop over all nodes and create their respective x and y coordinates. The node numbering should be like in Fig. X (see jupyter notebook for a discussion).
+    * Functions like ceil or floor might help you with the connectivity matrix; it might also help to first compute the row we are in and then compute the index of the lower left node and move on from there.
 
 .. toctree::
     :maxdepth: 2
