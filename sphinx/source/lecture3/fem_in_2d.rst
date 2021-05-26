@@ -73,13 +73,25 @@ We go on and split the modeling domain into finite elements and the first integr
     \end{split}
     \end{align}
 
+.. figure:: Schematic_FEM/mesh2D_structured.svg
+    :name: fig:mesh:2D:structured
+    :align: center
+ 
+    Structured mesh example of 2D finite element
 
 2-D FEM: connectivity
 ----------------------
 The basic concept of the finite element method is to solve/assemble the system of equations, for e.g. heat diffusion, on each element and add all element contributions together to obtain the global matrix equation.
 Every element has an element number and a certain number of nodes. We will initially use quadratic elements with four nodes. For the connectivity between elements we will need two matrices: a CGCOORD matrix that has the size [nnod,2], where 2 is the number of dimensions (x,y) and nnod is the total number of nodes in the mesh, and ELEM2NODE, which has the size [nel, nnodel] (nel is the total number of elements and nnodel is the number of nodes per element, i.e. 4). We had already used this matrices in 1-D but now their meaning becomes clear.
 
-We will use a connectivity as shown in Fg. X. Element 1 has, for example, the global nodes 1, 2, 3, 4. It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribuation of all elements is added/assembled into the global stiffness matrix and the global force vector.
+We will use a connectivity as shown in :numref:`fig:matrix:2D`. Element 1 has, for example, the global nodes 1, 2, 3, 4. It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribuation of all elements is added/assembled into the global stiffness matrix and the global force vector.
+
+.. figure:: Schematic_FEM/Matrix2D_structured.svg
+    :name: fig:matrix:2D
+    :align: center
+
+    Connectivity example of 2D finite element
+   
 
 Excercise
 ^^^^^^^^^^

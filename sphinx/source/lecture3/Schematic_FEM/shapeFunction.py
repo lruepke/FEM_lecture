@@ -47,7 +47,21 @@ def createMesh_1D(xmin=0,xmax=10,dx=2):
     for i in range(0,len(x)-1):
         el2nod.append([i, i+1])
     return {'GCOORD':{'x':x}, 'EL2NOD':el2nod}
-
+def createMesh_2D(xmin=0,dx=1,nx=5,ymin=0,dy=1,ny=4):
+    x=np.arange(xmin,xmin+(nx)*dx,dx)
+    y=np.arange(ymin,ymin+(ny)*dy,dy)
+    xx,yy=np.meshgrid(x,y)
+    xx,yy=xx.reshape(-1,1),yy.reshape(-1,1)
+    GCOORD=np.column_stack((xx,yy))
+    # el2nod
+    EL2NOD=[]
+    for j in range(0,ny-1):
+        for i in range(0,nx-1):
+            LL=i+(nx)*j
+            EL2NOD.append(np.array([LL, LL+1, LL+nx+1, LL+nx],dtype=int))
+    EL2NOD=np.array(EL2NOD,dtype=int)
+    # print(GCOORD.shape,EL2NOD)
+    return {'GCOORD':GCOORD, 'EL2NOD':EL2NOD}
 def Linear1D():
     colors=mpl.cm.get_cmap('tab10').colors
     dx=2
@@ -95,12 +109,13 @@ def Linear1D():
 def loadMesh2D(gmshfile):
     mesh=meshio.read(gmshfile)
     GCOORD=mesh.points[:,0:2]
-    el2node=[]
+    EL2NOD=[]
     for cells in mesh.cells:
         if(cells.type=='quad'):
-            el2node=cells.data
-    return {'GCOORD':GCOORD, 'EL2NOD':el2node}
-def plotMesh_2D(mesh):
+            EL2NOD=cells.data
+    return {'GCOORD':GCOORD, 'EL2NOD':EL2NOD}
+def plotMesh_2D(mesh,colorsName='tab20'):
+    colors=mpl.cm.get_cmap(colorsName).colors
     x,y=mesh['GCOORD'][:,0],mesh['GCOORD'][:,1]
     el2nod=mesh['EL2NOD']
     len_x,len_y=x.max()-x.min(),y.max()-y.min()
@@ -109,14 +124,81 @@ def plotMesh_2D(mesh):
     fig=plt.figure(figsize=(figwidth,figheight))
     ax=plt.gca()
     # plot element
-    for element in el2nod:
+    for i,element in enumerate(el2nod):
         ind=np.append(element,element[0])
-        ax.fill(x[ind],y[ind])
+        ax.fill(x[ind],y[ind],color=colors[i%len(colors)])
+        ax.text(x[element].mean(),y[element].mean(),'Element %d'%(i),ha='center',va='center',bbox={'fc':'lightgray','ec':'None','boxstyle':'round'})
     # plot node
     for nod in np.unique(el2nod.reshape(-1)):
-        ax.plot(x[nod],y[nod],marker='o',ms=20,mfc='w',mec='k')
-        ax.text(x[nod],y[nod],'%d'%(nod+1),ha='center',va='center')
-    plt.show()
+        ax.plot(x[nod],y[nod],marker='o',ms=15,mfc='w',mec='k',clip_on=False)
+        ax.text(x[nod],y[nod],'%d'%(nod),ha='center',va='center')
+    ax.axis('off')
+    ax.axis('scaled')
+    ax.set_xlim(-1,5)
+    ax.set_ylim(0,3)
+    for fmt in fmt_figs:
+        figname=str('%s/mesh2D_structured.%s'%(figpath,fmt))
+        plt.savefig(figname, bbox_inches='tight')
+def plotConnectivityMatrix_2D(mesh,colorsName='tab20'):
+    colors=mpl.cm.get_cmap(colorsName).colors
+    x,y=mesh['GCOORD'][:,0],mesh['GCOORD'][:,1]
+    el2nod=mesh['EL2NOD']
+    len_x,len_y=x.max()-x.min(),y.max()-y.min()
+    figwidth=12
+    figheight=len_y/len_x*figwidth
+    nnel,nnod=len(el2nod),len(x)
+    nnel1=int(np.sqrt(nnel))
+    nnel2=int(nnel/nnel1)
+    rows=np.min([nnel1,nnel2])
+    cols=int(nnel/rows)
+    width_ratios=[1]*(cols*2+1)
+    width_ratios[cols]=0.001
+    fig,axes=plt.subplots(rows,cols*2+1, sharex=True, sharey=True,figsize=(figwidth*2,figheight),
+    gridspec_kw={"hspace":0.15,'wspace':0.15,"width_ratios":width_ratios})
+    # plot matrix of each element
+    gs=axes[0][0].get_gridspec()
+    ax_global = fig.add_subplot(gs[:, cols+1:])
+    for ax in axes[:,cols:]:
+        for a in ax:
+            a.remove()
+    for i in range(0,rows):
+        for j in range(0,cols):
+            ind_el = j+i*cols
+            element=el2nod[ind_el]
+            ax_local=axes[i][j]
+            for ax in [ax_local,ax_global]:
+                ax.axis('scaled')
+                ax.set_xlim(-0.5,nnod-0.5)
+                ax.set_ylim(-0.5,nnod-0.5)
+                ax.xaxis.set_ticks(np.arange(0,nnod+1,1)-0.5)
+                ax.yaxis.set_ticks(np.arange(0,nnod+1,1)-0.5)
+                ax.grid(axis='both',which='major',clip_on=False)
+                ax.tick_params(axis='both',which='both',color='None')
+                ax.set_xticklabels([])
+                ax.set_yticklabels([])
+                for spine in ax.spines:
+                    ax.spines[spine].set_visible(False)
+                ax.invert_yaxis()
+                ax_local.set_title('Element %d'%(ind_el))
+                for nod_col in element:
+                    y=[nod_col-0.5, nod_col-0.5, nod_col+0.5, nod_col+0.5]
+                    for nod_row in element:
+                        x=[nod_row-0.5, nod_row+0.5, nod_row+0.5, nod_row-0.5]
+                        ax.fill(x,y,color=colors[ind_el%len(colors)],alpha=0.8)
+                if(j<(cols-1)):
+                    ax_local.plot(1.06,0.5,'P',color='k',transform=ax_local.transAxes,clip_on=False)
+                if((i>0) & (j==0)):
+                    ax_local.plot(-0.06,0.5,'P',color='k',transform=ax_local.transAxes,clip_on=False)
+                ax_global.plot([-0.1,-0.15],[0.51,0.51],lw=3,color='k',transform=ax_global.transAxes,clip_on=False)
+                ax_global.plot([-0.1,-0.15],[0.49,0.49],lw=3,color='k',transform=ax_global.transAxes,clip_on=False)
+    # for i,element in enumerate(el2nod):
+    #     ind=np.append(element,element[0])
+    #     axes[0][0].fill(x[ind],y[ind],color=colors[i%len(colors)])
+        # ax.text(x[element].mean(),y[element].mean(),'Element %d'%(i),ha='center',va='center',bbox={'fc':'lightgray','ec':'None','boxstyle':'round'})
+    # axes[0].remove()
+    for fmt in fmt_figs:
+        figname=str('%s/Matrix2D_structured.%s'%(figpath,fmt))
+        plt.savefig(figname, bbox_inches='tight')
 # shape function
 def shapes(s1, s2):
     N1 = 0.25*(1-s1)*(1-s2)
@@ -227,8 +309,14 @@ def Linear2D_Quad(xmin=0,dx=1,ymin=0,dy=1):
     for fmt in fmt_figs:
         figname=str('%s/shapeFunction_2D_Q1.%s'%(figpath,fmt))
         plt.savefig(figname, bbox_inches='tight')
+def connectivity():
+    # mesh=loadMesh2D('mesh/structure.msh')
+    mesh=createMesh_2D()
+    plotMesh_2D(mesh)
+    plotConnectivityMatrix_2D(mesh)
 def main(argv):
     # Linear1D()
-    Linear2D_Quad()
+    # Linear2D_Quad()
+    connectivity()
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
