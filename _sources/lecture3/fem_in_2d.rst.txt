@@ -299,7 +299,7 @@ A shape function has the value 1 at its node, zero at all the others, varies lin
 
     \begin{align}
     \begin{split}
-    \tilde{T(x,y)} = \sum_{j=1}^{n} N_jT_J = N_jT_J = NT \\
+    \tilde{T}(x,y) = \sum_{j=1}^{n} N_jT_J = N_jT_J = NT \\
     NT &= \begin{bmatrix} N_1 & N_2 & N_3 & N_4 \end{bmatrix} \begin{bmatrix} T_1 \\ T_2 \\ T_3 \\ T_4 \end{bmatrix}\\
     N_1 & = 0.25(1-\xi)(1-\eta) \\
     N_2 & = 0.25(1+\xi)(1-\eta) \\
