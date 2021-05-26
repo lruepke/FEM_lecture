@@ -133,6 +133,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../fem_intro.html#id1">Excercise</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../fem_in_2d.html">2-D FEM - Heat diffusion</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -472,7 +473,7 @@ div.rendered_html tbody tr:hover {
 <h1>Symbolic derivation of 1-D FEM stiffness matrix<a class="headerlink" href="#Symbolic-derivation-of-1-D-FEM-stiffness-matrix" title="Permalink to this headline">¶</a></h1>
 <p>First import everything. Note how we now import sympy as sy to make it clear which functions we are using</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -484,7 +485,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Now we define the symbols, compute the shape function, and build the stiffness matrix of a single elelemt.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -494,18 +495,18 @@ div.rendered_html tbody tr:hover {
 <span class="c1">#N1  = 1-(x-xi)/(dx)</span>
 <span class="c1">#N2  = (x-xi)/(dx)</span>
 
-<span class="c1">#E11 = sy.integrate(sy.diff(N1,x)*k*sy.diff(N1,x), (x,0,dx))</span>
+<span class="c1">#E11 = ???</span>
 <span class="c1">#E12 = ???</span>
 <span class="c1">#E21 = ???</span>
 <span class="c1">#E22 = ???</span>
 
-<span class="c1">#Ael = Matrix([[E11, ?], [?, ?]])</span>
+<span class="c1">#Ael = Matrix([[?, ?], [?, ?]])</span>
 <span class="c1">#Ael</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -514,7 +515,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -526,7 +527,7 @@ $\displaystyle \left[\begin{matrix}\frac{k}{dx} &amp; - \frac{k}{dx}\\- \frac{k}
 <p>We there have to use a little trick that is described here: <a class="reference external" href="https://www.reddit.com/r/learnpython/comments/f7uxn6/question_how_to_add_matrix_to_submatrix_in_sympy/">https://www.reddit.com/r/learnpython/comments/f7uxn6/question_how_to_add_matrix_to_submatrix_in_sympy/</a></p>
 <p>We simply identify the upper left index on the left-hand side and use list indexing on the right-hand side when adding the small matrices to the big one.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -540,7 +541,7 @@ $\displaystyle \left[\begin{matrix}\frac{k}{dx} &amp; - \frac{k}{dx}\\- \frac{k}
 
 <span class="c1"># global matrix assemly</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nnod</span><span class="p">,</span> <span class="n">nnod</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">iel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nel</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">iel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
     <span class="n">A</span><span class="p">[</span><span class="n">EL2NOD</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">EL2NOD</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">EL2NOD</span><span class="p">[:,</span><span class="n">iel</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span> <span class="o">+</span> <span class="n">Ael</span>
 
 <span class="n">A</span>
@@ -558,7 +559,7 @@ $\displaystyle \left[\begin{matrix}\frac{k}{dx} &amp; - \frac{k}{dx}\\- \frac{k}
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="output_area docutils container">

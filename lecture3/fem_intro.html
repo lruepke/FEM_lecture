@@ -136,6 +136,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="fem_in_2d.html">2-D FEM - Heat diffusion</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -314,7 +315,7 @@ T_1 \\
 T_2
 \end{bmatrix}=0\end{split}\]</div>
 <p>We get a <span class="math notranslate nohighlight">\(2x2\)</span> so-called stiffness matrix for every element. In the end we will have to sum the contributions from every element into a global stiffness matrix, which will again be <span class="math notranslate nohighlight">\([n x n]\)</span>.  Note: The node numbering in <a class="reference internal" href="#equation-eq-fem-1d-single-element">equation (95)</a> is local! I.e. node number 1 is the first node of an element k and has the global node number k, while node number 2 is the second node of the element and has the global node number k+1!</p>
-<p>We have two linear shape functions for the points i and i+1 of each element:</p>
+<p>We have two linear shape functions for the points i and i+1 of each element (see <a class="reference internal" href="#fig-shapefunc-1d-linear"><span class="std std-numref">Fig. 4</span></a>):</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-shape-elem">
 <span class="eqno">(96)<a class="headerlink" href="#equation-eq-fem-1d-shape-elem" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
@@ -322,6 +323,9 @@ N_i(x) = 1 - \frac{x-x_i}{x_{i+1} - x_i} &amp;= 1 - \frac{x-x_i}{\Delta x}\\
 N_{i+1}(x) = \frac{x-x_i}{x_{i+1} - x_i} &amp;= \frac{x-x_i}{\Delta x}\\
 \end{split}
 \end{align}\end{split}\]</div>
+<div class="figure align-center" id="fig-shapefunc-1d-linear">
+<img alt="../_images/shapeFunction_Linear_1D.svg" src="../_images/shapeFunction_Linear_1D.svg" /><p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Example of 1D linear finite element shape functions</span><a class="headerlink" href="#fig-shapefunc-1d-linear" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 <div class="section" id="excercise">
 <h2>Excercise<a class="headerlink" href="#excercise" title="Permalink to this headline">¶</a></h2>

@@ -47,7 +47,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="References" href="../../refs.html" />
+    <link rel="next" title="2-D FEM - Heat diffusion" href="../fem_in_2d.html" />
     <link rel="prev" title="Symbolic derivation of 1-D FEM stiffness matrix" href="fem_1d_symbolic.html" /> 
 </head>
 
@@ -131,6 +131,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../fem_in_2d.html">2-D FEM - Heat diffusion</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -469,7 +470,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Numerical-1-D-FEM-solution-of-the-heat-diffusion-equation">
 <h1>Numerical 1-D FEM solution of the heat diffusion equation<a class="headerlink" href="#Numerical-1-D-FEM-solution-of-the-heat-diffusion-equation" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -488,13 +489,13 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>First we define some numerical constants and define the problem</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1">#constants</span>
 <span class="n">lx</span>          <span class="o">=</span> <span class="mi">10</span>           <span class="c1">#width</span>
-<span class="n">nnod</span>        <span class="o">=</span> <span class="mi">7</span>            <span class="c1">#number of nodes</span>
+<span class="n">nnod</span>        <span class="o">=</span> <span class="mi">21</span>            <span class="c1">#number of nodes</span>
 <span class="n">nnodel</span>      <span class="o">=</span> <span class="mi">2</span>            <span class="c1">#nodes per element</span>
 <span class="n">k</span>           <span class="o">=</span> <span class="mi">1</span>            <span class="c1">#conductivity</span>
 <span class="n">Q</span>           <span class="o">=</span> <span class="mi">1</span>            <span class="c1">#source term</span>
@@ -508,7 +509,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Now we make our FEM mesh and element connectivity</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -519,7 +520,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Now we spell out our analytically-derived element stiffness matrix (see previous sections):</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -529,7 +530,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -538,8 +539,8 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <p>Now we need to loop over all elements and assemble the global stiffness matrix</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -561,12 +562,71 @@ div.rendered_html tbody tr:hover {
 <span class="n">K</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">K</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">A_all</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">((</span><span class="n">K</span><span class="p">,(</span><span class="n">I</span><span class="p">,</span><span class="n">J</span><span class="p">)),</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nnod</span><span class="p">,</span><span class="n">nnod</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A_all</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+  (0, 0)        2.0
+  (0, 1)        -2.0
+  (1, 0)        -2.0
+  (1, 1)        4.0
+  (1, 2)        -2.0
+  (2, 1)        -2.0
+  (2, 2)        4.0
+  (2, 3)        -2.0
+  (3, 2)        -2.0
+  (3, 3)        4.0
+  (3, 4)        -2.0
+  (4, 3)        -2.0
+  (4, 4)        4.0
+  (4, 5)        -2.0
+  (5, 4)        -2.0
+  (5, 5)        4.0
+  (5, 6)        -2.0
+  (6, 5)        -2.0
+  (6, 6)        4.0
+  (6, 7)        -2.0
+  (7, 6)        -2.0
+  (7, 7)        4.0
+  (7, 8)        -2.0
+  (8, 7)        -2.0
+  (8, 8)        4.0
+  :     :
+  (12, 12)      4.0
+  (12, 13)      -2.0
+  (13, 12)      -2.0
+  (13, 13)      4.0
+  (13, 14)      -2.0
+  (14, 13)      -2.0
+  (14, 14)      4.0
+  (14, 15)      -2.0
+  (15, 14)      -2.0
+  (15, 15)      4.0
+  (15, 16)      -2.0
+  (16, 15)      -2.0
+  (16, 16)      4.0
+  (16, 17)      -2.0
+  (17, 16)      -2.0
+  (17, 17)      4.0
+  (17, 18)      -2.0
+  (18, 17)      -2.0
+  (18, 18)      4.0
+  (18, 19)      -2.0
+  (19, 18)      -2.0
+  (19, 19)      4.0
+  (19, 20)      -2.0
+  (20, 19)      -2.0
+  (20, 20)      2.0
+</pre></div></div>
+</div>
 <p>Now we apply the boundary conditions in the usual way and solve using a sparse solver!</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -580,8 +640,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -589,8 +649,66 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+  (0, 0)        1.0
+  (0, 1)        0.0
+  (1, 0)        -2.0
+  (1, 1)        4.0
+  (1, 2)        -2.0
+  (2, 1)        -2.0
+  (2, 2)        4.0
+  (2, 3)        -2.0
+  (3, 2)        -2.0
+  (3, 3)        4.0
+  (3, 4)        -2.0
+  (4, 3)        -2.0
+  (4, 4)        4.0
+  (4, 5)        -2.0
+  (5, 4)        -2.0
+  (5, 5)        4.0
+  (5, 6)        -2.0
+  (6, 5)        -2.0
+  (6, 6)        4.0
+  (6, 7)        -2.0
+  (7, 6)        -2.0
+  (7, 7)        4.0
+  (7, 8)        -2.0
+  (8, 7)        -2.0
+  (8, 8)        4.0
+  :     :
+  (12, 12)      4.0
+  (12, 13)      -2.0
+  (13, 12)      -2.0
+  (13, 13)      4.0
+  (13, 14)      -2.0
+  (14, 13)      -2.0
+  (14, 14)      4.0
+  (14, 15)      -2.0
+  (15, 14)      -2.0
+  (15, 15)      4.0
+  (15, 16)      -2.0
+  (16, 15)      -2.0
+  (16, 16)      4.0
+  (16, 17)      -2.0
+  (17, 16)      -2.0
+  (17, 17)      4.0
+  (17, 18)      -2.0
+  (18, 17)      -2.0
+  (18, 18)      4.0
+  (18, 19)      -2.0
+  (19, 18)      -2.0
+  (19, 19)      4.0
+  (19, 20)      -2.0
+  (20, 19)      0.0
+  (20, 20)      1.0
+</pre></div></div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -619,12 +737,12 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7fcfc28c0490&gt;
+&lt;matplotlib.legend.Legend at 0x7fcfd01745d0&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -678,7 +796,7 @@ div.rendered_html tbody tr:hover {
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../../refs.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../fem_in_2d.html" class="btn btn-neutral float-right" title="2-D FEM - Heat diffusion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="fem_1d_symbolic.html" class="btn btn-neutral float-left" title="Symbolic derivation of 1-D FEM stiffness matrix" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

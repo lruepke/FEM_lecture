@@ -1,0 +1,384 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>2-D FEM - Heat diffusion &mdash; Finite Element Modeling in Geodynamics  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/tabs.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2-D FEM coordinate and connectivity matrices" href="jupyter/2d_fem_connectivity.html" />
+    <link rel="prev" title="Numerical 1-D FEM solution of the heat diffusion equation" href="jupyter/fem_1d_numerical.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Finite Element Modeling in Geodynamics
+          
+
+          
+            
+            <img src="../_static/htf_picto2.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Course information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general-info/course-details.html">Course details</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 1</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/overview.html">Overview: The Finite Differeces Method (FDM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/installation.html">Installation guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/fdm_intro.html">Introduction Finite Differences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/example_1.html">Example 1: Cooling dike</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/example_2.html">Example 2: Cooling dike - implicit version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/example_3.html">Example 3: Periodic variations in seafloor temperature</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 2</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/overview.html">Overview: Method of Weighted Residuals (MWR)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/mwr_intro.html">Introduction Method of Weighted Residuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/mwr_examples.html">MWR solutions of the steady advection-diffusion equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/excercises.html">Excercises</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 3</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview: Finite Elements!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fem_intro.html">Introduction Finite Element Method</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2-D FEM - Heat diffusion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#derivation-of-the-weak-form">Derivation of the weak form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#d-fem-connectivity">2-D FEM: connectivity</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#excercise">Excercise</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="jupyter/2d_fem_connectivity.html">2-D FEM coordinate and connectivity matrices</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../refs.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">Getting help</span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="mailto:lruepke@geomar.de"><i class="fa fa-envelope fa-fw"></i> Prof. Lars Ruepke</a></li>
+            
+                <li class="toctree-l1"><a href="mailto:zguo@geomar.de"><i class="fa fa-envelope fa-fw"></i> Dr. Zhikui Guo</a></li>
+            
+                <li class="toctree-l1"><a href="https://lruepke.github.io/FEM_lecture/"><i class="fa fa-home fa-fw"></i> Public site</a></li>
+            
+                <li class="toctree-l1"><a href="https://lms.uni-kiel.de/url/RepositoryEntry/3664576582"><i class="fa fa-home fa-fw"></i> University site</a></li>
+            
+        </ul>
+    
+
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Finite Element Modeling in Geodynamics</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>2-D FEM - Heat diffusion</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/lruepke/HTF_lecture/blob/main//source/lecture3/fem_in_2d.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="d-fem-heat-diffusion">
+<h1>2-D FEM - Heat diffusion<a class="headerlink" href="#d-fem-heat-diffusion" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="derivation-of-the-weak-form">
+<h2>Derivation of the weak form<a class="headerlink" href="#derivation-of-the-weak-form" title="Permalink to this headline">¶</a></h2>
+<p>Let’s move on to 2D! The strong form looks like this, we have just added the second dimension.</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-2d-strong">
+<span class="eqno">(102)<a class="headerlink" href="#equation-eq-fem-2d-strong" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T_{ex}}{\partial y} =0.\]</div>
+<p>We now use 2-D shape functions in our approximate solution:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-aprox-funcion-2d">
+<span class="eqno">(103)<a class="headerlink" href="#equation-eq-fem-aprox-funcion-2d" title="Permalink to this equation">¶</a></span>\[T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j(x,y) T_j = N_j T_J,\]</div>
+<p>where the shape functions <span class="math notranslate nohighlight">\(N_j(x,y)\)</span> are now function of both spatial dimensions. An example of a 2-D FEM mesh and associated shape functions are shown in Fi. X. Note that the structured quad mesh and the bi-linear shape functions are just one possibility of using the FEM in 2-D. There are many other possibility, like unstructured triangle meshes and higher order shape functions.</p>
+<div class="figure align-center" id="fig-shapefunc-2d-linear">
+<img alt="../_images/shapeFunction_2D_Q1.svg" src="../_images/shapeFunction_2D_Q1.svg" /><p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Example of 2D linear finite element shape functions</span><a class="headerlink" href="#fig-shapefunc-2d-linear" title="Permalink to this image">¶</a></p>
+</div>
+<p>We proceed by substituting <a class="reference internal" href="#equation-eq-fem-aprox-funcion-2d">equation (103)</a> into <a class="reference internal" href="#equation-eq-fem-2d-strong">equation (102)</a> and by using the Galerkin method. This results in:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-2d-weak">
+<span class="eqno">(104)<a class="headerlink" href="#equation-eq-fem-2d-weak" title="Permalink to this equation">¶</a></span>\[\int_\Omega N_i \frac{\partial}{\partial x}k\frac{\partial N_j T_j }{\partial x} + N_i \frac{\partial}{\partial y}k\frac{\partial N_j T_j }{\partial y} d\Omega=0\ \ \ \ \ \ \ i=1,2,...,n\]</div>
+<p>We do the integration by parts and obtain:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-2d-weak-2">
+<span class="eqno">(105)<a class="headerlink" href="#equation-eq-fem-2d-weak-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
+-\int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j T_j }{\partial y} d\Omega \right ) &amp;+ \oint_{\Gamma} \left ( N_ik\frac{\partial N_j T_j }{\partial x}  +  N_ik\frac{\partial N_j T_j }{\partial y} \right ) d\Gamma    =0\ \ \ \ \ \ \ i=1,2,...,n\\
+\Rightarrow \\
++\int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y} T_j d\Omega \right ) &amp;+ \oint_{\Gamma} N_i \vec{q}\vec{n}  d\Gamma    =0\ \ \ \ \ \ \ i=1,2,...,n\\
+\end{split}
+\end{align}\end{split}\]</div>
+<p>Note how the signs flipped during integration by parts and by substituting <span class="math notranslate nohighlight">\(\vec{q}=-k\nabla T\)</span>. The line integral has a clear physical meaning now, it’s the heat flow in and out of the modeling domain.</p>
+<p>We go on and split the modeling domain into finite elements and the first integral turns into a sum over those elements. The line integral is again obmitted for the moment.</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-2d-weak-3">
+<span class="eqno">(106)<a class="headerlink" href="#equation-eq-fem-2d-weak-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
++\int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y} T_j \right ) d\Omega   &amp;=0\ \ \ \ \ \ \ i=1,2,...,n\\
+\Rightarrow \\
++\int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y} T_j \right ) d\Omega   &amp;= \sum_{Elements} \int_{\Omega_{e}} \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y}  \right ) T_j d\Omega_{e} =0\ \ \ \ \ \ \ i=1,2,...,n\\
+\end{split}
+\end{align}\end{split}\]</div>
+</div>
+<div class="section" id="d-fem-connectivity">
+<h2>2-D FEM: connectivity<a class="headerlink" href="#d-fem-connectivity" title="Permalink to this headline">¶</a></h2>
+<p>The basic concept of the finite element method is to solve/assemble the system of equations, for e.g. heat diffusion, on each element and add all element contributions together to obtain the global matrix equation.
+Every element has an element number and a certain number of nodes. We will initially use quadratic elements with four nodes. For the connectivity between elements we will need two matrices: a CGCOORD matrix that has the size [2,nnod], where 2 is the number of dimensions (x,y) and nnod is the total number of nodes in the mesh, and ELEM2NODE, which has the size [nel, nnodel] (nel is the total number of elements and nnodel is the number of nodes per element, i.e. 4). We had already used this matrices in 1-D but now their meaning becomes clear.</p>
+<p>We will use a connectivity as shown in Fg. X. Element 1 has, for example, the global nodes 1, 2, 3, 4. It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribuation of all elements is added/assembled into the global stiffness matrix and the global force vector.</p>
+<div class="section" id="excercise">
+<h3>Excercise<a class="headerlink" href="#excercise" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Create the global coordinate vector GCOORD. Assume that the length of the box in x direction (lx) is 1 ([0,1]) and the length of box is y direction (ly) is also 1 ([0, 1]). The number of nodes in x is 4 (nx) and the number of nodes in y is 4 (ny).</p></li>
+<li><p>Create the connectivity matrix ELEM2NODE. The element numbering should look like this:</p></li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<ul class="simple">
+<li><p>Hint loop over all nodes and create their respective x and y coordinates. The node numbering should be like in eqn. (20)</p></li>
+<li><p>Functions like ceil or floor might help you with the connectivity matrix; it might also help to first compute the column we are in and then compute the index of the lower left node and move on from there.</p></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/2d_fem_connectivity.html">2-D FEM coordinate and connectivity matrices</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="jupyter/2d_fem_connectivity.html" class="btn btn-neutral float-right" title="2-D FEM coordinate and connectivity matrices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="jupyter/fem_1d_numerical.html" class="btn btn-neutral float-left" title="Numerical 1-D FEM solution of the heat diffusion equation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Lars Ruepke and Zhikui Guo.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+      
+        <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+          <span class="rst-current-version" data-toggle="rst-current-version">
+            <span class="fa fa-book"> Finite Element Modeling in Geodynamics</span>
+            v: latest
+            <span class="fa fa-caret-down"></span>
+          </span>
+          <div class="rst-other-versions">
+            <dl>
+              
+                
+                <dd><a href="https://lruepke.github.io/FEM_lecture/downloads/LectureNote.pdf">latest</a></dd>
+                
+                <dd><a href="#/LectureNote.pdf">2.0</a></dd>
+                
+              
+          </div>
+        </div>
+      
+    
+
+</body>
+</html>
