@@ -133,6 +133,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#numerical-integration">Numerical integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shape-functions">Shape functions</a></li>
 </ul>
 </li>
 </ul>
@@ -294,7 +295,7 @@
 <h2>2-D FEM: connectivity<a class="headerlink" href="#d-fem-connectivity" title="Permalink to this headline">¶</a></h2>
 <p>The basic concept of the finite element method is to solve/assemble the system of equations, for e.g. heat diffusion, on each element and add all element contributions together to obtain the global matrix equation.
 Every element has an element number and a certain number of nodes. We will initially use quadratic elements with four nodes. For the connectivity between elements we will need two matrices: a CGCOORD matrix that has the size [nnod,2], where 2 is the number of dimensions (x,y) and nnod is the total number of nodes in the mesh, and ELEM2NODE, which has the size [nel, nnodel] (nel is the total number of elements and nnodel is the number of nodes per element, i.e. 4). We had already used this matrices in 1-D but now their meaning becomes clear.</p>
-<p>We will use a connectivity as shown in Fg. X. Element 1 has, for example, the global nodes 1, 2, 3, 4. It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribuation of all elements is added/assembled into the global stiffness matrix and the global force vector.</p>
+<p>We will use a connectivity as shown in Fg. X. Element 0 has, for example, the global nodes 0, 1, 6, 5. Note that the local element numbering is always counterclockwise (in this class). It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribution of all elements is added/assembled into the global stiffness matrix and the global force vector.</p>
 <div class="section" id="excercise">
 <h3>Excercise<a class="headerlink" href="#excercise" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
@@ -399,6 +400,27 @@ J
 <div class="math notranslate nohighlight" id="equation-eq-num-int-jacobian-2">
 <span class="eqno">(117)<a class="headerlink" href="#equation-eq-num-int-jacobian-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\int_{\Omega_{e}} \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y}  \right ) d\Omega_{e} T_j \approx \\ \left [ \sum_{ip} \left ( \frac{N_i(\xi_{ip},\eta_{ip})}{\partial x} k \frac{N_j(\xi_{ip},\eta_{ip})}{\partial x} + \frac{N_i(\xi_{ip},\eta_{ip})}{\partial y} k \frac{N_j(\xi_{ip},\eta_{ip})}{\partial y}
 \right ) W_{ip} det(J) \right ] T_j\end{split}\]</div>
+<p>It should be noted that the transformation of a quadrilateral element of a mesh to a master element <span class="math notranslate nohighlight">\(\hat{\Omega}\)</span> is solely for the purpose of numerically evaluating the integrals in <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (108)</a> . No transformation of the physical domain or elements is involved in the finite element analysis.</p>
+</div>
+<div class="section" id="shape-functions">
+<h2>Shape functions<a class="headerlink" href="#shape-functions" title="Permalink to this headline">¶</a></h2>
+<p>By now we have learned how to solve integrals of shape functions and transform shape functions between different coordinate systems. It is really time that we learn what these shape functions are! We will use four-node rectangular element with bilinear shape functions. Remember that these shape functions look like this:</p>
+<div class="figure align-center" id="fig-shapefunc-2d-linear-1">
+<img alt="../_images/shapeFunction_2D_Q1.svg" src="../_images/shapeFunction_2D_Q1.svg" /><p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Shape of 2-D bi-linear element shape functions</span><a class="headerlink" href="#fig-shapefunc-2d-linear-1" title="Permalink to this image">¶</a></p>
+</div>
+<p>A shape function has the value 1 at its node, zero at all the others, varies linearly between them and the sum of all shape functions is always 1. A simple way to think about this is in 1D (remember the last script)! With these conventions we can now spell out a general interpolation scheme using shape functions:</p>
+<div class="math notranslate nohighlight" id="equation-eq-shape-functions">
+<span class="eqno">(118)<a class="headerlink" href="#equation-eq-shape-functions" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
+\tilde{T(x,y)} = \sum_{j=1}^{n} N_jT_J = N_jT_J = NT \\
+NT &amp;= \begin{bmatrix} N_1 &amp; N_2 &amp; N_3 &amp; N_4 \end{bmatrix} \begin{bmatrix} T_1 \\ T_2 \\ T_3 \\ T_4 \end{bmatrix}\\
+N_1 &amp; = 0.25(1-\xi)(1-\eta) \\
+N_2 &amp; = 0.25(1+\xi)(1-\eta) \\
+N_3 &amp; = 0.25(1+\xi)(1+\eta) \\
+N_4 &amp; = 0.25(1-\xi)(1+\eta) \\
+\end{split}
+\end{align}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(T_{j=1..4}\)</span> are the four nodal temperatures, <span class="math notranslate nohighlight">\(\tilde{T}\)</span> is the temperature at an (integration) point inside the element, <span class="math notranslate nohighlight">\(N\)</span> are the four shape functions, and <span class="math notranslate nohighlight">\((\xi,\eta)\)</span> are the two local coordinates between -1 and 1.</p>
 </div>
 </div>
 
