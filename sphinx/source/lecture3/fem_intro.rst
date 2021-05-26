@@ -64,7 +64,7 @@ Applying this to :eq:`eq:partial_int` results in the **weak form** of our govern
     \Rightarrow \\
     -\int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx + \oint_{\Gamma} N_ik\frac{\partial N_j T_j }{\partial x}d\Gamma=0\ \ \ \ \ \ \ i=1,2,...,n\\
     \Rightarrow \\
-    \int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx - \oint_{\Gamma}\vec{q}\vec{n}d\Gamma=0\ \ \ \ \ \ \ i=1,2,...,n\\
+    \int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx + \oint_{\Gamma}\vec{q}\vec{n}d\Gamma=0\ \ \ \ \ \ \ i=1,2,...,n\\
     \end{split}
     \end{align}
 
