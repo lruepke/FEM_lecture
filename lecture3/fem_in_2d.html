@@ -292,7 +292,7 @@
 <div class="section" id="d-fem-connectivity">
 <h2>2-D FEM: connectivity<a class="headerlink" href="#d-fem-connectivity" title="Permalink to this headline">¶</a></h2>
 <p>The basic concept of the finite element method is to solve/assemble the system of equations, for e.g. heat diffusion, on each element and add all element contributions together to obtain the global matrix equation.
-Every element has an element number and a certain number of nodes. We will initially use quadratic elements with four nodes. For the connectivity between elements we will need two matrices: a CGCOORD matrix that has the size [2,nnod], where 2 is the number of dimensions (x,y) and nnod is the total number of nodes in the mesh, and ELEM2NODE, which has the size [nel, nnodel] (nel is the total number of elements and nnodel is the number of nodes per element, i.e. 4). We had already used this matrices in 1-D but now their meaning becomes clear.</p>
+Every element has an element number and a certain number of nodes. We will initially use quadratic elements with four nodes. For the connectivity between elements we will need two matrices: a CGCOORD matrix that has the size [nnod,2], where 2 is the number of dimensions (x,y) and nnod is the total number of nodes in the mesh, and ELEM2NODE, which has the size [nel, nnodel] (nel is the total number of elements and nnodel is the number of nodes per element, i.e. 4). We had already used this matrices in 1-D but now their meaning becomes clear.</p>
 <p>We will use a connectivity as shown in Fg. X. Element 1 has, for example, the global nodes 1, 2, 3, 4. It therefore contributes to the calculations of those four temperatures. The element stiffness matrix will now be [4,4]. The contribuation of all elements is added/assembled into the global stiffness matrix and the global force vector.</p>
 <div class="section" id="excercise">
 <h3>Excercise<a class="headerlink" href="#excercise" title="Permalink to this headline">¶</a></h3>
@@ -306,6 +306,14 @@ Every element has an element number and a certain number of nodes. We will initi
 <li><p>Hint loop over all nodes and create their respective x and y coordinates. The node numbering should be like in Fig. X (see jupyter notebook for a discussion).</p></li>
 <li><p>Functions like ceil or floor might help you with the connectivity matrix; it might also help to first compute the row we are in and then compute the index of the lower left node and move on from there.</p></li>
 </ul>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>We use a function called tabulate to format the output in the notebooks. You will probably have to install it into your virtual python environment.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate py37_fem_class
+conda install tabulate
+</pre></div>
+</div>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
