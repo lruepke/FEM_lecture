@@ -13,7 +13,7 @@ This is called the strong form of the governing equation and the function :math:
 .. math::
     :label: eq:fem_aprox_funcion
 
-    T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j T_j = N_j T_J. 
+    T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j T_j = N_j T_j. 
 
 In FEM we divide our computational domain into simple geometeric entities, the finite elements, and those finite elements have grid points. For example, in 2-D we can divide the domain in triangles with three nodes and in 1-D in simple lines with two nodes each. Think of our simple FD descritization, if we were to use the same descritization in FEM, the intervals between grid points would be our finite elements.
 
@@ -190,7 +190,7 @@ Let's put everything together and write our first finite element code! We will d
 .. math::
     :label: eq:fem_1d_strong_ex
 
-    \frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}-Q=0.
+    \frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}+Q=0.
     
 The weak form will then look like this (signs get flipped during partial integration):
 
