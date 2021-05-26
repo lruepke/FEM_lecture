@@ -65,12 +65,12 @@ def Linear1D():
         colors_node=[colors[el[0]%len(colors)], colors[el[1]%len(colors)]]
         # element
         ax.plot(x[el],x[el]*0-0.1,lw=4,clip_on=False,color='k')
-        ax.text(x[el].mean(),-0.15,'Element %d'%(i+1),ha='center',va='top')
+        ax.text(x[el].mean(),-0.15,'Element %d'%(i),ha='center',va='top')
         # node
         ax.scatter(x[el],x[el]*0-0.1,marker='o',fc=colors_node,ec='w',s=100,clip_on=False,zorder=10)
-        ax.text(x[el][0],-0.1, '%d'%(el[0]+1),ha='center',va='center',zorder=11,fontsize=9,color='w')
+        ax.text(x[el][0],-0.1, '%d'%(el[0]),ha='center',va='center',zorder=11,fontsize=9,color='w')
         if(i==(len(el2nod)-1)): 
-            ax.text(x[el][1],-0.1, '%d'%(el[1]+1),ha='center',va='center',zorder=11,fontsize=9,color='w')
+            ax.text(x[el][1],-0.1, '%d'%(el[1]),ha='center',va='center',zorder=11,fontsize=9,color='w')
         # calculate shape function value of each node
         tmp_x=np.linspace(x[el][0],x[el][1],2)
         Ni = Ni_x(x[el][0], dx, tmp_x)
@@ -201,27 +201,28 @@ def Linear2D_Quad(xmin=0,dx=1,ymin=0,dy=1):
     # write2VTU('N2.vtu',xx,yy,N2)
     # write2VTU('N3.vtu',xx,yy,N3)
     # write2VTU('N4.vtu',xx,yy,N4)
-
+    sign_shapefunc=[['-','-'],['+','-'],['+','+'],['-','+']]
+    formula_shapefunc = lambda signs : '$\\frac{1}{4}(1%s\\xi)(1%s\\eta)$'%(signs[0],signs[1])
     fig = plt.figure(figsize=(16,8))
     for i, N in enumerate([N1, N2, N3, N4]):
-        ax = fig.add_subplot(1,4,i+1, projection='3d')
+        ax = fig.add_subplot(1,4,i+1, projection='3d',facecolor='None')
         ls = LightSource(270, 45)
         rgb = ls.shade(N, cmap=cm.plasma, vert_exag=0.1, blend_mode='soft')
         CS=ax.plot_surface(xx, yy, N, rstride=1, cstride=1, facecolors=rgb,
         linewidth=0, antialiased=True, shade=False)
-        # ax.set_xlabel('x axis',labelpad=0)
-        # ax.set_ylabel('y axis',labelpad=-5)
+        ax.set_xlabel('$\\xi$',labelpad=0)
+        ax.set_ylabel('$\\eta$',labelpad=0)
         ax.set_zlabel('Shape function',labelpad=-3)
         ax.zaxis.set_minor_locator(MultipleLocator(0.1))
         ax.set_xlim(-1,1)
         ax.set_ylim(-1,1)
         ax.set_zlim(0,1)
-        ax.xaxis.set_ticks([])
-        ax.yaxis.set_ticks([])
+        # ax.xaxis.set_ticks([])
+        # ax.yaxis.set_ticks([])
         ax.zaxis.set_ticks([0,1])
-        ax.set_title('N$_{\mathregular{%d}}$'%(i+1))
+        ax.set_title('N$_{\mathregular{%d}}=$%s'%(i,formula_shapefunc(sign_shapefunc[i])))
         # 重新自定义坐标轴属性
-        niceAxis(ax,fill_pane=False,label3D=True,fs_label=0.08, scaled=False)
+        niceAxis(ax,fill_pane=False,label3D=True,fs_label=0.1, scaled=False)
     plt.subplots_adjust(wspace=0)
     for fmt in fmt_figs:
         figname=str('%s/shapeFunction_2D_Q1.%s'%(figpath,fmt))

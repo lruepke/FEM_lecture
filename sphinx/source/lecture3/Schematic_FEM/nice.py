@@ -60,10 +60,10 @@ def niceAxis(ax, lw_major=0.5,lw_minor=0.25,color_major="0.50",color_minor="0.75
     #         text3d(ax, (tick, ymin-length*1.2*minLen_axis, zmin), label.get_text(),size=fs_label*minLen_axis, fc=label.get_color(), ec="None", ha='center',va='top', zdir='y')
     #         label.set_alpha(0)
     #         ax.plot([tick,tick],[ymin,ymin-length*minLen_axis],[zmin,zmin],lw=linewidth,color=label.get_color())
-    # if(label3D):
+    if(label3D):
     #     ax.plot([xmin,xmax],[ymin,ymin],[zmin,zmin],lw=linewidth,color=label.get_color())
-    #     text3d(ax, ((xmin+xmax)/2, ymin-length*offset_axislabel*minLen_axis, zmin), ax.get_xlabel(),
-    #            size=fs_label*minLen_axis, fc=label.get_color(), ec="None",ha='center',va='top')
+        text3d(ax, ((xmin+xmax)/2, ymin-length*offset_axislabel*minLen_axis, zmin), ax.get_xlabel(),
+               size=fs_label*minLen_axis, fc='k', ec="None",ha='center',va='top')
     # # y轴
     # tickmin,tickmax,tickaxis,axislim=ymin,ymax,ax.yaxis,ax.get_ylim()
     # tickpos1,tickpos2=[xmin,xmin,xmax],[zmax,zmin,zmin]
@@ -79,10 +79,10 @@ def niceAxis(ax, lw_major=0.5,lw_minor=0.25,color_major="0.50",color_minor="0.75
     #                fc=label.get_color(), ec="None",ha='center',va='top',angle=90)
     #         label.set_alpha(0)
     #         ax.plot([xmax,xmax+length*minLen_axis],[tick,tick],[zmin,zmin],lw=linewidth,color=label.get_color())
-    # if(label3D):
-    #     ax.plot([xmax,xmax],[ymin,ymax],[zmin,zmin],lw=linewidth,color=label.get_color())
-    #     text3d(ax, (xmax+length*offset_axislabel*minLen_axis,(ymin+ymax)/2, zmin), ax.get_ylabel(),
-    #            size=fs_label*minLen_axis, fc=label.get_color(), ec="None",ha='center',va='top',angle=90)
+    if(label3D):
+        # ax.plot([xmax,xmax],[ymin,ymax],[zmin,zmin],lw=linewidth,color=label.get_color())
+        text3d(ax, (xmax+length*offset_axislabel*minLen_axis,(ymin+ymax)/2, zmin), ax.get_ylabel(),
+               size=fs_label*minLen_axis, fc='k', ec="None",ha='center',va='top',angle=90)
         
     # z轴
     tickmin,tickmax,tickaxis,axislim=zmin,zmax,ax.zaxis,ax.get_zlim()
