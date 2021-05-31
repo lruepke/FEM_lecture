@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "a3a7b30d",
+   "id": "c8b10d92",
    "metadata": {},
    "source": [
     "# 2-D FEM shape functions\n",
@@ -12,8 +12,8 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
-   "id": "e4c85655",
+   "execution_count": 31,
+   "id": "110e493a",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -22,8 +22,8 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
-   "id": "5926b37e",
+   "execution_count": 32,
+   "id": "0f5a00f3",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -41,14 +41,16 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 12,
-   "id": "7d38bfb0",
+   "execution_count": 33,
+   "id": "1b91bace",
    "metadata": {},
    "outputs": [],
    "source": [
     "#hide\n",
     "\n",
     "def shapes():\n",
+    "    \n",
+    "    #shape functions\n",
     "    \n",
     "    N1 = 0.25*(1-xi)*(1-eta)\n",
     "    N2 = 0.25*(1+xi)*(1-eta)\n",
@@ -57,13 +59,31 @@
     "\n",
     "    N = np.array([N1, N2, N3, N4])\n",
     "    \n",
-    "    return N"
+    "    # and their derivatives\n",
+    "    dNds = np.zeros((2,4))\n",
+    " \n",
+    "    dNds[0,0]   =  0.25*(-1  + eta) #derivative with xi\n",
+    "    dNds[1,0]   =  0.25*(eta  -  1) #derivative with eta\n",
+    "\n",
+    "    #derivatives of second shape function with local coordinates\n",
+    "    dNds[0,1]   =  0.25*(1   - eta)\n",
+    "    dNds[1,1]   =  0.25*(-xi -  1)\n",
+    "\n",
+    "    #derivatives of third shape function with local coordinates\n",
+    "    dNds[0,2]   =  0.25*(eta  +  1)\n",
+    "    dNds[1,2]   =  0.25*(xi  +  1)\n",
+    "\n",
+    "    #derivatives of fourth shape function with local coordinates\n",
+    "    dNds[0,3]   =  0.25*(-eta -  1)\n",
+    "    dNds[1,3]   =  0.25*(1   - xi)\n",
+    "    \n",
+    "    return N, dNds"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 18,
-   "id": "95a85515",
+   "execution_count": 38,
+   "id": "f296ffb8",
    "metadata": {},
    "outputs": [
     {
@@ -72,7 +92,8 @@
      "text": [
       "[[-1  1  1 -1]\n",
       " [-1 -1  1  1]]\n",
-      "[0.25 0.25 0.25 0.25]\n",
+      "[0 0 1 1]\n",
+      "0.5\n",
       "0.5\n"
      ]
     }
@@ -80,26 +101,26 @@
    "source": [
     "# pseudo gcoord\n",
     "GCOORD = np.array([[-1, 1, 1, -1],[-1, -1, 1, 1]])\n",
-    "\n",
     "print(GCOORD)\n",
     "# pseudo nodal temperatures\n",
     "T = np.array([0, 0, 1, 1])\n",
-    "\n",
+    "print(T)\n",
     "# interpolatin point\n",
     "xi = 0\n",
     "eta = 0\n",
     "\n",
     "# shape functions at integration point\n",
-    "N = shapes()\n",
+    "N, dNds = shapes()\n",
     "\n",
     "#interpolation\n",
-    "print(sum(N*T))"
+    "print(sum(N*T))\n",
+    "print(sum(dNds[1,:]*T))"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "01df1c3c",
+   "id": "d55c137c",
    "metadata": {},
    "outputs": [],
    "source": []
