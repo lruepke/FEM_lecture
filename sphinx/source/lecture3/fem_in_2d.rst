@@ -315,8 +315,8 @@ We have now all the information we need to solve the integral in :eq:`eq:fem_2d_
 
 It should be noted that the transformation of a quadrilateral element of a mesh to a master element :math:`\hat{\Omega}` is solely for the purpose of numerically evaluating the integrals in :eq:`eq:fem_2d_weak_num_int` . No transformation of the physical domain or elements is involved in the finite element analysis.
 
-Shape functions
-----------------
+2-D Shape functions
+-------------------
 
 By now we have learned how to solve integrals of shape functions and transform shape functions between different coordinate systems. It is really time that we learn what these shape functions are! We will use four-node rectangular element with bilinear shape functions. Remember that these shape functions look like this:
 
@@ -354,3 +354,340 @@ Let’s try this interpolation scheme out on a single element with coordinates -
     :maxdepth: 2
 
     jupyter/FEM_2d_shapes_excercise.ipynb
+
+2-D FEM solution of steady-state diffusion
+------------------------------------------
+Now we have assembled all the pieces that we need to make a finite element model and solve it. :numref:`lst:2d-fem-ss` shows the complete python code for our first solver.
+
+Python code
+^^^^^^^^^^^
+
+.. code-block:: python 
+    :linenos:
+    :emphasize-lines: 60,65-85,103-110
+    :name: lst:2d-fem-ss
+    :caption: 2-D FEM diffusion, steady-state.
+
+    import numpy as np
+    from tabulate import tabulate
+    from scipy.sparse.linalg import spsolve
+    from scipy.sparse import csr_matrix
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    from shapes import shapes
+
+    #geometry
+    lx          = 1
+    ly          = 1
+    nx          = 51
+    ny          = 51
+    nnodel      = 4
+    dx          = lx/(nx-1)
+    dy          = ly/(ny-1)
+    w_i         = 0.2 # width inclusion
+    h_i         = 0.2 # heigths inclusion
+
+    # model parameters
+    k1          = 1
+    k2          = 0.01
+    Ttop        = 0
+    Tbot        = 1
+    
+    nex         = nx-1
+    ney         = ny-1
+    nnod        = nx*ny
+    nel         = nex*ney
+    GCOORD      = np.zeros((nnod,2))
+    T           = np.zeros(nnod) #initial T, not strictly needed
+
+    # global coordinates
+    id = 0
+    for i in range(0,ny):
+        for j in range(0,nx):
+            GCOORD[id,0] = -lx/2 + j*dx
+            GCOORD[id,1] = -ly/2 + i*dy
+            id          = id + 1
+
+    # FEM connectivity
+    EL2NOD   = np.zeros((nel,nnodel), dtype=int)
+
+    for iel in range(0,nel):
+        row        = iel//nex   
+        ind        = iel + row
+        EL2NOD[iel,:] = [ind, ind+1, ind+nx+1, ind+nx]
+        
+    # Gauss integration points
+    nip   = 4
+    gauss = np.array([[ -np.sqrt(1/3), np.sqrt(1/3), np.sqrt(1/3), -np.sqrt(1/3)], [-np.sqrt(1/3), -np.sqrt(1/3), np.sqrt(1/3), np.sqrt(1/3)]]).T.copy()
+
+    # Storage
+    Rhs_all = np.zeros(nnod)
+    I       = np.zeros((nel,nnodel*nnodel))
+    J       = np.zeros((nel,nnodel*nnodel))
+    K       = np.zeros((nel,nnodel*nnodel))
+
+    for iel in range(0,nel):
+        ECOORD = np.take(GCOORD, EL2NOD[iel,:], axis=0 )
+        Ael    = np.zeros((nnodel,nnodel))
+        Rhs_el = np.zeros(nnodel)
+        
+        for ip in range(0,nip):        
+            # 1. update shape functions
+            xi      = gauss[ip,0]
+            eta     = gauss[ip,1]
+            N, dNds = shapes(xi, eta)
+            
+            # 2. set up Jacobian, inverse of Jacobian, and determinant
+            Jac     = np.matmul(dNds,ECOORD) #[2,nnodel]*[nnodel,2]
+            invJ    = np.linalg.inv(Jac)     
+            detJ    = np.linalg.det(Jac)
+            
+            # 3. get global derivatives
+            dNdx    = np.matmul(invJ, dNds) # [2,2]*[2,nnodel]
+            
+            # 4. compute element stiffness matrix
+            kel = k1
+            if  abs(np.mean(ECOORD[:,0]))<w_i and abs(np.mean(ECOORD[:,1]))<h_i:
+                kel=k2  
+            Ael     = Ael + np.matmul(dNdx.T, dNdx)*detJ*kel # [nnodel,1]*[1,nnodel] / weights are missing, they are 1
+            
+            # 5. assemble right-hand side, no source terms, just here for completeness
+            Rhs_el     = Rhs_el + np.zeros(nnodel)
+        
+        # assemble coefficients
+        I[iel,:]  =  (EL2NOD[iel,:]*np.ones((nnodel,1), dtype=int)).T.reshape(nnodel*nnodel)
+        J[iel,:]  =  (EL2NOD[iel,:]*np.ones((nnodel,1), dtype=int)).reshape(nnodel*nnodel)
+        K[iel,:]  =  Ael.reshape(nnodel*nnodel)
+        
+        Rhs_all[EL2NOD[iel,:]] += Rhs_el
+
+    A_all = csr_matrix((K.reshape(nel*nnodel*nnodel),(I.reshape(nel*nnodel*nnodel),J.reshape(nel*nnodel*nnodel))),shape=(nnod,nnod))
+
+    # indices and values at top and bottom
+    i_bot   = np.arange(0,nx, dtype=int)
+    i_top   = np.arange(nx*(ny-1),nx*ny, dtype=int)
+    Ind_bc  = np.concatenate((i_bot, i_top))
+    Val_bc  = np.concatenate((np.ones(i_bot.shape)*Tbot, np.ones(i_top.shape)*Ttop ))
+
+    # smart way of boundary conditions that keeps matrix symmetry
+    Free    = np.arange(0,nnod)
+    Free    = np.delete(Free, Ind_bc)
+    TMP     = A_all[:,Ind_bc]
+    Rhs_all = Rhs_all - TMP.dot(Val_bc)
+
+    # solve reduced system
+    T[Free] = spsolve(A_all[np.ix_(Free, Free)],Rhs_all[Free])
+    T[Ind_bc] = Val_bc
+
+    # postprocessing - heat flow
+    Q_x  = np.zeros(nel)
+    Q_y  = np.zeros(nel)
+    Ec_x = np.zeros(nel)
+    Ec_y = np.zeros(nel)
+
+    for iel in range(0,nel):
+        # 0. get element coordinates
+        ECOORD = np.take(GCOORD, EL2NOD[iel,:], axis=0 )
+    
+        # 1. update shape functions
+        xi      = 0
+        eta     = 0
+        N, dNds = shapes(xi, eta)
+        
+        # 2. set up Jacobian, inverse of Jacobian, and determinant
+        Jac     = np.matmul(dNds,ECOORD) #[2,nnodel]*[nnodel,2]
+        invJ    = np.linalg.inv(Jac)    
+        detJ    = np.linalg.det(Jac)
+        
+        # 3. get global derivatives
+        dNdx    = np.matmul(invJ, dNds) # [2,2]*[2,nnodel]
+        
+        # 4. heat flux per element
+        kel = k1
+        if  abs(np.mean(ECOORD[:,0]))<0.25 and abs(np.mean(ECOORD[:,1]))<0.25:
+            kel=k2  
+        Q_x[iel] = -kel*np.matmul(dNdx[0,:], np.take(T, EL2NOD[iel,:]))
+        Q_y[iel] = -kel*np.matmul(dNdx[1,:], np.take(T, EL2NOD[iel,:]))
+        Ec_x[iel]  = np.mean(ECOORD[:,0])
+        Ec_y[iel]  = np.mean(ECOORD[:,1])
+
+    # plotting
+    fig = plt.figure()
+    left, bottom, width, height = 0.1, 0.1, 0.8, 0.8
+    ax = fig.add_axes([left, bottom, width, height]) 
+
+    X = np.reshape(GCOORD[:,0], (ny,nx))
+    Y = np.reshape(GCOORD[:,1], (ny,nx))
+    T = T.reshape((ny,nx))
+
+    cp = plt.contourf(X, Y, T)
+    plt.colorbar(cp)
+    plt.quiver(Ec_x, Ec_y, Q_x, Q_y, np.sqrt(np.square(Q_x) + np.square(Q_y)), cmap='autumn')
+
+    ax.set_title('Temperature with heat flow vectors')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    plt.show()import numpy as np
+
+The key components of the code are an element loop (which corresponds to the sum over the integrals in :eq:`eq:fem_2d_weak_3` and an integration loop (which corresponds to the loop over integration points in :eq:`eq:fem_2d_weak_3`). Most of the work is done inside the integration loop:
+
+    #. shape functions are calculated at the local coordinates of the integration point
+    #. The Jacobian matrix, its determinant, and the inverse Jacobian are is calculated according to :eq:`eq:num_int_isoparam_4` 
+    #. Global derivatives of shape functions at local coordinates are calculated according to :eq:`eq:num_int_jacobian`
+    #. The element stiffness matrix and the element force vector are integrated.
+
+    After the integration
+
+    #. the local stiffness matrices and their global coefficients are stored
+    #. and the element force vector is added to the global force vector
+
+
+Let’s have a closer look at some of the different steps.
+
+Jacobian:
+^^^^^^^^^
+The calculation of the Jacobian matrix is implemented via  :eq:`eq:num_int_isoparam_4`  as a matrix-vector multiplication:
+
+.. math::
+    :label: eq:jacobian_code
+
+    J = 
+    \begin{bmatrix}
+    \frac{\partial N_1}{\partial \xi} & \frac{\partial N_2}{\partial \xi} & \frac{\partial N_3}{\partial \xi} & \frac{\partial N_4}{\partial \xi} \\
+    \frac{\partial N_1}{\partial \eta} & \frac{\partial N_2}{\partial \eta} & \frac{\partial N_3}{\partial \eta} & \frac{\partial N_4}{\partial \eta}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    x_1 & y_1 \\
+    x_2 & y_2 \\
+    x_3 & y_3 \\
+    x_4 & y_4 \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    \frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} \\
+    \frac{\partial x}{\partial \eta} & \frac{\partial y}{\partial \eta}
+    \end{bmatrix},
+
+which is implemented as:
+
+.. code-block:: python 
+    
+    ECOORD = np.take(GCOORD, EL2NOD[iel,:], axis=0 )
+    Jac     = np.matmul(dNds,ECOORD) #[2,nnodel]*[nnodel,2]
+
+
+Global derivatives of shape functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The global derivatives are calculated according to :eq:`eq:num_int_jacobian`, which in matrix form is:
+
+.. math::
+    :label: eq:dndx_code
+
+    \begin{bmatrix}
+    \frac{\partial N_1}{\partial x} & \frac{\partial N_2}{\partial x} & \frac{\partial N_3}{\partial x} & \frac{\partial N_4}{\partial x} \\
+    \frac{\partial N_1}{\partial y} & \frac{\partial N_2}{\partial y} & \frac{\partial N_3}{\partial y} & \frac{\partial N_4}{\partial y}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    J^{-1}
+    \end{bmatrix}
+    \begin{bmatrix}
+    \frac{\partial N_1}{\partial \xi} & \frac{\partial N_2}{\partial \xi} & \frac{\partial N_3}{\partial \xi} & \frac{\partial N_4}{\partial \xi} \\
+    \frac{\partial N_1}{\partial \eta} & \frac{\partial N_2}{\partial \eta} & \frac{\partial N_3}{\partial \eta} & \frac{\partial N_4}{\partial \eta}
+    \end{bmatrix},
+
+which is implemented as:
+
+.. code-block:: python 
+        
+    dNdx    = np.matmul(invJ, dNds) # [2,2]*[2,nnodel]
+
+Element stiffness matrix
+^^^^^^^^^^^^^^^^^^^^^^^^
+The final step is to put the :eq:`eq:num_int_jacobian_2` into finite element form. Also this now quite easy:
+
+.. math::
+    :label: eq:Ael_code
+
+    \begin{bmatrix}
+    \begin{bmatrix}
+    \frac{\partial N_1}{\partial x} & \frac{\partial N_1}{\partial y} \\
+    \frac{\partial N_2}{\partial x} & \frac{\partial N_2}{\partial y} \\
+    \frac{\partial N_3}{\partial x} & \frac{\partial N_3}{\partial y} \\
+    \frac{\partial N_4}{\partial x} & \frac{\partial N_4}{\partial y}
+    \end{bmatrix}
+    \begin{bmatrix}
+    \frac{\partial N_1}{\partial x} & \frac{\partial N_2}{\partial x} & \frac{\partial N_3}{\partial x} & \frac{\partial N_4}{\partial x} \\
+    \frac{\partial N_1}{\partial y} & \frac{\partial N_2}{\partial y} & \frac{\partial N_3}{\partial y} & \frac{\partial N_4}{\partial y}
+    \end{bmatrix}
+    \end{bmatrix}
+    \begin{bmatrix}
+    T_1 \\ T_2 \\ T_3 \\ T_4
+    \end{bmatrix}
+    = 
+    \begin{bmatrix}
+    0 \\ 0 \\ 0 \\ 0
+    \end{bmatrix},
+
+where the first matrix is the element stiffness matrix, which is implemented as:
+
+.. code-block:: python 
+        
+    Ael     = Ael + np.matmul(dNdx.T, dNdx)*detJ*kel # [nnodel,1]*[1,nnodel] / weights are missing, they are 1
+
+Boundary conditions
+^^^^^^^^^^^^^^^^^^^^
+Before we can solve anything, we need to set boundary conditions. In the 1-D case, we had set the boundary conditions in the usual way by setting the entire row to zero, putting a 1 on the main diagonal, and setting the Rhs to the specified temperature. We had noted before that this procedure breaks matrix symmetry. We will therefore use a more elaborate method here, which was described in :cite:`Dabrowski2008` .
+We add the columns that refer to nodes with boundary conditions to the righ-hand side and afterwards solve the smaller system of equations! This is implemented as
+
+.. code-block:: python
+
+    # indices and values at top and bottom
+    i_bot   = np.arange(0,nx, dtype=int)
+    i_top   = np.arange(nx*(ny-1),nx*ny, dtype=int)
+    Ind_bc  = np.concatenate((i_bot, i_top))
+    Val_bc  = np.concatenate((np.ones(i_bot.shape)*Tbot, np.ones(i_top.shape)*Ttop ))
+
+    # smart way of boundary conditions that keeps matrix symmetry
+    Free    = np.arange(0,nnod)
+    Free    = np.delete(Free, Ind_bc)
+    TMP     = A_all[:,Ind_bc]
+    Rhs_all = Rhs_all - TMP.dot(Val_bc)
+
+    # solve reduced system
+    T[Free] = spsolve(A_all[np.ix_(Free, Free)],Rhs_all[Free])
+    T[Ind_bc] = Val_bc
+
+First we find all the global indices of the nodes with boundary conditions and build a vector of equal length with all the fixed values. Afterwards we move the columns to the Rhs and solve the smaller system of equations.
+Note how the Rhs is a vector full of zeros at the moment. This will change when we look at the transient problem!
+
+
+Excercise: Transient case
+---------------------------
+The next step is to derive and implement the unsteady (time-dependent) heat diffusion equation and to solve an example problem for the cooling of the lithosphere. The unsteady heat diffusion equation looks like this:
+
+.. math::
+    :label: eq:fem_2d_transient
+
+    \rho c_p \frac{\partial T}{\partial t} = \frac{\partial}{\partial x} k \frac{\partial T}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T}{\partial y}
+    
+Two differences to the previously considered steady heat diffusion are apparent. First, we now have a time derivative in addition to the spatial derivatives. Second, the material parameters (density, specific heat, thermal conductivity) are not constant (neglected) any more. Nevertheless, the diffusion part of :eq:`eq:fem_2d_transient` looks very similar to the steady-state case that we know how to solve.
+
+We know how to handle spatial derivatives but this is the first time we encounter a time derivative in finite elements. To solve it we will use a “trick” from finite differences – we will simply write the time derivative in finite differences form.
+
+.. math::
+    :label: eq:fem_2d_transient_2
+
+    \rho c_p \frac{T^{n+1} - T^n}{\Delta t} = \frac{\partial}{\partial x} k\frac{\partial T^{n+1}}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T^{n+1}}{\partial y}.
+
+Re-arrange :eq:`eq:fem_2d_transient` so that all known temperatures :math:`T^n` are on the Rhs and all unknown temperatures :math:`T^{n+1}` are on the Lhs.
+
+    #. Derive the finite element form of this equation.
+    #. Implement the equation by modifying the steady-sate script
+        * Note, you will get a non-zero Rhs. Consequently you will obtain a force vector for each element (containing the old temperatures) that needs to be added to the global force vector.
+    #. As an example problem we will considered a simplified lithosphere cooling case. Use these model parameters:
+        * Ttop=0, Tbot=1300, density=3000kg/m3, cp=1000J/Kg/K and k=3W/m/K
+        * Make the box 100x100km
+        * Initialize all temperatures to Ttop
+        * Take a time step of 1Ma.
