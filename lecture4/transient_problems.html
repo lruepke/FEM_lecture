@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Overview: Method of Weighted Residuals (MWR) &mdash; Finite Element Modeling in Geodynamics  documentation</title>
+  <title>Excercise: Transient case &mdash; Finite Element Modeling in Geodynamics  documentation</title>
   
 
   
@@ -41,14 +41,14 @@
         <script src="../_static/doctools.js"></script>
         <script src="../_static/tabs.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Introduction Method of Weighted Residuals" href="mwr_intro.html" />
-    <link rel="prev" title="Periodic variations in seafloor temperature" href="../lecture1/jupyter/seafloor_temp_variations.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,11 +111,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_3.html">Example 3: Periodic variations in seafloor temperature</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 2</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview: Method of Weighted Residuals (MWR)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mwr_intro.html">Introduction Method of Weighted Residuals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mwr_examples.html">MWR solutions of the steady advection-diffusion equation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="excercises.html">Excercises</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/overview.html">Overview: Method of Weighted Residuals (MWR)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/mwr_intro.html">Introduction Method of Weighted Residuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/mwr_examples.html">MWR solutions of the steady advection-diffusion equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/excercises.html">Excercises</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 3</span></p>
 <ul>
@@ -192,14 +192,14 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Overview: Method of Weighted Residuals (MWR)</li>
+      <li>Excercise: Transient case</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
             
-              <a href="https://github.com/lruepke/HTF_lecture/blob/main//source/lecture2/overview.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/lruepke/HTF_lecture/blob/main//source/lecture4/transient_problems.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -237,10 +237,38 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="overview-method-of-weighted-residuals-mwr">
-<h1>Overview: Method of Weighted Residuals (MWR)<a class="headerlink" href="#overview-method-of-weighted-residuals-mwr" title="Permalink to this headline">¶</a></h1>
-<p>So far, we have learned how to solve partial differential equations using the Finite Differences Method (FDM). <span id="id1">[<a class="reference internal" href="../refs.html#id30" title="William L. Briggs, Van Emden Henson, and Steve F. McCormick. A Multigrid Tutorial (2nd Ed.). Society for Industrial and Applied Mathematics, USA, 2000. ISBN 0898714621.">Briggs et al., 2000</a>]</span> in their book “A Multigrid Tutorial” describe this as <em>“…finite differences methods replace the problem domain by a grid and produce a vector whose components are approximations to the solution at the grid points”</em>. This is straightforward and exactly what we have done in the past weeks. Here is what they have to say on finite elements: <em>“…finite element methods partition the problem domain into subregions and produce a simple function in each subregion that approximates the solution”</em>. This seems a bit less straightforward but results in a very powerful method to solve partial differential equations.</p>
-<p>In this lecture, we will start out by having a closer look at finding approximate solutions for partial differential equations before diving deeper into finite element methods. A powerful technique, which is close to the finite element concept, is the <em>Method of Weighted Residuals</em> (MWR). This method will be presented as an introduction, before using a particular subclass of MWR, the Galerkin Method of Weighted Residuals, to derive the  equations of the Finite Element Method (FEM).</p>
+<div class="section" id="excercise-transient-case">
+<h1>Excercise: Transient case<a class="headerlink" href="#excercise-transient-case" title="Permalink to this headline">¶</a></h1>
+<p>The next step is to derive and implement the unsteady (time-dependent) heat diffusion equation and to solve an example problem for the cooling of the lithosphere. The unsteady heat diffusion equation looks like this:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-2d-transient">
+<span class="eqno">()<a class="headerlink" href="#equation-eq-fem-2d-transient" title="Permalink to this equation">¶</a></span>\[\rho c_p \frac{\partial T}{\partial t} = \frac{\partial}{\partial x} k \frac{\partial T}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T}{\partial y}\]</div>
+<p>Two differences to the previously considered steady heat diffusion are apparent. First, we now have a time derivative in addition to the spatial derivatives. Second, the material parameters (density, specific heat, thermal conductivity) are not constant (neglected) any more. Nevertheless, the diffusion part of <a class="reference internal" href="#equation-eq-fem-2d-transient">equation ()</a> looks very similar to the steady-state case that we know how to solve.</p>
+<p>We know how to handle spatial derivatives but this is the first time we encounter a time derivative in finite elements. To solve it we will use a “trick” from finite differences – we will simply write the time derivative in finite differences form.</p>
+<div class="math notranslate nohighlight" id="equation-eq-fem-2d-transient-2">
+<span class="eqno">()<a class="headerlink" href="#equation-eq-fem-2d-transient-2" title="Permalink to this equation">¶</a></span>\[\rho c_p \frac{T^{n+1} - T^n}{\Delta t} = \frac{\partial}{\partial x} k\frac{\partial T^{n+1}}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T^{n+1}}{\partial y}.\]</div>
+<p>Re-arrange <a class="reference internal" href="#equation-eq-fem-2d-transient">equation ()</a> so that all known temperatures <span class="math notranslate nohighlight">\(T^n\)</span> are on the Rhs and all unknown temperatures <span class="math notranslate nohighlight">\(T^{n+1}\)</span> are on the Lhs.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Derive the finite element form of this equation.</p></li>
+<li><dl class="simple">
+<dt>Implement the equation by modifying the steady-sate script</dt><dd><ul class="simple">
+<li><p>Note, you will get a non-zero Rhs. Consequently you will obtain a force vector for each element (containing the old temperatures) that needs to be added to the global force vector.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>As an example problem we will considered a simplified lithosphere cooling case. Use these model parameters:</dt><dd><ul class="simple">
+<li><p>Ttop=0, Tbot=1300, density=3000kg/m3, cp=1000J/Kg/K and k=3W/m/K</p></li>
+<li><p>Make the box 100x100km</p></li>
+<li><p>Initialize all temperatures to Ttop</p></li>
+<li><p>Take a time step of 1Ma.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</div></blockquote>
 </div>
 
 
@@ -248,10 +276,6 @@
            
           </div>
           <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="mwr_intro.html" class="btn btn-neutral float-right" title="Introduction Method of Weighted Residuals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../lecture1/jupyter/seafloor_temp_variations.html" class="btn btn-neutral float-left" title="Periodic variations in seafloor temperature" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
 
   <hr/>
 
