@@ -1,3 +1,5 @@
+.. _Course details:
+
 Course details
 ==============
 

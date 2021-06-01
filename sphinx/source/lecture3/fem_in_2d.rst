@@ -662,32 +662,204 @@ We add the columns that refer to nodes with boundary conditions to the righ-hand
 First we find all the global indices of the nodes with boundary conditions and build a vector of equal length with all the fixed values. Afterwards we move the columns to the Rhs and solve the smaller system of equations.
 Note how the Rhs is a vector full of zeros at the moment. This will change when we look at the transient problem!
 
+Excersise - unstructured triangle meshes
+----------------------------------------
+In the previous section we have learned how to solve for steady-state diffusion problems in 2-D using FEM. One of strengths of the FE method is that it is quite easy to use differently shaped elements. Triangles are, for example, well suited for resolving complex geometries in 2-D.
 
-Excercise: Transient case
----------------------------
-The next step is to derive and implement the unsteady (time-dependent) heat diffusion equation and to solve an example problem for the cooling of the lithosphere. The unsteady heat diffusion equation looks like this:
+In this excercise we will learn
 
-.. math::
-    :label: eq:fem_2d_transient
+    * how to use a mesh genetrator to mesh complex geometries,
+    * what changes are needed to change the basic element.
 
-    \rho c_p \frac{\partial T}{\partial t} = \frac{\partial}{\partial x} k \frac{\partial T}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T}{\partial y}
+The problem we will look at is basically the same as in the example given above. We will resolve steady-state heat diffusion within a rectangular region but now we will have circular inclusions of different thermal conductivity.
+
+Step 0: getting ready
+^^^^^^^^^^^^^^^^^^^^^
+Make a copy of the exemple solver above. Take it as a starting point and integrate the various code pieces and pieces of information below into. 
+
+Step 1: mesh generation
+^^^^^^^^^^^^^^^^^^^^^^^
+We will use the mesh generator `triangle <https://www.cs.cmu.edu/~quake/triangle.html>`_ by Jonathan Shewchuk. It's one of the best 2-D mesh generators for triangle meshes. It's originally written in C but we will for convenience use a python wrapper. You can install it into your virtual environment by doing this:
+
+.. code-block:: bash
+
+    pip install triangle
+
+Here is a code piece for making the the mesh:
+
+.. code-block:: python
+
+    import triangle as tr
+
+    ## Create the triangle mesh
+    vertices = []
+    segments = []
+    regions = []
+
+    # make a box with given dims and place given attribute at its center
+    def make_box(x, y, w, h, attribute):
+        i = len(vertices)
+
+        vertices.extend([[x,   y],
+                        [x+w, y],
+                        [x+w, y+h],
+                        [x,   y+h]])
+
+        segments.extend([(i+0, i+1),
+                        (i+1, i+2),
+                        (i+2, i+3),
+                        (i+3, i+0)])
+        
+        regions.append([x+0.01*w, y+0.01*h, attribute,0.005])
+
+    def make_inclusion(center_x, center_y, radius, points_inc, attribute):
+        theta        = np.linspace(0,2*np.pi,points_inc, endpoint=False)
+        xx           = np.cos(theta)
+        yy           = np.sin(theta)
+
+        i = len(vertices)   
+        vertices.extend(np.array([center_x + radius*xx,center_y + radius*yy]).T)
+        
+        Tmp = np.array([np.arange(i, i+points_inc), np.arange(i+1, i+points_inc+1)]).T
+        Tmp[-1,1] = i
+        segments.extend(Tmp)
     
-Two differences to the previously considered steady heat diffusion are apparent. First, we now have a time derivative in addition to the spatial derivatives. Second, the material parameters (density, specific heat, thermal conductivity) are not constant (neglected) any more. Nevertheless, the diffusion part of :eq:`eq:fem_2d_transient` looks very similar to the steady-state case that we know how to solve.
+        regions.append([center_x, center_y, attribute,0.001])
 
-We know how to handle spatial derivatives but this is the first time we encounter a time derivative in finite elements. To solve it we will use a “trick” from finite differences – we will simply write the time derivative in finite differences form.
+    #geometry
+    x0          = -1
+    y0          = -1
+    lx          = 2
+    ly          = 2
+    n_incl      = 5
+    radius      = 0.15
 
-.. math::
-    :label: eq:fem_2d_transient_2
+    # generate input    
+    make_box(x0, y0, lx, ly, 1)
 
-    \rho c_p \frac{T^{n+1} - T^n}{\Delta t} = \frac{\partial}{\partial x} k\frac{\partial T^{n+1}}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T^{n+1}}{\partial y}.
+    make_inclusion(-0.8, -0.3, radius, 20, 100)
+    make_inclusion(-0.5, -0.75, radius, 20, 100)
+    make_inclusion(-0.6, 0.5, radius, 20, 100)
+    make_inclusion(-0.1, -0.3, radius, 20, 100)
+    make_inclusion(0.1, 0, radius, 20, 100)
+    make_inclusion(0.5, -0.2, radius, 20, 100)
+    make_inclusion(0.6, .3, radius, 20, 100)
+    make_inclusion(0.7, .8, radius, 20, 100)
+    make_inclusion(0, .75, radius, 20, 100)
+    make_inclusion(-0.5, .05, radius, 20, 100)
+    make_inclusion(0.5, -.75, radius, 20, 100)
 
-Re-arrange :eq:`eq:fem_2d_transient` so that all known temperatures :math:`T^n` are on the Rhs and all unknown temperatures :math:`T^{n+1}` are on the Lhs.
+    A = dict(vertices=vertices, segments=segments, regions=regions)
+    B = tr.triangulate(A, 'pq33Aa')
+    #tr.compare(plt, A, B)
+    #plt.show()
 
-    #. Derive the finite element form of this equation.
-    #. Implement the equation by modifying the steady-sate script
-        * Note, you will get a non-zero Rhs. Consequently you will obtain a force vector for each element (containing the old temperatures) that needs to be added to the global force vector.
-    #. As an example problem we will considered a simplified lithosphere cooling case. Use these model parameters:
-        * Ttop=0, Tbot=1300, density=3000kg/m3, cp=1000J/Kg/K and k=3W/m/K
-        * Make the box 100x100km
-        * Initialize all temperatures to Ttop
-        * Take a time step of 1Ma.
+    # extract mesh information
+    GCOORD = B.get("vertices")
+    EL2NOD = B.get("triangles")
+    Phases = B.get("triangle_attributes")
+
+    nnodel = EL2NOD.shape[1]
+    nel    = EL2NOD.shape[0]
+    nnod   = GCOORD.shape[0]
+    Phases = np.reshape(Phases,nel)
+
+
+Note how the generated mesh comes back as a python dictionary from which we extract the mesh information. Note also that the array :code:`Phases` contains a marker to which region an element belongs (matrix versus inclusion).
+
+Step 2: triangle shape functions and integration points
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+:numref:`fig:shapeFunc:2D:linear` shows shape functions for a linear triangle element. You will need to modify the function in our :code:`shapes.py` file to implement the triangular shape functions. 
+
+.. code-block:: python
+
+    #shape functions
+    eta2 = xi
+    eta3 = eta
+    eta1 = 1-eta2-eta3
+
+    N1 = eta1
+    N2 = eta2
+    N3 = eta3
+
+Take this as a starting point and modify :code:`shapes.py` to return the correct three shape functions and the six derivatives!
+
+Next we need to adapt our integration rule. Take these three integration points and weights.
+
+.. list-table:: Triangle integration
+    :header-rows: 1
+
+    * - Integration point
+      - :math:`\xi`
+      - :math:`\eta`
+      - weight
+    * - :math:`1`
+      - :math:`\frac{1}{6}`
+      - :math:`\frac{1}{6}`
+      - :math:`\frac{1}{6}`
+    * - :math:`2`
+      - :math:`\frac{2}{3}`
+      - :math:`\frac{1}{6}`
+      - :math:`\frac{1}{6}`
+    * - :math:`3`
+      - :math:`\frac{1}{6}`
+      - :math:`\frac{2}{3}`
+      - :math:`\frac{1}{6}`
+
+
+.. tip::
+    There are, of course, many different elements and associated integration rules using different numbers of integration points in FEM. Have a look at the suggested books in :ref:`Course details` .
+
+
+
+Step 3: Boundary conditions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+We were actually a bit "lazy" when we implemented the boundary conditions in the example above. Instead of coming up with a general solution, we identified the global node numbers on the boundaries assuming a structured quad mesh. Now we are using an unstructured triangle mesh and it is not so easy anymore to know which nodes are on the boundaries and should get boundary conditions. The "typical" way would be to use boundary markers in the mesh generation; here we use a different approach and use an ad-hoc search for the boundary nodes:
+
+.. code-block:: python
+
+    # indices and values at top and bottom
+    tol = 1e-3
+    # i_bot = np.where(abs(???) < tol)[0] #bottom nodes
+    # i_top = np.where(abs(???) < tol)[0] #top nodes
+    
+
+Complete this and add the lines to the main code!
+
+.. admonition:: Boundary conditions
+
+    Did you notice that we are not specifying boundary conditions for lateral boundaries? Still the code seems to work. Have a look at :eq:`eq:fem_2d_weak_2` and think about which implicit assumption we are making about the line integral.
+
+
+Step 3: Post-processing and plotting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Modify the post-processing code that computes the heat fluxes, so that it works for triangles. This should just involve setting a new local coordinates for the single integration points. Use :math:`\xi=\frac{1}{3}` and  :math:`\eta=\frac{1}{3}`, which is the center of each triangle.
+
+Now we just need to plot! Thankfully python makes it easy for us and we can use the functions :code:`triplot` and :code:`tricontourf` to plot the unstructured data.
+
+.. code-block:: python
+
+    # plotting
+    fig = plt.figure()
+    left, bottom, width, height = 0.1, 0.1, 0.8, 0.8
+    ax = fig.add_axes([left, bottom, width, height]) 
+
+    plt.triplot(GCOORD[:,0], GCOORD[:,1], EL2NOD, linewidth=0.5)
+    cp = plt.tricontourf(GCOORD[:,0], GCOORD[:,1], EL2NOD, T, 10, cmap='gist_yarg')
+
+    plt.colorbar(cp)
+    plt.quiver(Ec_x, Ec_y, Q_x, Q_y, np.sqrt(np.square(Q_x) + np.square(Q_y)), cmap='hot')
+
+    ax.set_title('Temperature with heat flow vectors')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    plt.show()
+
+
+.. figure:: /_figures/triangle_fem_diffusion.png
+    :name: fig:fem_triangle_dif_f
+    :align: center
+    :figwidth: 80%
+
+    2-D diffusion on unstructured mesh.
