@@ -677,6 +677,85 @@ In this excercise we will learn
 
 The problem we will look at is basically the same as in the example given above. We will resolve steady-state heat diffusion within a rectangular region but now we will have circular inclusions of different thermal conductivity.
 
+Theoretical background
+^^^^^^^^^^^^^^^^^^^^^^^^
+Let's first explore how triangle element "work". :numref:`fig:fem_triangle_coords_f`  shows a triangle in global and local coordinates. The local node numering is again counterclockwise.
+
+.. figure:: /_figures/triangle_coords.png
+    :name: fig:fem_triangle_coords_f
+    :align: center
+    
+    Global and local coordinates of a triangle element. Black crosses mark the locations of the three integration points.
+
+Here we look at a linear triangle with three nodes. The relation between global and local coordinates is therefore:
+
+.. math::
+    :label: eq:triangle_1
+
+    \begin{align}
+    \begin{split}
+    x &= x_1 + (x_2-x_1)\xi + (x_3-x_1)\eta \\
+    y &= y_1 + (y_2-y_1)\xi + (y_3-y_1)\eta \\
+    \end{split}
+    \end{align}
+
+
+Temperature, or any other variable, will also vary linearly with the local coordinates and we can write
+
+.. math::
+    :label: eq:triangle_2
+
+    T(\xi,\eta) = a_1 +a_2\xi + a_3\eta
+
+We can spell this out for the three nodes:
+
+.. math::
+    :label: eq:triangle_3
+
+    \begin{align}
+    \begin{split}
+    T_1 &= T(0,0) = a_1 \\
+    T_2 &= T(1,0) = a_1 + a_2 \\
+    T_3 &= T(0,1) = a_1 + a_3
+    \end{split}
+    \end{align}
+
+And express the contants :math:`a` in terms of the nodal temperatures (or whatever our unknown is). 
+
+.. math::
+    :label: eq:triangle_4
+
+    \begin{align}
+    \begin{split}
+    a_1 = T_1 \\
+    a_2 = T_2 - T_1 \\
+    a_3 = T_3 - T_1
+    \end{split}
+    \end{align}
+
+This we put back into the definition of the approximate solution :numred:`eq:eq:triangle_2` and get:
+
+
+.. math::
+    :label: eq:triangle_4
+
+    \begin{align}
+    \begin{split}
+    T(\xi,\eta) &= T_1 +(T_2 - T_1)\xi + (T_3-T_1)\eta\\
+    \Rightarrow \\
+    T(\xi,\eta) &= (1 -\xi - \eta)T_1 + \xi T_2 + \eta T_3 \\
+    \Rightarrow \\
+    N_1(\xi, \eta) &=  (1 -\xi - \eta)\\
+    N_2(\xi, \eta) &=  \xi \\
+    N_3(\xi, \eta) &=  \eta \\
+    \Rightarrow \\
+    T(\xi,\eta) &= N_1 T_1 + N_2 T_2 + N_3 T_3 \\
+    \end{split}
+    \end{align}
+
+Alright, now that we understand the local coordinates and the shape functions associated with linear triangle element, we are good to go!
+
+
 Step 0: getting ready
 ^^^^^^^^^^^^^^^^^^^^^
 Make a copy of the exemple solver above. Take it as a starting point and integrate the various code pieces and pieces of information below into. 
