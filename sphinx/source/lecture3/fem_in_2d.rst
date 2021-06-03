@@ -662,6 +662,10 @@ We add the columns that refer to nodes with boundary conditions to the righ-hand
 First we find all the global indices of the nodes with boundary conditions and build a vector of equal length with all the fixed values. Afterwards we move the columns to the Rhs and solve the smaller system of equations.
 Note how the Rhs is a vector full of zeros at the moment. This will change when we look at the transient problem!
 
+.. admonition:: Excercise
+
+    You can download the python code here (:download:`2d_fem_steady_state.py <python/2d_fem_steady_state.py>` and :download:`shapes.py <python/shapes.py>`). Try to get it to work and make sure that you understand the key parts. I good way is to use the Visual Studio Code debugger and to step through the code. Make sure that you understand the various matrix shapes and the connection between the equations presented above and the matrix multiplications in the code.
+
 Excersise - unstructured triangle meshes
 ----------------------------------------
 In the previous section we have learned how to solve for steady-state diffusion problems in 2-D using FEM. One of strengths of the FE method is that it is quite easy to use differently shaped elements. Triangles are, for example, well suited for resolving complex geometries in 2-D.

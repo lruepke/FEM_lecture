@@ -19,7 +19,7 @@ h_i         = 0.2 # heigths inclusion
 
 # model parameters
 k1          = 1
-k2          = 0.01
+k2          = 10
 Ttop        = 0
 Tbot        = 1
  
@@ -150,9 +150,9 @@ X = np.reshape(GCOORD[:,0], (ny,nx))
 Y = np.reshape(GCOORD[:,1], (ny,nx))
 T = T.reshape((ny,nx))
 
-cp = plt.contourf(X, Y, T)
+cp = plt.contourf(X, Y, T, cmap='gist_yarg')
 plt.colorbar(cp)
-plt.quiver(Ec_x, Ec_y, Q_x, Q_y, np.sqrt(np.square(Q_x) + np.square(Q_y)), cmap='autumn')
+plt.quiver(Ec_x, Ec_y, Q_x, Q_y, np.sqrt(np.square(Q_x) + np.square(Q_y)), cmap='hot')
 
 ax.set_title('Temperature with heat flow vectors')
 ax.set_xlabel('x')
