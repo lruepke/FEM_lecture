@@ -733,7 +733,7 @@ And express the contants :math:`a` in terms of the nodal temperatures (or whatev
     \end{split}
     \end{align}
 
-This we put back into the definition of the approximate solution :numred:`eq:eq:triangle_2` and get:
+This we put back into the definition of the approximate solution :eq:`eq:triangle_2` and get:
 
 
 .. math::
