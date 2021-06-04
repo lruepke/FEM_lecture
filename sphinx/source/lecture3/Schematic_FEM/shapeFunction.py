@@ -110,12 +110,23 @@ def Linear1D():
         plt.savefig(figurename, bbox_inches='tight')
 
 def loadMesh2D(gmshfile):
+    """Node connection of triangle of gmsh is clockwise, we need to make it counterclockwise
+
+    Args:
+        gmshfile ([type]): gmsh(.msh) file name
+
+    Returns:
+        [type]: {'GCOORD':GCOORD, 'EL2NOD':EL2NOD}
+    """
     mesh=meshio.read(gmshfile)
     GCOORD=mesh.points[:,0:2]
     EL2NOD=[]
     for cells in mesh.cells:
         if((cells.type=='quad') | (cells.type=='triangle')):
             EL2NOD=cells.data
+    EL2NOD_old=EL2NOD.copy()
+    for i in range(1,EL2NOD.shape[1]):
+        EL2NOD[:,i]=EL2NOD_old[:,-i]
     return {'GCOORD':GCOORD, 'EL2NOD':EL2NOD}
 def plotMesh_2D(mesh,colorsName='tab20',figname='mesh2D_structured',extend_x=0):
     colors=mpl.cm.get_cmap(colorsName).colors
@@ -515,11 +526,11 @@ def main(argv):
     # # 2. 2D Quad element
     # FE_Quad(fem='Q1',cmap=cm.plasma)
     # FE_Quad(fem='Q2',cmap=cm.Spectral_r)
-    # 3. 2D triangle element
-    FE_Tri(fem='Q1')
-    FE_Tri(fem='Q2')
-    FE_Tri(fem='Q3')
+    # # 3. 2D triangle element
+    # FE_Tri(fem='Q1')
+    # FE_Tri(fem='Q2')
+    # FE_Tri(fem='Q3')
     # # 4. matrix connectivity of 2D mesh 
-    # connectivity()
+    connectivity()
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
