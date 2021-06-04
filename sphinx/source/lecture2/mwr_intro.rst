@@ -3,7 +3,7 @@ Introduction Method of Weighted Residuals
 
 .. admonition:: Credit!
 
-    This chapter is based on lecture notes originally prepared by Prof. Keith A. Woodbury of The University of Alabama.
+    This chapter is based on lecture notes originally prepared by Prof. Keith A. Woodbury of The University of Alabama. Further details can also be found in the book by :cite:`grandin1991`.
 
 Suppose we have a linear differential operator :math:`D` acting on a function :math:`u`
 to produce a function :math:`p`. 

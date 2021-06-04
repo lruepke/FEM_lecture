@@ -5,7 +5,7 @@ We will use Python for learning the basics of the finite element method. Later i
 
 Visual Studio Code
 ------------------
-We will do a lot of editing of text files and you can use your favorite text editor for this. However, we  recommend to use `Microsoft's Visual Studio Code <https://code.visualstudio.com/>`_. 
+We will do a lot of editing of text files and you can use your favorite text editor for this. However, we  recommend to use `Microsoft's Visual Studio Code <https://code.visualstudio.com/>`_, which also nicely integrates with python. 
 
 Python
 --------
@@ -69,7 +69,7 @@ We will do most excercises using jupyter notebooks. A good workflow is to start 
     jupyter lab
 
 
-One possible issue is that you need to make sure that your jupyter notebooks use the correct python environment. One way of doing this is to registering your virtual environment as a jupyter kernel. This can be done like this:
+One possible issue is that you need to make sure that your jupyter notebooks use the correct python environment. One way of doing this is to register your virtual environment as a jupyter kernel. This can be done like this:
 
 .. code-block:: bash
 
@@ -82,6 +82,3 @@ Restart you jupyter lab and try to select the correct python kernel.
 Integration with Visual Studio Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 You will need to install Microsoft's Python extension. Just search for Python under Extensions and chose the one from Microsoft (usually the first option). Finally, you will have to set the Python interpreter. Do this by pushing CMD/CTRL+SHIFT+P. Type Python: Select Interpretor and select our newly created anaconda environment. If it doesn't show up, close and re-open Visual Studio Code.
-
-An alternative is to use jupyter lab - we (currently) recommend using jupyter lab or jupyter notebook.
-
