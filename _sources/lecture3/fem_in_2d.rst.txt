@@ -30,7 +30,7 @@ where the shape functions :math:`N_j(x,y)` are now function of both spatial dime
         Example of 2D linear finite element shape functions
  
 .. tab:: Nine‐Node Biquadratic Quadrilateral
-
+ 
     .. figure:: Schematic_FEM/shapeFunction_2D_Q2.*
         :name: fig:shapeFunc:2D:quad:Q2
         :align: center
@@ -737,7 +737,7 @@ This we put back into the definition of the approximate solution :eq:`eq:triangl
 
 
 .. math::
-    :label: eq:triangle_4
+    :label: eq:triangle_5
 
     \begin{align}
     \begin{split}
