@@ -914,7 +914,7 @@ Complete this and add the lines to the main code!
     Did you notice that we are not specifying boundary conditions for lateral boundaries? Still the code seems to work. Have a look at :eq:`eq:fem_2d_weak_2` and think about which implicit assumption we are making about the line integral.
 
 
-Step 3: Post-processing and plotting
+Step 4: Post-processing and plotting
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Modify the post-processing code that computes the heat fluxes, so that it works for triangles. This should just involve setting a new local coordinates for the single integration points. Use :math:`\xi=\frac{1}{3}` and  :math:`\eta=\frac{1}{3}`, which is the center of each triangle.
