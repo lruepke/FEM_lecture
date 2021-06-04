@@ -21,6 +21,11 @@ We now use 2-D shape functions in our approximate solution:
 
 where the shape functions :math:`N_j(x,y)` are now function of both spatial dimensions. An example of a 2-D FEM mesh and associated shape functions are shown in :numref:`fig:shapeFunc:2D:linear`. Note that the structured quad mesh and the bi-linear shape functions are just one possibility of using the FEM in 2-D. There are many other possibility, like unstructured triangle meshes and higher order shape functions.
 
+.. tip::
+    Never forget that the shape functions :mat:`N(x,y)`are defined over the entire modeling domain in global coordinates. We will just evaluate them per element using local coordinates.
+
+
+
 .. tab:: Four‐Node Bilinear Quadrilateral
 
     .. figure:: Schematic_FEM/shapeFunction_2D_Q1.*
@@ -210,7 +215,7 @@ The main problem with solving :eq:`eq:fem_2d_weak_num_int` is that the integral 
 
     \int_{\hat{\Omega}} F(\xi,\eta) d\xi d\eta = \int_{-1}^{1}\int_{-1}^{1}F(\xi,\eta)d\xi d\eta = \sum_{I=1}^{M} \sum_{J=1}^{N} F(\xi_I,\eta_J)W_I W_J = \sum_{ip}F(\xi_{ip},\eta_{ip})W_{ip},
 
-where M and N denote the number of Gauss points, math:`(\xi,\eta)`denote the Gauss point coordinates, and :math:`W_I` and :math:`W_J` denote the corresponding Gauss weights. The selection of the number of Gauss points is based on the formula :math:`N=int[(p+1)/2]+1`, where p the polynomial degree to which the integrand is approximated. We will use linear shape functions so that we have 2 Gauss points (in every direction). In this case the local coordinates are :math:`\pm0.5773502692` and the weights are all :math:`1`.
+where M and N denote the number of Gauss points, :math:`(\xi,\eta)`denote the Gauss point coordinates, and :math:`W_I` and :math:`W_J` denote the corresponding Gauss weights. The selection of the number of Gauss points is based on the formula :math:`N=int[(p+1)/2]+1`, where p the polynomial degree to which the integrand is approximated. We will use linear shape functions so that we have 2 Gauss points (in every direction). In this case the local coordinates are :math:`\pm0.5773502692` and the weights are all :math:`1`.
 
 So far so good, but how do we solve the integral in :eq:`eq:fem_2d_weak_num_int` using local coordinates? We will have to do a coordinate transformation for the purpose of numerical integration that relates the element :math:`\Omega_e` to the master element area :math:`\hat{\Omega}` - or, equivalently, :math:`(x,y)` to :math:`(ξ,η)`. This can be done by using interpolation functions in terms of local coordinates. We will use so-called *isoparametric* elements in which we use the same number of interpolation functions for coordinate mapping and primary variable interpolation. This implies for our four node element that the local variables vary bi-linearly over the element.
     

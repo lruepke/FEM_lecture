@@ -22,7 +22,7 @@ One fundamental equation in the analysis of heat transfer is Fourier’s law for
 
 It states that heat flow is directed from high to low temperatures (that’s where the minus sign comes from) and is proportional to the geothermal gradient. The proportionality constant, k, is the thermal conductivity which has units of W/m/K and describes how well a rock transfers heat. k is a typically a complex function of rock type, porosity, and temperature yet is often simplified to a constant value.
 
-In most cases, we are interested in temperature and not heat flow so that we would like to have an equation that describes the temperature evolution in a rock. We can get this by deriving a conservation law for heat.
+In most cases, we are interested in temperature and not heat flow so that we would like to have an equation that describes the temperature evolution in a rock. We can get this by starting from the convervations equation of internal energy.
 
 .. figure:: /_figures/3D_cube_heat_flow.*
    :align: center
@@ -103,14 +103,14 @@ This form is called the *finite differences* form and is a first step towards so
 
 Note that it matters in which direction you count. Usually it makes life much easier if indices and physical coordinates point in the same direction, e.g. x coordinate and index increase to the right.
 
-We have learned how we can compute derivatives numerically. The next step is to solve the heat conduction equation :eq:`eq:1D_heat_flow` completely numerically. We are interested in the temperature evolution as a function of time and space :math:`T(x, t)`, which satisfies :eq:`eq:1D_heat_flow`, given an initial temperature distribution. We know already from the heat flow example how to calculate first derivatives (forward differencing):
+We have learned how we can compute derivatives numerically. The next step is to solve the heat conduction equation (:eq:`eq:1D_heat_flow`) completely numerically. We are interested in the temperature evolution as a function of time and space :math:`T(x, t)`, which satisfies :eq:`eq:1D_heat_flow`, given an initial temperature distribution. We know already from the heat flow example how to calculate first derivatives (forward differencing):
 
 .. math::
     :label: eq:FD_temperature
 
     \frac{\partial T}{\partial t} = \frac{T_i^{n+1} - T_i^n}{\Delta t}
 
-The index :math:`n` corresponds to the time step and the index :math:`i` to the grid point (x-coordinate) :numref:`dike_setup`. Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):
+The index :math:`n` corresponds to the time step and the index :math:`i` to the grid point (x-coordinate, :numref:`dike_setup`). Next, we need to know how to write second derivatives. A second derivative is just a derivative of a derivate. So we can write (central differencing):
 
 .. math::
     :label: eq:FD_heat_flow_central_difference

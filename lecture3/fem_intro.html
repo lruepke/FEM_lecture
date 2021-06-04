@@ -257,7 +257,7 @@
 <p>Let’s go on and solve the 1-D heat diffusion equation with the Finite Element Method (FEM). Our starting point is again the steady-state case:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-strong">
 <span class="eqno">(86)<a class="headerlink" href="#equation-eq-fem-1d-strong" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}=0.\]</div>
-<p>This is called the strong form of the governing equation and the function <span class="math notranslate nohighlight">\(T_{ex}(x)\)</span> by a (simpler) approximation (cf. Fig. 1):</p>
+<p>This is called the strong form of the governing equation and the function <span class="math notranslate nohighlight">\(T_{ex}(x)\)</span> by a (simpler) approximation:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-aprox-funcion">
 <span class="eqno">(87)<a class="headerlink" href="#equation-eq-fem-aprox-funcion" title="Permalink to this equation">¶</a></span>\[T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j T_j = N_j T_j.\]</div>
 <p>In FEM we divide our computational domain into simple geometeric entities, the finite elements, and those finite elements have grid points. For example, in 2-D we can divide the domain in triangles with three nodes and in 1-D in simple lines with two nodes each. Think of our simple FD descritization, if we were to use the same descritization in FEM, the intervals between grid points would be our finite elements.</p>
@@ -301,7 +301,7 @@
 \int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx =  \sum_{Elements} \int_{X_e} \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx = 0\ \ \ \ \ \ \ i=1,2,...,n\\
 \end{split}
 \end{align}\end{split}\]</div>
-<p>While mathematically we are always allowed to split an integral into a sum of integrals, in FEM this is particularly useful. The catch is that the shape function associated with a node are only non-zero in the elements connected to that node. This in turn means that in <a class="reference internal" href="#equation-eq-fem-1d-weak-simple-2">equation (94)</a> we can do the integration of each element completely indepdent from all other elements!</p>
+<p>While mathematically we are always allowed to split an integral into a sum of integrals, in FEM this is particularly useful. The catch is that the shape function associated with a node is only non-zero in the elements connected to that node. This in turn means that in <a class="reference internal" href="#equation-eq-fem-1d-weak-simple-2">equation (94)</a>, we can do the integration of each element completely independent from all other elements!</p>
 <p>In the following sessions, we will go through all the steps involved in solving <a class="reference internal" href="#equation-eq-fem-1d-weak-simple-2">equation (94)</a>. We will first do this in a simple 1-D case before moving on to the general 2-D.</p>
 <div class="section" id="fem-1-d-heat-diffusion">
 <h2>FEM: 1-D heat diffusion<a class="headerlink" href="#fem-1-d-heat-diffusion" title="Permalink to this headline">¶</a></h2>

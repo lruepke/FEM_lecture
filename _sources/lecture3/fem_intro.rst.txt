@@ -8,7 +8,7 @@ Let's go on and solve the 1-D heat diffusion equation with the Finite Element Me
 
     \frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}=0. 
 
-This is called the strong form of the governing equation and the function :math:`T_{ex}(x)`is the exact solution to it. We now follow our MWR recipe and replace the continuous function :math:`T_{ex}(x)` by a (simpler) approximation (cf. Fig. 1):
+This is called the strong form of the governing equation and the function :math:`T_{ex}(x)`is the exact solution to it. We now follow our MWR recipe and replace the continuous function :math:`T_{ex}(x)` by a (simpler) approximation:
 
 .. math::
     :label: eq:fem_aprox_funcion
@@ -92,7 +92,7 @@ The basic idea is to split the integrals into subdomains and the solution will b
     \end{align}
 
 
-While mathematically we are always allowed to split an integral into a sum of integrals, in FEM this is particularly useful. The catch is that the shape function associated with a node are only non-zero in the elements connected to that node. This in turn means that in :eq:`eq:fem_1d_weak_simple_2` we can do the integration of each element completely indepdent from all other elements!
+While mathematically we are always allowed to split an integral into a sum of integrals, in FEM this is particularly useful. The catch is that the shape function associated with a node is only non-zero in the elements connected to that node. This in turn means that in :eq:`eq:fem_1d_weak_simple_2`, we can do the integration of each element completely independent from all other elements!
 
 In the following sessions, we will go through all the steps involved in solving :eq:`eq:fem_1d_weak_simple_2`. We will first do this in a simple 1-D case before moving on to the general 2-D.
 

@@ -110,12 +110,8 @@
 <li class="toctree-l1"><a class="reference internal" href="fdm_intro.html">Introduction Finite Differences</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Example 1: Cooling dike</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#problem-description">Problem description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fdm-notebook">FDM notebook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#excercises-1-d-cooling-dike-explicit">Excercises - 1-D cooling dike (explicit)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="jupyter/cooling_dike_1d_fdm.html">Script for solving the 1D diffusion equation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#excercises">Excercises</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fdm-notebook-t-t-at-x-meters-from-dike">FDM notebook - T(t) at x meters from dike</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="jupyter/cooling_dike_1d_fdm_T_at_x_m.html">Script for solving the 1D diffusion equation - T(t) at x meters from dike</a></li>
 </ul>
 </li>
@@ -255,39 +251,36 @@
 <h1>Example 1: Cooling dike<a class="headerlink" href="#example-1-cooling-dike" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="problem-description">
 <h2>Problem description<a class="headerlink" href="#problem-description" title="Permalink to this headline">¶</a></h2>
-<p>As a first example, we will use the finite differences form <a class="reference internal" href="fdm_intro.html#equation-eq-fd-heat-flow-explicit-solution">equation (11)</a> of the heat diffusion equation <a class="reference internal" href="fdm_intro.html#equation-eq-1d-heat-flow">equation (2)</a> to explore the cooling of a dike. We will look at a  <span class="math notranslate nohighlight">\(2m\)</span> wide dike that intruded with a temperature of  <span class="math notranslate nohighlight">\(1200°C\)</span> into  <span class="math notranslate nohighlight">\(300°C\)</span> warm country rock. The initial conditions can then be written like this:</p>
+<p>As a first example, we will use the finite differences form (<a class="reference internal" href="fdm_intro.html#equation-eq-fd-heat-flow-explicit-solution">equation (11)</a>) of the heat diffusion equation (<a class="reference internal" href="fdm_intro.html#equation-eq-1d-heat-flow">equation (2)</a>) to explore the cooling of a dike. We will look at a  <span class="math notranslate nohighlight">\(2m\)</span> wide dike that intruded with a temperature of  <span class="math notranslate nohighlight">\(1200°C\)</span> into  <span class="math notranslate nohighlight">\(300°C\)</span> warm country rock. The initial conditions can be written as:</p>
 <div class="math notranslate nohighlight" id="equation-eq-dike-ic">
 <span class="eqno">(31)<a class="headerlink" href="#equation-eq-dike-ic" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
-T(x&lt;-1 \mid x&gt;1) = 300\\
-T(x&gt;-1 \&amp; x&lt;1) = 1200
+T(x\leq-1 &amp;\mid x\geq1) = 300°C\\
+T(x&gt;-1 &amp;\&amp; x&lt;1) = 1200°C
 \end{split}
 \end{align}\end{split}\]</div>
 <p>In addition, we assume that the temperature far away from the dike center (at <span class="math notranslate nohighlight">\(\lvert L/2 \rvert\)</span>) remains at a constant temperature. The boundary conditions are thus:</p>
+<p><a class="reference internal" href="#dike-setup"><span class="std std-numref">Fig. 2</span></a> summarizes the setup of the cooling dike problem.</p>
 <div class="math notranslate nohighlight" id="equation-eq-dike-bc">
 <span class="eqno">(32)<a class="headerlink" href="#equation-eq-dike-bc" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
-T(x=-\frac{L}{2}) = 300\\
-T(x=\frac{L}{2}) = 300
+T(x=-\frac{L}{2}) = 300°C\\
+T(x=\frac{L}{2}) = 300°C
 \end{split}
 \end{align}\end{split}\]</div>
 <div class="figure align-center" id="dike-setup" style="width: 100%">
 <img alt="../_images/1D_dike_example_stencil.png" src="../_images/1D_dike_example_stencil.png" />
 <p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Setup of the model considered here (A). A hot basaltic dike intrudes into colder country rock. Only variations in x-direction are considered; properties in the other directions are assumed to be constant. The initial temperature distribution <span class="math notranslate nohighlight">\(T(x,0)\)</span> has a step-like perturbation. B) Finite difference discretization of the 1D heat equation. The finite difference method approximates the temperature at given grid points, with spacing <span class="math notranslate nohighlight">\(\Delta x\)</span>. The time-evolution is also computed at given times with timestep <span class="math notranslate nohighlight">\(\Delta t\)</span>.</span><a class="headerlink" href="#dike-setup" title="Permalink to this image">¶</a></p>
 </div>
-<p><a class="reference internal" href="#dike-setup"><span class="std std-numref">Fig. 2</span></a> summarizes the setup of the cooling dike problem.</p>
 </div>
-<div class="section" id="fdm-notebook">
-<h2>FDM notebook<a class="headerlink" href="#fdm-notebook" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="excercises-1-d-cooling-dike-explicit">
+<h2>Excercises - 1-D cooling dike (explicit)<a class="headerlink" href="#excercises-1-d-cooling-dike-explicit" title="Permalink to this headline">¶</a></h2>
+<p>Try to implement the above prolem in python using the juypter notebook below as a starting point. One way is to activate your course python environment, start a jupyter lab or notebook, and create a new notebook. You can then copy the code blocks (cells) from the script into your notebook and complete the missing pieces.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="jupyter/cooling_dike_1d_fdm.html">Script for solving the 1D diffusion equation</a></li>
 </ul>
 </div>
-</div>
-<div class="section" id="excercises">
-<h2>Excercises<a class="headerlink" href="#excercises" title="Permalink to this headline">¶</a></h2>
-<p>The first step is to get the jupyter notebook to work. A good starting point is to make your own copy of the notebook. One way is to start-up your course python environment in a shell, start a jupyter lab or notebook, and create a new notebook. You can then copy the code blocks (cells) from the script into your notebook and complete the missing pieces.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate py37_fem_lecture
 <span class="nb">cd</span> <span class="nv">$your_working_directory</span>$
 jupyter lab
@@ -302,9 +295,7 @@ jupyter lab
 <li><p>Bonus question: Derive a finite-difference approximation for variable k and variable dx.</p></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="fdm-notebook-t-t-at-x-meters-from-dike">
-<h2>FDM notebook - T(t) at x meters from dike<a class="headerlink" href="#fdm-notebook-t-t-at-x-meters-from-dike" title="Permalink to this headline">¶</a></h2>
+<p>Here is a starting point for also calculating the temperature evolution at a certain distance from the dike.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="jupyter/cooling_dike_1d_fdm_T_at_x_m.html">Script for solving the 1D diffusion equation - T(t) at x meters from dike</a></li>
