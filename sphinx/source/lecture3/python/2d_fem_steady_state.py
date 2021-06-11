@@ -19,7 +19,7 @@ h_i         = 0.2 # heigths inclusion
 
 # model parameters
 k1          = 1
-k2          = 10
+k2          = 0.001
 Ttop        = 0
 Tbot        = 1
  
