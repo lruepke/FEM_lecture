@@ -102,11 +102,11 @@
               <p class="caption"><span class="caption-text">Course information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../general-info/course-details.html">Course details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../general-info/installation.html">Installation guide</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 1</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/overview.html">Overview: The Finite Differeces Method (FDM)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture1/installation.html">Installation guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/fdm_intro.html">Introduction Finite Differences</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_1.html">Example 1: Cooling dike</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_2.html">Example 2: Cooling dike - implicit version</a></li>
@@ -123,15 +123,24 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview: Finite Elements!</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction Finite Element Method</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#fem-1-d-heat-diffusion">FEM: 1-D heat diffusion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#excercise">Excercise</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jupyter/fem_1d_symbolic.html">Symbolic derivation of 1-D FEM stiffness matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fem-discretization">FEM discretization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#strong-form">Strong form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#approximate-solution">Approximate solution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#galerkin-method">Galerkin method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#weak-form">Weak form</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#matrix-assembly">Matrix assembly</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example-1-d-heat-diffusion-numerical-fem-solution">Example: 1-D heat diffusion numerical FEM solution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">Excercise</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jupyter/fem_1d_numerical.html">Numerical 1-D FEM solution of the heat diffusion equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fem-solution">FEM solution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#element-stiffness-matrix-a-el">Element stiffness matrix <span class="math notranslate nohighlight">\(A_{el}\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#excercise-derive-a-el">Excercise: derive <span class="math notranslate nohighlight">\(A_{el}\)</span></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="jupyter/fem_1d_symbolic.html">Symbolic derivation of 1-D FEM stiffness matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#matrix-assembly">Matrix assembly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation">Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="jupyter/fem_1d_numerical.html">Numerical 1-D FEM solution of the heat diffusion equation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -254,10 +263,22 @@
 </style>
 <div class="section" id="introduction-finite-element-method">
 <h1>Introduction Finite Element Method<a class="headerlink" href="#introduction-finite-element-method" title="Permalink to this headline">¶</a></h1>
-<p>Let’s go on and solve the 1-D heat diffusion equation with the Finite Element Method (FEM). Our starting point is again the steady-state case:</p>
+<div class="section" id="fem-discretization">
+<h2>FEM discretization<a class="headerlink" href="#fem-discretization" title="Permalink to this headline">¶</a></h2>
+<p>We will again use the 1-D steady state heat diffusion equation as an example and solve it using FEM. Formally speaking the steady-state diffusion equation is an <strong>elliptic</strong> PDE. Elliptic equations describe a large variety of steady state problems in earth sciences including diffusion, plate flexure, and incompressible flows.</p>
+<div class="admonition-types-of-pdes admonition">
+<p class="admonition-title">Types of PDEs</p>
+<p>Besides <strong>elliptic</strong> PDEs, there are, for example, also <strong>parabolic</strong> PDEs, which include the transient term, and <strong>hyperbolic</strong> PDEs, which describe e.g. wave propagation. We will learn about those a bit later in the course.</p>
+</div>
+<div class="section" id="strong-form">
+<h3>Strong form<a class="headerlink" href="#strong-form" title="Permalink to this headline">¶</a></h3>
+<p>Let’s go on and solve the elliptic 1-D heat diffusion equation with the Finite Element Method (FEM):</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-strong">
 <span class="eqno">(86)<a class="headerlink" href="#equation-eq-fem-1d-strong" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}=0.\]</div>
 <p>This is called the strong form of the governing equation and the function <span class="math notranslate nohighlight">\(T_{ex}(x)\)</span> by a (simpler) approximation:</p>
+</div>
+<div class="section" id="approximate-solution">
+<h3>Approximate solution<a class="headerlink" href="#approximate-solution" title="Permalink to this headline">¶</a></h3>
 <div class="math notranslate nohighlight" id="equation-eq-fem-aprox-funcion">
 <span class="eqno">(87)<a class="headerlink" href="#equation-eq-fem-aprox-funcion" title="Permalink to this equation">¶</a></span>\[T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j T_j = N_j T_j.\]</div>
 <p>In FEM we divide our computational domain into simple geometeric entities, the finite elements, and those finite elements have grid points. For example, in 2-D we can divide the domain in triangles with three nodes and in 1-D in simple lines with two nodes each. Think of our simple FD descritization, if we were to use the same descritization in FEM, the intervals between grid points would be our finite elements.</p>
@@ -271,12 +292,18 @@
 <p>Note how we use the Einstein convention and sum over repeated indices. We can now write the MWR form of the equation:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-mwr">
 <span class="eqno">(89)<a class="headerlink" href="#equation-eq-fem-mwr" title="Permalink to this equation">¶</a></span>\[\int_XW_i\frac{\partial}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx=0\ \ \ \ \ \ \ i=1,2,...,n\]</div>
+</div>
+<div class="section" id="galerkin-method">
+<h3>Galerkin method<a class="headerlink" href="#galerkin-method" title="Permalink to this headline">¶</a></h3>
 <p>In finite elements, the most frequently used weighting method is the Galerkin method that we already know from the previous session. We therefore use the interpolation functions also as weighting functions:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-mwr-2">
 <span class="eqno">(90)<a class="headerlink" href="#equation-eq-fem-mwr-2" title="Permalink to this equation">¶</a></span>\[\int_XN_i\frac{\partial}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx=0\ \ \ \ \ \ \ i=1,2,...,n\]</div>
 <p>The next step is to reduce the order of differentiation by using partial integration. Remember, integration by parts looks like this:</p>
 <div class="math notranslate nohighlight" id="equation-eq-partial-int">
 <span class="eqno">(91)<a class="headerlink" href="#equation-eq-partial-int" title="Permalink to this equation">¶</a></span>\[\int_{\Omega} fg' d\Omega = -\int_{\Omega} f'g d\Omega + \oint_{\Gamma} fg d\Gamma\]</div>
+</div>
+<div class="section" id="weak-form">
+<h3>Weak form<a class="headerlink" href="#weak-form" title="Permalink to this headline">¶</a></h3>
 <p>Applying this to <a class="reference internal" href="#equation-eq-partial-int">equation (91)</a> results in the <strong>weak form</strong> of our governing equation:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-weak">
 <span class="eqno">(92)<a class="headerlink" href="#equation-eq-fem-1d-weak" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
@@ -291,8 +318,7 @@
 <p>Close inspection of the boundary integral reveals that it is the heat flow through the boundaries of the modeling domain. In 1-D these are simply numbers of heat flow at the sides and in 2-D/3-D heat fluxes through the sides of the modeling domain. For the moment we will neglect it and only continue with the solution inside our domain:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-weak-simple">
 <span class="eqno">(93)<a class="headerlink" href="#equation-eq-fem-1d-weak-simple" title="Permalink to this equation">¶</a></span>\[\int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx =0\ \ \ \ \ \ \ i=1,2,...,n\]</div>
-<p>How can we solve this using the FEM?</p>
-<p>The basic idea is to split the integrals into subdomains and the solution will be the sum of the subdomains. In FEM, those subdomains are the finite elements:</p>
+<p>How can we solve this using the FEM? The basic idea is to split the integrals into subdomains and the solution will be the sum of the subdomains. In FEM, those subdomains are the finite elements:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-weak-simple-2">
 <span class="eqno">(94)<a class="headerlink" href="#equation-eq-fem-1d-weak-simple-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
@@ -303,8 +329,12 @@
 \end{align}\end{split}\]</div>
 <p>While mathematically we are always allowed to split an integral into a sum of integrals, in FEM this is particularly useful. The catch is that the shape function associated with a node is only non-zero in the elements connected to that node. This in turn means that in <a class="reference internal" href="#equation-eq-fem-1d-weak-simple-2">equation (94)</a>, we can do the integration of each element completely independent from all other elements!</p>
 <p>In the following sessions, we will go through all the steps involved in solving <a class="reference internal" href="#equation-eq-fem-1d-weak-simple-2">equation (94)</a>. We will first do this in a simple 1-D case before moving on to the general 2-D.</p>
-<div class="section" id="fem-1-d-heat-diffusion">
-<h2>FEM: 1-D heat diffusion<a class="headerlink" href="#fem-1-d-heat-diffusion" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="fem-solution">
+<h2>FEM solution<a class="headerlink" href="#fem-solution" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="element-stiffness-matrix-a-el">
+<h3>Element stiffness matrix <span class="math notranslate nohighlight">\(A_{el}\)</span><a class="headerlink" href="#element-stiffness-matrix-a-el" title="Permalink to this headline">¶</a></h3>
 <p>Let’s look at a single 1-D element. If we use linear shape functions, one 1-D element has two nodes – and only the shape functions of those two nodes will be non-zero. The so-called connectivity, which connects elements and nodes (which nodes belong to which element) is easy in 1-D: element number k will have the nodes i=k and i=k+1 (Element 1 has nodes 1 and 2). This means that for each element we will get two equations:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-single-element">
 <span class="eqno">(95)<a class="headerlink" href="#equation-eq-fem-1d-single-element" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
@@ -327,8 +357,8 @@ N_{i+1}(x) = \frac{x-x_i}{x_{i+1} - x_i} &amp;= \frac{x-x_i}{\Delta x}\\
 \end{split}
 \end{align}\end{split}\]</div>
 </div>
-<div class="section" id="excercise">
-<h2>Excercise<a class="headerlink" href="#excercise" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="excercise-derive-a-el">
+<h3>Excercise: derive <span class="math notranslate nohighlight">\(A_{el}\)</span><a class="headerlink" href="#excercise-derive-a-el" title="Permalink to this headline">¶</a></h3>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="jupyter/fem_1d_symbolic.html">Symbolic derivation of 1-D FEM stiffness matrix</a></li>
@@ -336,7 +366,7 @@ N_{i+1}(x) = \frac{x-x_i}{x_{i+1} - x_i} &amp;= \frac{x-x_i}{\Delta x}\\
 </div>
 </div>
 <div class="section" id="matrix-assembly">
-<h2>Matrix assembly<a class="headerlink" href="#matrix-assembly" title="Permalink to this headline">¶</a></h2>
+<h3>Matrix assembly<a class="headerlink" href="#matrix-assembly" title="Permalink to this headline">¶</a></h3>
 <p>The above exercise results in the integrated element stiffness matrix of steady-state diffusion:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-int-ae">
 <span class="eqno">(97)<a class="headerlink" href="#equation-eq-fem-1d-int-ae" title="Permalink to this equation">¶</a></span>\[\begin{split}Ael =
@@ -369,8 +399,8 @@ N_{i+1}(x) = \frac{x-x_i}{x_{i+1} - x_i} &amp;= \frac{x-x_i}{\Delta x}\\
 0 &amp; 0 &amp; -\frac{k}{\Delta x} &amp; \frac{k}{\Delta x} \\
 \end{bmatrix}\end{split}\]</div>
 </div>
-<div class="section" id="example-1-d-heat-diffusion-numerical-fem-solution">
-<h2>Example: 1-D heat diffusion numerical FEM solution<a class="headerlink" href="#example-1-d-heat-diffusion-numerical-fem-solution" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
 <p>Let’s put everything together and write our first finite element code! We will do this by programming a FEM solution to the steady-state heat diffusion equation but this time with a source term.</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-1d-strong-ex">
 <span class="eqno">(99)<a class="headerlink" href="#equation-eq-fem-1d-strong-ex" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x}+Q=0.\]</div>
@@ -401,14 +431,12 @@ T_{i+1}
 \frac{\Delta x}{2}Q_{el}
 \end{bmatrix}\end{split}\]</div>
 <p>Where the first matrix is the element stiffness matrix, the second vector are the unknown temperatures of the element, and the right-hand side has the integration source term <span class="math notranslate nohighlight">\(Q_{el}\)</span> which here is constant value (per element).</p>
-</div>
-<div class="section" id="id1">
-<h2>Excercise<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>Let’s put this into python!</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="jupyter/fem_1d_numerical.html">Numerical 1-D FEM solution of the heat diffusion equation</a></li>
 </ul>
+</div>
 </div>
 </div>
 </div>

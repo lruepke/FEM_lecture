@@ -99,11 +99,11 @@
               <p class="caption"><span class="caption-text">Course information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="general-info/course-details.html">Course details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="general-info/installation.html">Installation guide</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 1</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="lecture1/overview.html">Overview: The Finite Differeces Method (FDM)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lecture1/installation.html">Installation guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lecture1/fdm_intro.html">Introduction Finite Differences</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lecture1/example_1.html">Example 1: Cooling dike</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lecture1/example_2.html">Example 2: Cooling dike - implicit version</a></li>
@@ -238,24 +238,24 @@
 </style>
 <div class="section" id="the-finite-element-method-in-geodynamics">
 <h1>The Finite Element Method in geodynamics<a class="headerlink" href="#the-finite-element-method-in-geodynamics" title="Permalink to this headline">¶</a></h1>
-<p>Welcome to the course Numerical Fluid Dynamics II (FEM in geodynamics) taught at Kiel University within the Geophysics master.  The focus of this course is on learning how we can solve partial differential equations using the Finite Element Method (FEM) in the context of geodynamical modeling. The Finite Element Method is one of the main numerical methods in mechanics and is also used in the popular geodynamics community code <a class="reference external" href="https://aspect.geodynamics.org">ASPECT</a>. We will first learn about the basics before progressing towards writing our own mantle convection code and using it to address some example problems in geodynamics ranging from plate subduction to seafloor spreading. If we have time, we will also cover the marker-in-cell method, which becomes increasingly popular in the geodynamics community. All examples will be implemented in MATLAB and/or Python - sometimes using the <a class="reference external" href="https://fenicsproject.org">FENICS</a> framework.</p>
+<p>Welcome to the course Numerical Fluid Dynamics II (FEM in earth sciences) taught at Kiel University within the Geophysics master.  The focus of this course is on learning how we can solve partial differential equations using the Finite Element Method (FEM). The Finite Element Method is one of the main numerical methods in mechanics and is also used in the popular geodynamics community code <a class="reference external" href="https://aspect.geodynamics.org">ASPECT</a>. We will first learn about the basics before progressing towards solving several example problems ranging from heat diffusion, over reactive systems, to mantle convection. All examples will be implemented in Python.</p>
 <div class="section" id="course-content">
 <h2>Course content<a class="headerlink" href="#course-content" title="Permalink to this headline">¶</a></h2>
 <p>These are the main topics:</p>
 <ol class="arabic simple">
-<li><p>Getting started - 1D Finite Differences.</p></li>
+<li><p>Getting started</p></li>
+<li><p>1D Finite Differences.</p></li>
 <li><p>Introduction to the finite element method (FEM).</p></li>
-<li><p>Matlab/Python implementation of the FEM in 1D und 2D.</p></li>
-<li><p>Stokes-Flow.</p></li>
-<li><p>Project work on geodynamical topics.</p></li>
-<li><p>Introduction to marker-in-cell method.</p></li>
+<li><p>2D elliptical problems - heat diffusion.</p></li>
+<li><p>2D parabolic problems - transient diffusion.</p></li>
+<li><p>Stokes flow.</p></li>
 </ol>
 </div>
 <div class="section" id="course-goals">
 <h2>Course goals<a class="headerlink" href="#course-goals" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Ability to solve geodynamics problems using numerical models.</p></li>
-<li><p>Knowledge of numerical techniques and of how to solve partial differential equations using numerical methods using MATLAB or Python</p></li>
+<li><p>Knowledge of numerical techniques and of how to solve partial differential equations using numerical methods using Python</p></li>
 <li><p>Ability to understand how the popular geodynamics community codes like <a class="reference external" href="https://aspect.geodynamics.org">ASPECT</a> “work”.</p></li>
 <li><p>Preparation to a possible MSc project in geophysical fluid dynamics.</p></li>
 </ol>
@@ -278,17 +278,17 @@
 <li class="toctree-l2"><a class="reference internal" href="general-info/course-details.html#credits">Credits</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="general-info/installation.html">Installation guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general-info/installation.html#visual-studio-code">Visual Studio Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general-info/installation.html#python">Python</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Lecture 1</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="lecture1/overview.html">Overview: The Finite Differeces Method (FDM)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lecture1/installation.html">Installation guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lecture1/installation.html#visual-studio-code">Visual Studio Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lecture1/installation.html#python">Python</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="lecture1/fdm_intro.html">Introduction Finite Differences</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="lecture1/fdm_intro.html#background-on-conductive-heat-transport">Background on conductive heat transport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lecture1/fdm_intro.html#finite-differences-discretization">Finite Differences discretization</a></li>
@@ -352,11 +352,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="lecture3/overview.html">Overview: Finite Elements!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lecture3/fem_intro.html">Introduction Finite Element Method</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lecture3/fem_intro.html#fem-1-d-heat-diffusion">FEM: 1-D heat diffusion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lecture3/fem_intro.html#excercise">Excercise</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lecture3/fem_intro.html#matrix-assembly">Matrix assembly</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lecture3/fem_intro.html#example-1-d-heat-diffusion-numerical-fem-solution">Example: 1-D heat diffusion numerical FEM solution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lecture3/fem_intro.html#id1">Excercise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lecture3/fem_intro.html#fem-discretization">FEM discretization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lecture3/fem_intro.html#fem-solution">FEM solution</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="lecture3/fem_in_2d.html">2-D FEM - Heat diffusion</a><ul>
