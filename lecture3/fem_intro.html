@@ -145,7 +145,17 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="fem_in_2d.html">2-D FEM - Heat diffusion</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 4</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/overview.html">Overview: 2-D FEM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html">2-D FEM: derivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html#d-fem-solution">2-D FEM: solution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 5</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lecture5/overview.html">Overview: Unstructured meshes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture5/FEM_triangles.html">Unstructured triangle meshes</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -283,7 +293,7 @@
 <span class="eqno">(87)<a class="headerlink" href="#equation-eq-fem-aprox-funcion" title="Permalink to this equation">¶</a></span>\[T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j T_j = N_j T_j.\]</div>
 <p>In FEM we divide our computational domain into simple geometeric entities, the finite elements, and those finite elements have grid points. For example, in 2-D we can divide the domain in triangles with three nodes and in 1-D in simple lines with two nodes each. Think of our simple FD descritization, if we were to use the same descritization in FEM, the intervals between grid points would be our finite elements.</p>
 <div class="figure align-center" id="fig-shapefunc-1d-linear">
-<img alt="../_images/shapeFunction_Linear_1D.svg" src="../_images/shapeFunction_Linear_1D.svg" /><p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Example of 1D linear finite element shape functions</span><a class="headerlink" href="#fig-shapefunc-1d-linear" title="Permalink to this image">¶</a></p>
+<img alt="lecture3/Schematic_FEM/shapeFunction_Linear_1D.svg" src="lecture3/Schematic_FEM/shapeFunction_Linear_1D.svg" /><p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Example of 1D linear finite element shape functions</span><a class="headerlink" href="#fig-shapefunc-1d-linear" title="Permalink to this image">¶</a></p>
 </div>
 <p>These linear independent functions <span class="math notranslate nohighlight">\(N\)</span>, called shape functions in FEM, are associated with the chosen discretization (<a class="reference internal" href="#fig-shapefunc-1d-linear"><span class="std std-numref">Fig. 4</span></a>). Each node is associated with one shape function and that shape function has the value <span class="math notranslate nohighlight">\(1\)</span> at that node and is zero at every other node. In our simple 1-D case, the shape functions vary linearly from one to zero over the adjacent elements of each node. With these properties, the sum over all all shape functions is always one, and the coefficients of those shape functions happen to be the unknown variable values at the nodes, the nodal temperatures in our case.</p>
 <p>Let’s plug the approximated solution into the strong form of our equation:</p>

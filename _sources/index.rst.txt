@@ -69,7 +69,20 @@ The majority of this course will be spent in front of a computer working on exer
     lecture3/fem_intro
     lecture3/fem_in_2d
 
-    
+.. toctree::
+    :maxdepth: 2
+    :caption: Lecture 4
+
+    lecture4/overview
+    lecture4/fem_in_2d
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Lecture 5
+
+    lecture5/overview
+    lecture5/FEM_triangles
+
 .. toctree::
    :maxdepth: 2
    :caption: References
