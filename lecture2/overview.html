@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Overview: Method of Weighted Residuals (MWR) &mdash; Finite Element Modeling in Geodynamics  documentation</title>
+  <title>Overview &mdash; Finite Element Modeling in Geodynamics  documentation</title>
   
 
   
@@ -47,7 +47,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Introduction Method of Weighted Residuals" href="mwr_intro.html" />
+    <link rel="next" title="Introduction: Method of Weighted Residuals (MWR)" href="mwr_intro.html" />
     <link rel="prev" title="Periodic variations in seafloor temperature" href="../lecture1/jupyter/seafloor_temp_variations.html" /> 
 </head>
 
@@ -104,34 +104,36 @@
 </ul>
 <p class="caption"><span class="caption-text">Lecture 1</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../lecture1/overview.html">Overview: The Finite Differeces Method (FDM)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture1/fdm_intro.html">Introduction Finite Differences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/fdm_intro.html">Introduction: The Finite Differences Method (FDM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_1.html">Example 1: Cooling dike</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_2.html">Example 2: Cooling dike - implicit version</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_3.html">Example 3: Periodic variations in seafloor temperature</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 2</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview: Method of Weighted Residuals (MWR)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mwr_intro.html">Introduction Method of Weighted Residuals</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mwr_intro.html">Introduction: Method of Weighted Residuals (MWR)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mwr_examples.html">MWR solutions of the steady advection-diffusion equation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="excercises.html">Excercises</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 3</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../lecture3/overview.html">Overview: Finite Elements!</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html">Introduction Finite Element Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html">Introduction: Finite Element Method (FEM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html#fem-implementation">FEM implementation</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 4</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../lecture4/overview.html">Overview: 2-D FEM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html">2-D FEM: derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html#d-fem-solution">2-D FEM: solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html">2-D FEM - elliptic problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html#implementation">Implementation</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 5</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../lecture5/overview.html">Overview: Unstructured meshes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture5/FEM_triangles.html">Unstructured triangle meshes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture5/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture5/FEM_triangles.html">Triangles: unstructured meshes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture5/FEM_triangles.html#excercise">Excercise</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -202,7 +204,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Overview: Method of Weighted Residuals (MWR)</li>
+      <li>Overview</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -247,8 +249,8 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="overview-method-of-weighted-residuals-mwr">
-<h1>Overview: Method of Weighted Residuals (MWR)<a class="headerlink" href="#overview-method-of-weighted-residuals-mwr" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
 <p>So far, we have learned how to solve partial differential equations using the Finite Differences Method (FDM). <span id="id1">[<a class="reference internal" href="../refs.html#id30" title="William L. Briggs, Van Emden Henson, and Steve F. McCormick. A Multigrid Tutorial (2nd Ed.). Society for Industrial and Applied Mathematics, USA, 2000. ISBN 0898714621.">Briggs et al., 2000</a>]</span> in their book “A Multigrid Tutorial” describe this as <em>“…finite differences methods replace the problem domain by a grid and produce a vector whose components are approximations to the solution at the grid points”</em>. This is straightforward and exactly what we have done in the past weeks. Here is what they have to say on finite elements: <em>“…finite element methods partition the problem domain into subregions and produce a simple function in each subregion that approximates the solution”</em>. This seems a bit less straightforward but results in a very powerful method to solve partial differential equations.</p>
 <p>In this lecture, we will start out by having a closer look at finding approximate solutions for partial differential equations before diving deeper into finite element methods. A powerful technique, which is close to the finite element concept, is the <em>Method of Weighted Residuals</em> (MWR). This method will be presented as an introduction, before using a particular subclass of MWR, the Galerkin Method of Weighted Residuals, to derive the  equations of the Finite Element Method (FEM).</p>
 </div>
@@ -259,7 +261,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="mwr_intro.html" class="btn btn-neutral float-right" title="Introduction Method of Weighted Residuals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="mwr_intro.html" class="btn btn-neutral float-right" title="Introduction: Method of Weighted Residuals (MWR)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="../lecture1/jupyter/seafloor_temp_variations.html" class="btn btn-neutral float-left" title="Periodic variations in seafloor temperature" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

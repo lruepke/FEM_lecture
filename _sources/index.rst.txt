@@ -67,7 +67,6 @@ The majority of this course will be spent in front of a computer working on exer
 
     lecture3/overview
     lecture3/fem_intro
-    lecture3/fem_in_2d
 
 .. toctree::
     :maxdepth: 2

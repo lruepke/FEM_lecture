@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Unstructured triangle meshes &mdash; Finite Element Modeling in Geodynamics  documentation</title>
+  <title>Triangles: unstructured meshes &mdash; Finite Element Modeling in Geodynamics  documentation</title>
   
 
   
@@ -50,7 +50,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="References" href="../refs.html" />
-    <link rel="prev" title="Overview: Unstructured meshes" href="overview.html" /> 
+    <link rel="prev" title="Overview" href="overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -106,42 +106,44 @@
 </ul>
 <p class="caption"><span class="caption-text">Lecture 1</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../lecture1/overview.html">Overview: The Finite Differeces Method (FDM)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture1/fdm_intro.html">Introduction Finite Differences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/fdm_intro.html">Introduction: The Finite Differences Method (FDM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_1.html">Example 1: Cooling dike</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_2.html">Example 2: Cooling dike - implicit version</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_3.html">Example 3: Periodic variations in seafloor temperature</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 2</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../lecture2/overview.html">Overview: Method of Weighted Residuals (MWR)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture2/mwr_intro.html">Introduction Method of Weighted Residuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/mwr_intro.html">Introduction: Method of Weighted Residuals (MWR)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture2/mwr_examples.html">MWR solutions of the steady advection-diffusion equation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture2/excercises.html">Excercises</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 3</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../lecture3/overview.html">Overview: Finite Elements!</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html">Introduction Finite Element Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html">Introduction: Finite Element Method (FEM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html#fem-implementation">FEM implementation</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 4</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../lecture4/overview.html">Overview: 2-D FEM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html">2-D FEM: derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html#d-fem-solution">2-D FEM: solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html">2-D FEM - elliptic problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html#implementation">Implementation</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 5</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview: Unstructured meshes</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Unstructured triangle meshes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#theoretical-background">Theoretical background</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#step-0-getting-ready">Step 0: getting ready</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-1-mesh-generation">Step 1: mesh generation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-2-triangle-shape-functions-and-integration-points">Step 2: triangle shape functions and integration points</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-3-boundary-conditions">Step 3: Boundary conditions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-4-post-processing-and-plotting">Step 4: Post-processing and plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Triangles: unstructured meshes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#theoretical-background">Theoretical background</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#excercise">Excercise</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#step-0-getting-ready">Step 0: getting ready</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-1-mesh-generation">Step 1: mesh generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2-triangle-shape-functions-and-integration-points">Step 2: triangle shape functions and integration points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3-boundary-conditions">Step 3: Boundary conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-4-post-processing-and-plotting">Step 4: Post-processing and plotting</a></li>
 </ul>
 </li>
 </ul>
@@ -214,7 +216,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Unstructured triangle meshes</li>
+      <li>Triangles: unstructured meshes</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -259,8 +261,8 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="unstructured-triangle-meshes">
-<h1>Unstructured triangle meshes<a class="headerlink" href="#unstructured-triangle-meshes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="triangles-unstructured-meshes">
+<h1>Triangles: unstructured meshes<a class="headerlink" href="#triangles-unstructured-meshes" title="Permalink to this headline">¶</a></h1>
 <p>In this session we will learn</p>
 <blockquote>
 <div><ul class="simple">
@@ -271,14 +273,14 @@
 <p>The problem we will look at is basically the same as in the example given above. We will resolve steady-state heat diffusion within a rectangular region but now we will have circular inclusions of different thermal conductivity.</p>
 <div class="section" id="theoretical-background">
 <h2>Theoretical background<a class="headerlink" href="#theoretical-background" title="Permalink to this headline">¶</a></h2>
-<p>Let’s first explore how triangle element “work”. <a class="reference internal" href="#fig-fem-triangle-coords-f"><span class="std std-numref">Fig. 18</span></a>  shows a triangle in global and local coordinates. The local node numering is again counterclockwise.</p>
+<p>Let’s first explore how triangle element “work”. <a class="reference internal" href="#fig-fem-triangle-coords-f"><span class="std std-numref">Fig. 16</span></a>  shows a triangle in global and local coordinates. The local node numering is again counterclockwise.</p>
 <div class="figure align-center" id="fig-fem-triangle-coords-f">
 <img alt="../_images/triangle_coords.png" src="../_images/triangle_coords.png" />
-<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">Global and local coordinates of a triangle element. Black crosses mark the locations of the three integration points.</span><a class="headerlink" href="#fig-fem-triangle-coords-f" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Global and local coordinates of a triangle element. Black crosses mark the locations of the three integration points.</span><a class="headerlink" href="#fig-fem-triangle-coords-f" title="Permalink to this image">¶</a></p>
 </div>
 <p>Here we look at a linear triangle with three nodes. The relation between global and local coordinates is therefore:</p>
 <div class="math notranslate nohighlight" id="equation-eq-triangle-1">
-<span class="eqno">(127)<a class="headerlink" href="#equation-eq-triangle-1" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(122)<a class="headerlink" href="#equation-eq-triangle-1" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 x &amp;= x_1 + (x_2-x_1)\xi + (x_3-x_1)\eta \\
 y &amp;= y_1 + (y_2-y_1)\xi + (y_3-y_1)\eta \\
@@ -286,10 +288,10 @@ y &amp;= y_1 + (y_2-y_1)\xi + (y_3-y_1)\eta \\
 \end{align}\end{split}\]</div>
 <p>Temperature, or any other variable, will also vary linearly with the local coordinates and we can write</p>
 <div class="math notranslate nohighlight" id="equation-eq-triangle-2">
-<span class="eqno">(128)<a class="headerlink" href="#equation-eq-triangle-2" title="Permalink to this equation">¶</a></span>\[T(\xi,\eta) = a_1 +a_2\xi + a_3\eta\]</div>
+<span class="eqno">(123)<a class="headerlink" href="#equation-eq-triangle-2" title="Permalink to this equation">¶</a></span>\[T(\xi,\eta) = a_1 +a_2\xi + a_3\eta\]</div>
 <p>We can spell this out for the three nodes:</p>
 <div class="math notranslate nohighlight" id="equation-eq-triangle-3">
-<span class="eqno">(129)<a class="headerlink" href="#equation-eq-triangle-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(124)<a class="headerlink" href="#equation-eq-triangle-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 T_1 &amp;= T(0,0) = a_1 \\
 T_2 &amp;= T(1,0) = a_1 + a_2 \\
@@ -298,16 +300,16 @@ T_3 &amp;= T(0,1) = a_1 + a_3
 \end{align}\end{split}\]</div>
 <p>And express the contants <span class="math notranslate nohighlight">\(a\)</span> in terms of the nodal temperatures (or whatever our unknown is).</p>
 <div class="math notranslate nohighlight" id="equation-eq-triangle-4">
-<span class="eqno">(130)<a class="headerlink" href="#equation-eq-triangle-4" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(125)<a class="headerlink" href="#equation-eq-triangle-4" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 a_1 = T_1 \\
 a_2 = T_2 - T_1 \\
 a_3 = T_3 - T_1
 \end{split}
 \end{align}\end{split}\]</div>
-<p>This we put back into the definition of the approximate solution <a class="reference internal" href="#equation-eq-triangle-2">equation (128)</a> and get:</p>
+<p>This we put back into the definition of the approximate solution <a class="reference internal" href="#equation-eq-triangle-2">equation (123)</a> and get:</p>
 <div class="math notranslate nohighlight" id="equation-eq-triangle-5">
-<span class="eqno">(131)<a class="headerlink" href="#equation-eq-triangle-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(126)<a class="headerlink" href="#equation-eq-triangle-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 T(\xi,\eta) &amp;= T_1 +(T_2 - T_1)\xi + (T_3-T_1)\eta\\
 \Rightarrow \\
@@ -321,12 +323,16 @@ T(\xi,\eta) &amp;= N_1 T_1 + N_2 T_2 + N_3 T_3 \\
 \end{split}
 \end{align}\end{split}\]</div>
 <p>Alright, now that we understand the local coordinates and the shape functions associated with linear triangle element, we are good to go!</p>
+</div>
+</div>
+<div class="section" id="excercise">
+<h1>Excercise<a class="headerlink" href="#excercise" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="step-0-getting-ready">
-<h3>Step 0: getting ready<a class="headerlink" href="#step-0-getting-ready" title="Permalink to this headline">¶</a></h3>
-<p>Make a copy of the exemple solver above. Take it as a starting point and integrate the various code pieces and pieces of information below into.</p>
+<h2>Step 0: getting ready<a class="headerlink" href="#step-0-getting-ready" title="Permalink to this headline">¶</a></h2>
+<p>Make a copy of the example solver above. Take it as a starting point and integrate the various code pieces and pieces of information below into.</p>
 </div>
 <div class="section" id="step-1-mesh-generation">
-<h3>Step 1: mesh generation<a class="headerlink" href="#step-1-mesh-generation" title="Permalink to this headline">¶</a></h3>
+<h2>Step 1: mesh generation<a class="headerlink" href="#step-1-mesh-generation" title="Permalink to this headline">¶</a></h2>
 <p>We will use the mesh generator <a class="reference external" href="https://www.cs.cmu.edu/~quake/triangle.html">triangle</a> by Jonathan Shewchuk. It’s one of the best 2-D mesh generators for triangle meshes. It’s originally written in C but we will for convenience use a python wrapper. You can install it into your virtual environment by doing this:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install triangle
 </pre></div>
@@ -411,7 +417,7 @@ T(\xi,\eta) &amp;= N_1 T_1 + N_2 T_2 + N_3 T_3 \\
 <p>Note how the generated mesh comes back as a python dictionary from which we extract the mesh information. Note also that the array <code class="code docutils literal notranslate"><span class="pre">Phases</span></code> contains a marker to which region an element belongs (matrix versus inclusion).</p>
 </div>
 <div class="section" id="step-2-triangle-shape-functions-and-integration-points">
-<h3>Step 2: triangle shape functions and integration points<a class="headerlink" href="#step-2-triangle-shape-functions-and-integration-points" title="Permalink to this headline">¶</a></h3>
+<h2>Step 2: triangle shape functions and integration points<a class="headerlink" href="#step-2-triangle-shape-functions-and-integration-points" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="../lecture4/fem_in_2d.html#fig-shapefunc-2d-linear"><span class="std std-numref">Fig. 5</span></a> shows shape functions for a linear triangle element. You will need to modify the function in our <code class="code docutils literal notranslate"><span class="pre">shapes.py</span></code> file to implement the triangular shape functions.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#shape functions</span>
 <span class="n">eta2</span> <span class="o">=</span> <span class="n">xi</span>
@@ -426,7 +432,7 @@ T(\xi,\eta) &amp;= N_1 T_1 + N_2 T_2 + N_3 T_3 \\
 <p>Take this as a starting point and modify <code class="code docutils literal notranslate"><span class="pre">shapes.py</span></code> to return the correct three shape functions and the six derivatives!</p>
 <p>Next we need to adapt our integration rule. Take these three integration points and weights.</p>
 <table class="docutils align-default" id="id1">
-<caption><span class="caption-number">Table 3 </span><span class="caption-text">Triangle integration</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">Triangle integration</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 25%" />
 <col style="width: 25%" />
@@ -464,7 +470,7 @@ T(\xi,\eta) &amp;= N_1 T_1 + N_2 T_2 + N_3 T_3 \\
 </div>
 </div>
 <div class="section" id="step-3-boundary-conditions">
-<h3>Step 3: Boundary conditions<a class="headerlink" href="#step-3-boundary-conditions" title="Permalink to this headline">¶</a></h3>
+<h2>Step 3: Boundary conditions<a class="headerlink" href="#step-3-boundary-conditions" title="Permalink to this headline">¶</a></h2>
 <p>We were actually a bit “lazy” when we implemented the boundary conditions in the example above. Instead of coming up with a general solution, we identified the global node numbers on the boundaries assuming a structured quad mesh. Now we are using an unstructured triangle mesh and it is not so easy anymore to know which nodes are on the boundaries and should get boundary conditions. The “typical” way would be to use boundary markers in the mesh generation; here we use a different approach and use an ad-hoc search for the boundary nodes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># indices and values at top and bottom</span>
 <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-3</span>
@@ -479,7 +485,7 @@ T(\xi,\eta) &amp;= N_1 T_1 + N_2 T_2 + N_3 T_3 \\
 </div>
 </div>
 <div class="section" id="step-4-post-processing-and-plotting">
-<h3>Step 4: Post-processing and plotting<a class="headerlink" href="#step-4-post-processing-and-plotting" title="Permalink to this headline">¶</a></h3>
+<h2>Step 4: Post-processing and plotting<a class="headerlink" href="#step-4-post-processing-and-plotting" title="Permalink to this headline">¶</a></h2>
 <p>Modify the post-processing code that computes the heat fluxes, so that it works for triangles. This should just involve setting a new local coordinates for the single integration points. Use <span class="math notranslate nohighlight">\(\xi=\frac{1}{3}\)</span> and  <span class="math notranslate nohighlight">\(\eta=\frac{1}{3}\)</span>, which is the center of each triangle.</p>
 <p>Now we just need to plot! Thankfully python makes it easy for us and we can use the functions <code class="code docutils literal notranslate"><span class="pre">triplot</span></code> and <code class="code docutils literal notranslate"><span class="pre">tricontourf</span></code> to plot the unstructured data.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># plotting</span>
@@ -501,8 +507,7 @@ T(\xi,\eta) &amp;= N_1 T_1 + N_2 T_2 + N_3 T_3 \\
 </div>
 <div class="figure align-center" id="fig-fem-triangle-dif-f" style="width: 80%">
 <img alt="../_images/triangle_fem_diffusion.png" src="../_images/triangle_fem_diffusion.png" />
-<p class="caption"><span class="caption-number">Fig. 19 </span><span class="caption-text">2-D diffusion on unstructured mesh.</span><a class="headerlink" href="#fig-fem-triangle-dif-f" title="Permalink to this image">¶</a></p>
-</div>
+<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">2-D diffusion on unstructured mesh.</span><a class="headerlink" href="#fig-fem-triangle-dif-f" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>
@@ -514,7 +519,7 @@ T(\xi,\eta) &amp;= N_1 T_1 + N_2 T_2 + N_3 T_3 \\
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="../refs.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="overview.html" class="btn btn-neutral float-left" title="Overview: Unstructured meshes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

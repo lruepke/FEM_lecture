@@ -1,5 +1,5 @@
-Unstructured triangle meshes
-===========================
+Triangles: unstructured meshes
+===================
 
 In this session we will learn
 
@@ -86,13 +86,15 @@ This we put back into the definition of the approximate solution :eq:`eq:triangl
 
 Alright, now that we understand the local coordinates and the shape functions associated with linear triangle element, we are good to go!
 
+Excercise
+=========
 
 Step 0: getting ready
-^^^^^^^^^^^^^^^^^^^^^
-Make a copy of the exemple solver above. Take it as a starting point and integrate the various code pieces and pieces of information below into. 
+---------------------
+Make a copy of the example solver above. Take it as a starting point and integrate the various code pieces and pieces of information below into. 
 
 Step 1: mesh generation
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 We will use the mesh generator `triangle <https://www.cs.cmu.edu/~quake/triangle.html>`_ by Jonathan Shewchuk. It's one of the best 2-D mesh generators for triangle meshes. It's originally written in C but we will for convenience use a python wrapper. You can install it into your virtual environment by doing this:
 
 .. code-block:: bash
@@ -182,7 +184,7 @@ Here is a code piece for making the the mesh:
 Note how the generated mesh comes back as a python dictionary from which we extract the mesh information. Note also that the array :code:`Phases` contains a marker to which region an element belongs (matrix versus inclusion).
 
 Step 2: triangle shape functions and integration points
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------------------------------
 :numref:`fig:shapeFunc:2D:linear` shows shape functions for a linear triangle element. You will need to modify the function in our :code:`shapes.py` file to implement the triangular shape functions. 
 
 .. code-block:: python
@@ -227,7 +229,7 @@ Next we need to adapt our integration rule. Take these three integration points 
 
 
 Step 3: Boundary conditions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------
 We were actually a bit "lazy" when we implemented the boundary conditions in the example above. Instead of coming up with a general solution, we identified the global node numbers on the boundaries assuming a structured quad mesh. Now we are using an unstructured triangle mesh and it is not so easy anymore to know which nodes are on the boundaries and should get boundary conditions. The "typical" way would be to use boundary markers in the mesh generation; here we use a different approach and use an ad-hoc search for the boundary nodes:
 
 .. code-block:: python
@@ -246,7 +248,7 @@ Complete this and add the lines to the main code!
 
 
 Step 4: Post-processing and plotting
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------------
 
 Modify the post-processing code that computes the heat fluxes, so that it works for triangles. This should just involve setting a new local coordinates for the single integration points. Use :math:`\xi=\frac{1}{3}` and  :math:`\eta=\frac{1}{3}`, which is the center of each triangle.
 

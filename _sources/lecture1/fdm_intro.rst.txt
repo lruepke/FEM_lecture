@@ -1,5 +1,5 @@
-Introduction Finite Differences
-===============================
+Introduction: The Finite Differences Method (FDM)
+=================================================
 
 Before progressing towards finite element modeling, we will learn about the Finite Difference Method (FDM), which is a somewhat easier method to solve partial differential equations. We will do so by looking at how heat conduction “works”.
 
