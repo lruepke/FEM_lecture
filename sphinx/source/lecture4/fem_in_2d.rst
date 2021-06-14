@@ -1,16 +1,21 @@
-2-D FEM - Heat diffusion
+2-D FEM: derivation
 =========================================
 
-Derivation of the weak form
----------------------------
+Let’s move on to 2D! We will again use our steady-state heat diffusion equation as an example and will follow basically the same steps as during the 1-D example.
 
-Let’s move on to 2D! The strong form looks like this, we have just added the second dimension.
+
+Governing equation - strong form
+--------------------------------
+
+The strong form looks like this, we have just added the second dimension.
 
 .. math::
     :label: eq:fem_2d_strong
 
     \frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T_{ex}}{\partial y} =0. 
 
+2-D shape functions
+-------------------
 
 We now use 2-D shape functions in our approximate solution:
 
@@ -22,9 +27,7 @@ We now use 2-D shape functions in our approximate solution:
 where the shape functions :math:`N_j(x,y)` are now function of both spatial dimensions. An example of a 2-D FEM mesh and associated shape functions are shown in :numref:`fig:shapeFunc:2D:linear`. Note that the structured quad mesh and the bi-linear shape functions are just one possibility of using the FEM in 2-D. There are many other possibility, like unstructured triangle meshes and higher order shape functions.
 
 .. tip::
-    Never forget that the shape functions :mat:`N(x,y)`are defined over the entire modeling domain in global coordinates. We will just evaluate them per element using local coordinates.
-
-
+    Never forget that the shape functions :math:`N(x,y)` are defined over the entire modeling domain in global coordinates. We will just evaluate them per element using local coordinates.
 
 .. tab:: Four‐Node Bilinear Quadrilateral
 
@@ -74,9 +77,9 @@ Note that the 2-D shape functions still sum to :math:`1` everywhere:
 
     \sum_{j=1}^{n} N_j(x,y)  = 1. 
 
-
-
-We proceed by substituting :eq:`eq:fem_aprox_funcion_2d` into :eq:`eq:fem_2d_strong` and by using the Galerkin method. This results in:
+Weak form
+---------
+We proceed by substituting :eq:`eq:fem_aprox_funcion_2d` into :eq:`eq:fem_2d_strong` and by using the Galerkin method we get:
 
 .. math::
     :label: eq:fem_2d_weak
@@ -113,10 +116,13 @@ We go on and split the modeling domain into finite elements and the first integr
     \end{split}
     \end{align}
 
-2-D FEM: connectivity
-----------------------
+
+Element connectivity
+--------------------
 The basic concept of the finite element method is to solve/assemble the system of equations, for e.g. heat diffusion, on each element and add all element contributions together to obtain the global matrix equation.
-Every element has an element number and a certain number of nodes. We will initially use quadratic elements with four nodes. For the connectivity between elements we will need two matrices: a CGCOORD matrix that has the size [nnod,2], where 2 is the number of dimensions (x,y) and nnod is the total number of nodes in the mesh, and ELEM2NODE, which has the size [nel, nnodel] (nel is the total number of elements and nnodel is the number of nodes per element, i.e. 4), see :numref:`fig:mesh:2D:structured`. We had already used this matrices in 1-D but now their meaning becomes clear.
+Every element has an element number and a certain number of nodes. We will initially use quadratic elements with four nodes.
+
+For a FEM mesh with bi-linear quad elements, we will need two matrices: a matrix we will call CGCOORD that contains the global coordinates of each grid point (it therefore has the size [nnod,2], where 2 is the number of dimensions (x,y) and nnod is the total number of nodes) and a matris so we call ELEM2NODE, which contains for each element the indices of the four nodes that belong to it (it therefore has the size [nel, nnodel], where nel is the total number of elements and nnodel is the number of nodes per element). See :numref:`fig:mesh:2D:structured` for more details. We had already used these matrices in 1-D but now their meanings become clear.
 
 .. tab:: Structured mesh 1
 
@@ -168,45 +174,15 @@ We will use a connectivity as shown in :numref:`fig:matrix:2D:structured`. Eleme
 
         Connectivity example of 2D finite element with unstructured mesh
 
-Excercise
-^^^^^^^^^^
-
-#. Create the global coordinate vector GCOORD. Assume that the length of the box in x direction (lx) is 1 ([0,1]) and the length of box is y direction (ly) is also 1 ([0, 1]). The number of nodes in x is 5 (nx) and the number of nodes in y is 4 (ny).  
-#. Create the connectivity matrix ELEM2NODE. The element numbering should look like this:
-
-.. tip::
-
-    * Hint loop over all nodes and create their respective x and y coordinates. The node numbering should be like in :numref:`fig:mesh:2D:structured` (see jupyter notebook for a discussion).
-    * Functions like ceil or floor might help you with the connectivity matrix; it might also help to first compute the row we are in and then compute the index of the lower left node and move on from there.
-
-.. tip::
-
-    We use a function called tabulate to format the output in the notebooks. You will probably have to install it into your virtual python environment.
-
-    .. code-block:: bash
-
-        conda activate py37_fem_class
-        conda install tabulate
-
-
-.. toctree::
-    :maxdepth: 2
-
-    jupyter/2d_fem_connectivity.ipynb
-
 
 Numerical integration
 ----------------------
-In the previous session we have learned how to set up a finite element mesh and the connectivity matrix that relates elements and nodes. Next we will learn about numerical integration and how shape functions are used to interpolate on elements.
-
-We have seen that the general finite element form, called weak form, of the heat diffusion equation can be written as (with boundary terms omitted):
+The next step is to learn how we can integrate the element stiffness matrix. We have seen that the general finite element form, called weak form, of the heat diffusion equation can be written as (with boundary terms omitted):
 
 .. math::
     :label: eq:fem_2d_weak_num_int
 
     \int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y} T_j \right ) d\Omega   = \sum_{Elements} \int_{\Omega_{e}} \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y}  \right ) T_j d\Omega_{e} =0\ \ \ \ \ \ \ i=1,2,...,n
-
-
 
 The main problem with solving :eq:`eq:fem_2d_weak_num_int` is that the integral may be very difficult to evaluate. In finite elements we can use elements of very different geometries to mesh complex objects, which makes the 2-D integrals very hard to solve. We will therefore use numerical integration techniques like Gauss-Legendre quadrature. The problem is (or good thing  as we will see later) that basically all quadrature rules (for quads) apply to rectangular domains that are 2x2 in size and have a local coordinate system :math:`(−1 \leq (\xi,\eta) \leq 1)`. The integration of a function over a 2d domain can than be expressed as:
 
@@ -217,6 +193,50 @@ The main problem with solving :eq:`eq:fem_2d_weak_num_int` is that the integral 
 
 where M and N denote the number of Gauss points, :math:`(\xi,\eta)`denote the Gauss point coordinates, and :math:`W_I` and :math:`W_J` denote the corresponding Gauss weights. The selection of the number of Gauss points is based on the formula :math:`N=int[(p+1)/2]+1`, where p the polynomial degree to which the integrand is approximated. We will use linear shape functions so that we have 2 Gauss points (in every direction). In this case the local coordinates are :math:`\pm0.5773502692` and the weights are all :math:`1`.
 
+Gauss points
+^^^^^^^^^^^^
+.. list-table:: Quad integration. Only one direction is spelled out, the second direction is done in the same way.
+    :header-rows: 1
+
+    * - Order 
+      - Integration point
+      - :math:`\xi`
+      - :math:`\eta`
+      - weight
+    * - :math:`1` 
+      - :math:`1`
+      - :math:`0`
+      - :math:`0`
+      - :math:`2`
+    * - :math:`2`
+      - :math:`1`
+      - :math:`-0.577`
+      - :math:`-0.577`
+      - :math:`1`
+    * - :math:`2`
+      - :math:`2`
+      - :math:`+0.577`
+      - :math:`-0.577`
+      - :math:`1`
+    * - :math:`3` 
+      - :math:`1`
+      - :math:`-0.775`
+      - :math:`-0.775`
+      - :math:`0.556`
+    * - :math:`3`
+      - :math:`2`
+      - :math:`0`
+      - :math:`-0.775`
+      - :math:`0.889`
+    * - :math:`3`
+      - :math:`3`
+      - :math:`+0.775`
+      - :math:`-0.775`
+      - :math:`0.556`
+
+
+Isoparametric elements
+^^^^^^^^^^^^^^^^^^^^^^
 So far so good, but how do we solve the integral in :eq:`eq:fem_2d_weak_num_int` using local coordinates? We will have to do a coordinate transformation for the purpose of numerical integration that relates the element :math:`\Omega_e` to the master element area :math:`\hat{\Omega}` - or, equivalently, :math:`(x,y)` to :math:`(ξ,η)`. This can be done by using interpolation functions in terms of local coordinates. We will use so-called *isoparametric* elements in which we use the same number of interpolation functions for coordinate mapping and primary variable interpolation. This implies for our four node element that the local variables vary bi-linearly over the element.
     
 .. math::
@@ -266,8 +286,9 @@ Or in matrix form:
     \frac{\partial N}{\partial y},
     \end{bmatrix} 
 
-
-which gives the relation between the derivatives of :math:`N` with respect to the global and local coordinates. The matrix in :eq:`eq:num_int_isoparam_3` is called the Jacobian matrix, J, of the coordinate transformation. Unfortunately this relationship is in the wrong direction. If we have a look at our starting equation :eq:`eq:fem_2d_weak_num_int`, we realize that we need to relate the derivative with respect to global coordinates to the derivative with respect to local coordinates (which is the opposite direction). Fortunately this can be done quite easily:
+Jacobian matrix
+^^^^^^^^^^^^^^^^
+:eq:`eq:num_int_isoparam_3` gives the relationship between the derivatives of :math:`N` with respect to the global and local coordinates. The matrix in :eq:`eq:num_int_isoparam_3` is called the Jacobian matrix, J, of the coordinate transformation. Unfortunately this relationship is in the wrong direction. If we have a look at our starting equation :eq:`eq:fem_2d_weak_num_int`, we realize that we need to relate the derivative with respect to global coordinates to the derivative with respect to local coordinates (which is the opposite direction). Fortunately this can be done quite easily:
 
 .. math::
     :label: eq:num_int_isoparam_4
@@ -320,18 +341,40 @@ We have now all the information we need to solve the integral in :eq:`eq:fem_2d_
 
 It should be noted that the transformation of a quadrilateral element of a mesh to a master element :math:`\hat{\Omega}` is solely for the purpose of numerically evaluating the integrals in :eq:`eq:fem_2d_weak_num_int` . No transformation of the physical domain or elements is involved in the finite element analysis.
 
-2-D Shape functions
--------------------
+Excercises
+----------
 
-By now we have learned how to solve integrals of shape functions and transform shape functions between different coordinate systems. It is really time that we learn what these shape functions are! We will use four-node rectangular element with bilinear shape functions. Remember that these shape functions look like this:
+FEM mesh
+^^^^^^^^^^
+The first excercise is about building the FEM mesh and element connectivity matrix that contains the information on which nodes belong to which element. Have a look at :numref:`fig:mesh:2D:structured` and follow the logic of that Figure. 
 
-.. figure:: Schematic_FEM/shapeFunction_2D_Q1.*
-    :name: fig:shapeFunc:2D:linear_1
-    :align: center
 
-    Shape of 2-D bi-linear element shape functions
+#. Create the global coordinate vector GCOORD. Assume that the length of the box in x direction (lx) is 1 ([0,1]) and the length of box is y direction (ly) is also 1 ([0, 1]). The number of nodes in x is 5 (nx) and the number of nodes in y is 4 (ny).  
+#. Create the connectivity matrix ELEM2NODE. The element numbering should look like this:
 
-A shape function has the value 1 at its node, zero at all the others, varies linearly between them and the sum of all shape functions is always 1. A simple way to think about this is in 1D (remember the last script)! With these conventions we can now spell out a general interpolation scheme using shape functions:
+.. tip::
+
+    * Hint loop over all nodes and create their respective x and y coordinates. The node numbering should be like in :numref:`fig:mesh:2D:structured` (see jupyter notebook for a discussion).
+    * Functions like ceil or floor might help you with the connectivity matrix; it might also help to first compute the row we are in and then compute the index of the lower left node and move on from there.
+
+.. tip::
+
+    We use a function called tabulate to format the output in the notebooks. You will probably have to install it into your virtual python environment.
+
+    .. code-block:: bash
+
+        conda activate py37_fem_class
+        conda install tabulate
+
+
+.. toctree::
+    :maxdepth: 2
+
+    jupyter/2d_fem_connectivity.ipynb
+
+Shape functions
+^^^^^^^^^^^^^^^^
+The second excercise is about spelling out the shape functions and their derivatives. Remember that the shape functions are defined in local coordinates. For bi-linear quads, they have this functional form:
 
 
 .. math::
@@ -350,22 +393,21 @@ A shape function has the value 1 at its node, zero at all the others, varies lin
 
 where :math:`T_{j=1..4}` are the four nodal temperatures, :math:`\tilde{T}` is the temperature at an (integration) point inside the element, :math:`N` are the four shape functions, and :math:`(\xi,\eta)` are the two local coordinates between -1 and 1.
 
-Excercise
-^^^^^^^^^^
-
-Let’s try this interpolation scheme out on a single element with coordinates -1,-1 to 1,1.
+Implement the shape functions in a jupyter notebook, also compute the eight derivatives with local coordinates :math:`(\xi,\eta)`, and try them out on a single element with coordinates -1,-1 to 1,1.
 
 .. toctree::
     :maxdepth: 2
 
     jupyter/FEM_2d_shapes_excercise.ipynb
 
-2-D FEM solution of steady-state diffusion
-------------------------------------------
+
+
+2-D FEM: solution
+=================
 Now we have assembled all the pieces that we need to make a finite element model and solve it. :numref:`lst:2d-fem-ss` shows the complete python code for our first solver.
 
 Python code
-^^^^^^^^^^^
+-----------
 
 .. code-block:: python 
     :linenos:
@@ -550,7 +592,7 @@ The key components of the code are an element loop (which corresponds to the sum
 Let’s have a closer look at some of the different steps.
 
 Jacobian:
-^^^^^^^^^
+---------
 The calculation of the Jacobian matrix is implemented via  :eq:`eq:num_int_isoparam_4`  as a matrix-vector multiplication:
 
 .. math::
@@ -583,7 +625,7 @@ which is implemented as:
 
 
 Global derivatives of shape functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 The global derivatives are calculated according to :eq:`eq:num_int_jacobian`, which in matrix form is:
 
 .. math::
@@ -609,7 +651,7 @@ which is implemented as:
     dNdx    = np.matmul(invJ, dNds) # [2,2]*[2,nnodel]
 
 Element stiffness matrix
-^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 The final step is to put the :eq:`eq:num_int_jacobian_2` into finite element form. Also this now quite easy:
 
 .. math::
@@ -642,7 +684,7 @@ where the first matrix is the element stiffness matrix, which is implemented as:
     Ael     = Ael + np.matmul(dNdx.T, dNdx)*detJ*kel # [nnodel,1]*[1,nnodel] / weights are missing, they are 1
 
 Boundary conditions
-^^^^^^^^^^^^^^^^^^^^
+--------------------
 Before we can solve anything, we need to set boundary conditions. In the 1-D case, we had set the boundary conditions in the usual way by setting the entire row to zero, putting a 1 on the main diagonal, and setting the Rhs to the specified temperature. We had noted before that this procedure breaks matrix symmetry. We will therefore use a more elaborate method here, which was described in :cite:`Dabrowski2008` .
 We add the columns that refer to nodes with boundary conditions to the righ-hand side and afterwards solve the smaller system of equations! This is implemented as
 
