@@ -1,9 +1,9 @@
 Triangles: unstructured meshes
-===================
+==============================
 
 In this session we will learn
 
-    * how to use a mesh genetrator to mesh complex geometries,
+    * how to use a mesh generator to mesh complex geometries,
     * what changes are needed to change the basic element.
 
 The problem we will look at is basically the same as in the example given above. We will resolve steady-state heat diffusion within a rectangular region but now we will have circular inclusions of different thermal conductivity.
