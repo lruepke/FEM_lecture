@@ -1,16 +1,15 @@
-Introduction Finite Element Method
+Introduction: Finite Element Method (FEM)
 =========================================
 
-FEM discretization
---------------------------------
 We will again use the 1-D steady state heat diffusion equation as an example and solve it using FEM. Formally speaking the steady-state diffusion equation is an **elliptic** PDE. Elliptic equations describe a large variety of steady state problems in earth sciences including diffusion, plate flexure, and incompressible flows.
 
 .. admonition:: Types of PDEs
 
     Besides **elliptic** PDEs, there are, for example, also **parabolic** PDEs, which include the transient term, and **hyperbolic** PDEs, which describe e.g. wave propagation. We will learn about those a bit later in the course.
 
-Strong form
-^^^^^^^^^^^^
+Governing equation - strong form
+--------------------------------
+
 Let's go on and solve the elliptic 1-D heat diffusion equation with the Finite Element Method (FEM):
 
 .. math::
@@ -22,7 +21,7 @@ This is called the strong form of the governing equation and the function :math:
 
 
 Approximate solution
-^^^^^^^^^^^^^^^^^^^^^
+--------------------
 .. math::
     :label: eq:fem_aprox_funcion
 
@@ -30,7 +29,7 @@ Approximate solution
 
 In FEM we divide our computational domain into simple geometeric entities, the finite elements, and those finite elements have grid points. For example, in 2-D we can divide the domain in triangles with three nodes and in 1-D in simple lines with two nodes each. Think of our simple FD descritization, if we were to use the same descritization in FEM, the intervals between grid points would be our finite elements.
 
-.. figure:: Schematic_FEM/shapeFunction_Linear_1D.svg
+.. figure:: /_figures/shapeFunction_Linear_1D.svg
     :name: fig:shapeFunc:1D:linear
     :align: center
 
@@ -54,7 +53,7 @@ Note how we use the Einstein convention and sum over repeated indices. We can no
 
 
 Galerkin method
-^^^^^^^^^^^^^^^^
+----------------
 In finite elements, the most frequently used weighting method is the Galerkin method that we already know from the previous session. We therefore use the interpolation functions also as weighting functions:
 
 .. math::
@@ -71,7 +70,7 @@ The next step is to reduce the order of differentiation by using partial integra
 
 
 Weak form
-^^^^^^^^^^
+----------
 Applying this to :eq:`eq:partial_int` results in the **weak form** of our governing equation:
 
 .. math::
@@ -112,11 +111,11 @@ While mathematically we are always allowed to split an integral into a sum of in
 
 In the following sessions, we will go through all the steps involved in solving :eq:`eq:fem_1d_weak_simple_2`. We will first do this in a simple 1-D case before moving on to the general 2-D.
 
-FEM solution
---------------
+FEM implementation
+==================
 
 Element stiffness matrix :math:`A_{el}`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 Let’s look at a single 1-D element. If we use linear shape functions, one 1-D element has two nodes – and only the shape functions of those two nodes will be non-zero. The so-called connectivity, which connects elements and nodes (which nodes belong to which element) is easy in 1-D: element number k will have the nodes i=k and i=k+1 (Element 1 has nodes 1 and 2). This means that for each element we will get two equations:
 
 .. math::
@@ -149,7 +148,7 @@ We have two linear shape functions for the points i and i+1 of each element (see
 
 
 Excercise: derive :math:`A_{el}`
-^^^^^^^^^^
+----------------------------------
 .. toctree::
     :maxdepth: 2
 
@@ -157,7 +156,7 @@ Excercise: derive :math:`A_{el}`
 
 
 Matrix assembly
-^^^^^^^^^^^^^^^
+---------------
 The above exercise results in the integrated element stiffness matrix of steady-state diffusion:
 
 .. math::
@@ -201,7 +200,7 @@ If we assume three linear elements, this looks like this
 
 
 Implementation
-^^^^^^^^^^^^^^
+---------------
 
 Let's put everything together and write our first finite element code! We will do this by programming a FEM solution to the steady-state heat diffusion equation but this time with a source term.
 

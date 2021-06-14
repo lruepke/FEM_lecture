@@ -1,4 +1,4 @@
-Overview: 2-D FEM
+Overview
 ===========================
 
 In this session we will progress to 2-D. This involves learning about:

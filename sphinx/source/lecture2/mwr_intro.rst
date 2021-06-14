@@ -1,5 +1,5 @@
-Introduction Method of Weighted Residuals
-=========================================
+Introduction: Method of Weighted Residuals (MWR)
+=================================================
 
 .. admonition:: Credit!
 
