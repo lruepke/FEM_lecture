@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Transient heat diffusion - parabolic PDEs &mdash; Finite Element Modeling in Geodynamics  documentation</title>
+  <title>Transient heat diffusion &mdash; Finite Element Modeling in Geodynamics  documentation</title>
   
 
   
@@ -140,8 +140,7 @@
 <p class="caption"><span class="caption-text">Lecture 6</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Transient heat diffusion - parabolic PDEs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#the-transient-term">The transient term</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Transient heat diffusion</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#fem-form">FEM form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#implementation">Implementation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#time-loop-and-output-writing">Time loop and output writing</a></li>
@@ -220,7 +219,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Transient heat diffusion - parabolic PDEs</li>
+      <li>Transient heat diffusion</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -265,10 +264,8 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="transient-heat-diffusion-parabolic-pdes">
-<h1>Transient heat diffusion - parabolic PDEs<a class="headerlink" href="#transient-heat-diffusion-parabolic-pdes" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="the-transient-term">
-<h2>The transient term<a class="headerlink" href="#the-transient-term" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="transient-heat-diffusion">
+<h1>Transient heat diffusion<a class="headerlink" href="#transient-heat-diffusion" title="Permalink to this headline">¶</a></h1>
 <p>The next step is to derive and implement the unsteady (time-dependent) heat diffusion equation and to solve an example problem for the cooling of the lithosphere. The unsteady heat diffusion equation looks like this:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-2d-transient">
 <span class="eqno">(127)<a class="headerlink" href="#equation-eq-fem-2d-transient" title="Permalink to this equation">¶</a></span>\[\rho c_p \frac{\partial T}{\partial t} = \frac{\partial}{\partial x} k \frac{\partial T}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T}{\partial y}\]</div>
@@ -279,7 +276,6 @@
 <p>Re-arrange <a class="reference internal" href="#equation-eq-fem-2d-transient">equation (127)</a> so that all known temperatures <span class="math notranslate nohighlight">\(T^n\)</span> are on the Rhs and all unknown temperatures <span class="math notranslate nohighlight">\(T^{n+1}\)</span> are on the Lhs.</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-2d-transient-3">
 <span class="eqno">(129)<a class="headerlink" href="#equation-eq-fem-2d-transient-3" title="Permalink to this equation">¶</a></span>\[\rho c_p T^{n+1} - \Delta t \left( \frac{\partial}{\partial x} k\frac{\partial T^{n+1}}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T^{n+1}}{\partial y} \right ) = \rho c_p T^{n}.\]</div>
-</div>
 <div class="section" id="fem-form">
 <h2>FEM form<a class="headerlink" href="#fem-form" title="Permalink to this headline">¶</a></h2>
 <p>Now we proceed in the usual way: insert the approximate solution using shape functions and use the Galerkin method:</p>

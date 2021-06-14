@@ -1,9 +1,5 @@
-Transient heat diffusion - parabolic PDEs
+Transient heat diffusion
 =========================================
-
-The transient term
-------------------
-
 The next step is to derive and implement the unsteady (time-dependent) heat diffusion equation and to solve an example problem for the cooling of the lithosphere. The unsteady heat diffusion equation looks like this:
 
 .. math::
@@ -154,3 +150,5 @@ Make sure that the new logical for :math:`Kel`is also used in the post-processin
        source src="../../_static/video/T.mp4" type="video/mp4">
           Your browser does not support HTML video.
        </video>
+
+
