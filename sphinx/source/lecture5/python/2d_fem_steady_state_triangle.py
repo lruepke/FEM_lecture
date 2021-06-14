@@ -237,5 +237,5 @@ writer=meshio.xdmf.TimeSeriesWriter('transient.xmf')
 writer.__enter__() # have to add this: import hdf5 and open file ...
 writer.write_points_cells(points, cells)
 for t in [0, 1, 2, 3]:
-    writer.write_data(t, point_data={"T": T*(1+t)})
+    writer.write_data(t, point_data={"T": T*(1+t)},cell_data={"U": [U]})
 writer.__exit__() # close file
