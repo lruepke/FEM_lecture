@@ -1,7 +1,17 @@
 Introduction Finite Element Method
 =========================================
 
-Let's go on and solve the 1-D heat diffusion equation with the Finite Element Method (FEM). Our starting point is again the steady-state case:
+FEM discretization
+--------------------------------
+We will again use the 1-D steady state heat diffusion equation as an example and solve it using FEM. Formally speaking the steady-state diffusion equation is an **elliptic** PDE. Elliptic equations describe a large variety of steady state problems in earth sciences including diffusion, plate flexure, and incompressible flows.
+
+.. admonition:: Types of PDEs
+
+    Besides **elliptic** PDEs, there are, for example, also **parabolic** PDEs, which include the transient term, and **hyperbolic** PDEs, which describe e.g. wave propagation. We will learn about those a bit later in the course.
+
+Strong form
+^^^^^^^^^^^^
+Let's go on and solve the elliptic 1-D heat diffusion equation with the Finite Element Method (FEM):
 
 .. math::
     :label: eq:fem_1d_strong
@@ -10,6 +20,9 @@ Let's go on and solve the 1-D heat diffusion equation with the Finite Element Me
 
 This is called the strong form of the governing equation and the function :math:`T_{ex}(x)`is the exact solution to it. We now follow our MWR recipe and replace the continuous function :math:`T_{ex}(x)` by a (simpler) approximation:
 
+
+Approximate solution
+^^^^^^^^^^^^^^^^^^^^^
 .. math::
     :label: eq:fem_aprox_funcion
 
@@ -39,6 +52,9 @@ Note how we use the Einstein convention and sum over repeated indices. We can no
     
     \int_XW_i\frac{\partial}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx=0\ \ \ \ \ \ \ i=1,2,...,n
 
+
+Galerkin method
+^^^^^^^^^^^^^^^^
 In finite elements, the most frequently used weighting method is the Galerkin method that we already know from the previous session. We therefore use the interpolation functions also as weighting functions:
 
 .. math::
@@ -53,6 +69,9 @@ The next step is to reduce the order of differentiation by using partial integra
 
     \int_{\Omega} fg' d\Omega = -\int_{\Omega} f'g d\Omega + \oint_{\Gamma} fg d\Gamma
 
+
+Weak form
+^^^^^^^^^^
 Applying this to :eq:`eq:partial_int` results in the **weak form** of our governing equation:
 
 .. math::
@@ -75,10 +94,7 @@ Close inspection of the boundary integral reveals that it is the heat flow throu
 
     \int_X \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x}dx =0\ \ \ \ \ \ \ i=1,2,...,n
 
-
-How can we solve this using the FEM?
-
-The basic idea is to split the integrals into subdomains and the solution will be the sum of the subdomains. In FEM, those subdomains are the finite elements:
+How can we solve this using the FEM? The basic idea is to split the integrals into subdomains and the solution will be the sum of the subdomains. In FEM, those subdomains are the finite elements:
     
 .. math::
     :label: eq:fem_1d_weak_simple_2
@@ -96,9 +112,11 @@ While mathematically we are always allowed to split an integral into a sum of in
 
 In the following sessions, we will go through all the steps involved in solving :eq:`eq:fem_1d_weak_simple_2`. We will first do this in a simple 1-D case before moving on to the general 2-D.
 
-FEM: 1-D heat diffusion
--------------------------
+FEM solution
+--------------
 
+Element stiffness matrix :math:`A_{el}`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Let’s look at a single 1-D element. If we use linear shape functions, one 1-D element has two nodes – and only the shape functions of those two nodes will be non-zero. The so-called connectivity, which connects elements and nodes (which nodes belong to which element) is easy in 1-D: element number k will have the nodes i=k and i=k+1 (Element 1 has nodes 1 and 2). This means that for each element we will get two equations:
 
 .. math::
@@ -130,8 +148,8 @@ We have two linear shape functions for the points i and i+1 of each element (see
     \end{align}
 
 
-Excercise
-----------
+Excercise: derive :math:`A_{el}`
+^^^^^^^^^^
 .. toctree::
     :maxdepth: 2
 
@@ -139,7 +157,7 @@ Excercise
 
 
 Matrix assembly
----------------
+^^^^^^^^^^^^^^^
 The above exercise results in the integrated element stiffness matrix of steady-state diffusion:
 
 .. math::
@@ -182,8 +200,8 @@ If we assume three linear elements, this looks like this
     \end{bmatrix}
 
 
-Example: 1-D heat diffusion numerical FEM solution
---------------------------------------------------
+Implementation
+^^^^^^^^^^^^^^
 
 Let's put everything together and write our first finite element code! We will do this by programming a FEM solution to the steady-state heat diffusion equation but this time with a source term.
 
@@ -228,8 +246,6 @@ After another symbolic integration (try it) of the source term,we get the follow
 
 Where the first matrix is the element stiffness matrix, the second vector are the unknown temperatures of the element, and the right-hand side has the integration source term :math:`Q_{el}` which here is constant value (per element).
 
-Excercise
-----------
 
 Let's put this into python!
 
