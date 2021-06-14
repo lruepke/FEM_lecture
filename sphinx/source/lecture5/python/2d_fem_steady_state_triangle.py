@@ -209,4 +209,23 @@ ax.set_ylabel('y')
 plt.show()
 
 
+# ================== save data ======================
+import meshio
+# =======1. steady state: write mesh and data into a single vtu file ==========
+# MESH
+points=np.hstack((GCOORD, GCOORD[:,0].reshape(-1,1)*0)) #must have 3 components (x,y,z)
+cells=[("triangle",EL2NOD)]
+# Point data and cell data
+U=np.hstack((Q_x.reshape(-1,1),Q_y.reshape(-1,1)))
+U=np.hstack((U,U[:,0].reshape(-1,1)*0))
+mesh = meshio.Mesh(points,cells,point_data={"T": T},cell_data={"U": [U]})
+mesh.write("2d_fem_steady_state_tri.vtu")
 
+# ======= 2. transient: wirte data (mesh and fields) into **.h5 fille, and meta info to **.xmf file.
+# ======== using XDMF format can share mesh and decrease file size.
+# ======= then one can use paraview visualize the data, open .xmf file and select "Xdmf3 Reader (top level partition)" 
+# example for transient data ....
+with meshio.xdmf.TimeSeriesWriter('transient.xmf') as writer:
+    writer.write_points_cells(points, cells)
+    for t in [0, 1, 2, 3]:
+        writer.write_data(t, point_data={"T": T*(1+t)})
