@@ -225,7 +225,17 @@ mesh.write("2d_fem_steady_state_tri.vtu")
 # ======== using XDMF format can share mesh and decrease file size.
 # ======= then one can use paraview visualize the data, open .xmf file and select "Xdmf3 Reader (top level partition)" 
 # example for transient data ....
-with meshio.xdmf.TimeSeriesWriter('transient.xmf') as writer:
-    writer.write_points_cells(points, cells)
-    for t in [0, 1, 2, 3]:
-        writer.write_data(t, point_data={"T": T*(1+t)})
+
+# Option 1: use with ... as statement
+# with meshio.xdmf.TimeSeriesWriter('transient.xmf') as writer:
+#     writer.write_points_cells(points, cells)
+#     for t in [0, 1, 2, 3]:
+#         writer.write_data(t, point_data={"T": T*(1+t)})
+
+# Option 2: 
+writer=meshio.xdmf.TimeSeriesWriter('transient.xmf')
+writer.__enter__() # have to add this: import hdf5 and open file ...
+writer.write_points_cells(points, cells)
+for t in [0, 1, 2, 3]:
+    writer.write_data(t, point_data={"T": T*(1+t)},cell_data={"U": [U]})
+writer.__exit__() # close file
