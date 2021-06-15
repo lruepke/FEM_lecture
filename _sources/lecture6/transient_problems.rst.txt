@@ -147,7 +147,7 @@ Make sure that the new logical for :math:`Kel`is also used in the post-processin
     .. raw:: html
  
        <video width=100% autoplay muted controls loop>
-       source src="../../_static/video/T.mp4" type="video/mp4">
+       <source src="../_static/video/T.mp4" type="video/mp4">
           Your browser does not support HTML video.
        </video>
 
