@@ -19,7 +19,7 @@ ly          = 5
 
 # time control
 dt = 5e-4
-nt = 200
+nt = 50
 
 # model parameters
 g_coeff     = 600 #kinetic constant
@@ -49,7 +49,7 @@ def make_box(x, y, w, h, attribute):
                      (i+2, i+3),
                      (i+3, i+0)])
     
-    regions.append([x+0.01*w, y+0.01*h, attribute,0.01])
+    regions.append([x+0.01*w, y+0.01*h, attribute,0.005])
 
 # generate input    
 make_box(x0, y0, lx, ly, 1)
@@ -102,9 +102,9 @@ for t in range(0,nt):
     K       = np.zeros((nel,2*nnodel*nnodel))
 
     for iel in range(0,nel):
-        ECOORD = np.take(GCOORD, EL2NOD[iel,:], axis=0 )
-        Ael_A    = np.zeros((nnodel,nnodel))
-        Ael_B    = np.zeros((nnodel,nnodel))
+        ECOORD  = np.take(GCOORD, EL2NOD[iel,:], axis=0 )
+        Ael_A   = np.zeros((nnodel,nnodel))
+        Ael_B   = np.zeros((nnodel,nnodel))
         RhsA_el = np.zeros(nnodel)
         RhsB_el = np.zeros(nnodel)
         
@@ -147,8 +147,11 @@ for t in range(0,nt):
     error = 10
     tol   = 0.001
     Conc_tmp = np.ones(sdof)*10
+    iter_max = 10
 
     while error > tol:
+        Tmp = Rhs_all.copy()
+        iter += 1
         # loop over all elements and integrate Rhs
         for iel in range(0,nel):
             FA_el = np.zeros(nnodel)
@@ -162,13 +165,11 @@ for t in range(0,nt):
                                
                 # 2. integrate force terms
                 FA_el     = FA_el + dt*g_coeff*N*(a_coeff+np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*weights[ip] 
-                FB_el     = FA_el + dt*g_coeff*N*(b_coeff-np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*weights[ip] 
+                FB_el     = FB_el + dt*g_coeff*N*(b_coeff-np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*weights[ip] 
       
-        # We don't have boundary conditions, as everything is zero flux
-       
-        Tmp = Rhs_all.copy()
-        Tmp[2*EL2NOD[iel,:]]   += FA_el
-        Tmp[2*EL2NOD[iel,:]+1] += FB_el
+            # We don't have boundary conditions, as everything is zero flux      
+            Tmp[2*EL2NOD[iel,:]]   += FA_el
+            Tmp[2*EL2NOD[iel,:]+1] += FB_el
        
         # solve  system
         Conc  = spsolve(A_all,Tmp)        
@@ -176,9 +177,15 @@ for t in range(0,nt):
         Conc_tmp = Conc.copy()
         A     = Conc[0:sdof:2]
         B     = Conc[1:sdof:2]
+        
+        if iter == iter_max:
+            print(error)
+            break
 
       
+    
     #save data
+    print(t)
     writer.write_data(t, point_data={"A": A, "B": B})
 
 writer.__exit__() # close file
