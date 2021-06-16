@@ -1,5 +1,6 @@
 # Script that calculated steady-state diffusion on unstructured triangle mesh
 import numpy as np
+from scipy.sparse.dia import dia_matrix
 from tabulate import tabulate
 from scipy.sparse.linalg import spsolve
 from scipy.sparse import csr_matrix
@@ -15,20 +16,18 @@ from numpy.random import default_rng
 #geometry
 x0          = 0
 y0          = 0
-lx          = 5
-ly          = 5
+lx          = 128
+ly          = 128
 
 # time control
-dt = 5e-4
-nt = 200
+dt = 10
+nt = 500
 
 # model parameters
-g_coeff     = 600 #kinetic constant
-a_coeff     = 0.05 #growth A
-b_coeff     = 1    #growth B
-d_coeff     = 20   #diffusivity B
-amp         = 0.01 #random noise
-
+D_A         = 1
+D_B         = 0.5
+f_coeff     = 0.55
+k_coeff     = 0.62
 
 ## Create the triangle mesh
 # arrays to fill in with input
@@ -74,11 +73,13 @@ EL2DOF[:,0::2] = 2*EL2NOD
 EL2DOF[:,1::2] = 2*EL2NOD+1
 
 # Initial conditions
-rng  = default_rng()
-vals = rng.standard_normal(nnod)
-A    = (a_coeff+b_coeff) + amp*vals
-vals = rng.standard_normal(nnod)
-B    = b_coeff/(a_coeff+b_coeff)**2 + amp*vals
+A = np.ones(nnod)
+B = np.zeros(nnod)
+Ind = np.where(GCOORD[:,0]>50 and GCOORD[:,0]<61 and GCOORD[:,1]>50 and GCOORD[:,1]<71)
+B[Ind] = 1
+Ind = np.where(GCOORD[:,0]>60 and GCOORD[:,0]<81 and GCOORD[:,1]>70 and GCOORD[:,1]<81)
+B[Ind] = 1
+
 
 # setup output writing
 points=np.hstack((GCOORD, GCOORD[:,0].reshape(-1,1)*0)) #must have 3 components (x,y,z)
