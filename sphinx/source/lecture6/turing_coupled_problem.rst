@@ -84,5 +84,10 @@ One way of solving such a coupled problem is to have two unknowns per node (two 
     \end{bmatrix}
     = Rhs
 
-The unknown concentrations of :math:`A` and :math:`B` or both showing up in the solution vector. What we also note is that the coupling is not that strong, as there are no cross-terms. The equation for :math:`A_1^{n+1}`, the first row in :eq:`eq:turing_eqs_fem_matrix_3` has zeros in the columns that operate on B. The coupling comes in through the source terms that appear on the Rhs (:eq:`eq:turing_eqs`).
+The unknown concentrations of :math:`A` and :math:`B` or both showing up in the solution vector. What we also note is that the coupling is not that strong as there are no cross-terms. The equation for :math:`A_1^{n+1}`, the first row in :eq:`eq:turing_eqs_fem_matrix_3`, has zeros in the columns that operate on B. The coupling comes in through the source terms that appear on the Rhs (:eq:`eq:turing_eqs`).
+
+Non-linear terms
+----------------
+Treating the non-linear source term in an implicit way requires iterations - because the term :math:`A^2B`cannot be directly incorporated into the stiffness matrix. We will use simple direct iterations, in which we solve for :math:`A` and :math:`B`, then update the source terms, and solve again until the solution is converged. Easiest to implement would be a non-linear iteration loop over the entire element loop but that would not be very smart as the stiffness matrix is not changing during iterations. Instead we first assembly the stiffness matrix and then have an iteration loop that updates the source term (righ-hand side) until the solution is converged.
+
 
