@@ -305,8 +305,8 @@ A &amp;= \int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j 
 <h3>Time loop and output writing<a class="headerlink" href="#time-loop-and-output-writing" title="Permalink to this headline">¶</a></h3>
 <p>For transient problems, we will need a time loop over all time steps and a way to store/visualize the evolving solution. So far, we have plotted only steady-state solutions that we could directly plot using <code class="code docutils literal notranslate"><span class="pre">matplotlib</span></code>. Now we will have to come up with a different strategy as we want to visualize and analyze the complete transient solution. One good way is to use the <code class="code docutils literal notranslate"><span class="pre">meshio</span></code> python package to save the solution in vtk format and to later analyze is using <a class="reference external" href="https://www.paraview.org">Paraview</a> If you don’t have paraview installed, no is the time ;)</p>
 <p>Here is a code snippit that illustrates the logic:</p>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">Output writing.</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">Output writing.</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># mesh information</span>
 <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">GCOORD</span><span class="p">,</span> <span class="n">GCOORD</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">0</span><span class="p">))</span> <span class="c1">#must have 3 components (x,y,z)</span>
 <span class="n">cells</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;triangle&quot;</span><span class="p">,</span><span class="n">EL2NOD</span><span class="p">)]</span>
@@ -340,8 +340,8 @@ A &amp;= \int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j 
 <div class="section" id="matrix-assembly">
 <h3>Matrix assembly<a class="headerlink" href="#matrix-assembly" title="Permalink to this headline">¶</a></h3>
 <p>If we look at <a class="reference internal" href="#equation-eq-fem-2d-transient-weak-matrix-v2">equation (133)</a>, we notice that we have to change the matrix assembly to 1) account for the mass matrix in the element stiffness matrix, and 2) to integrate the old temperatures into the force vector. This can be done like this:</p>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">matrix assembly.</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">matrix assembly.</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 4. compute element stiffness matrix</span>
 <span class="n">Ael</span>     <span class="o">=</span> <span class="n">Ael</span> <span class="o">+</span> <span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">cp</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">)</span> <span class="o">+</span>  <span class="n">dt</span><span class="o">*</span><span class="n">Kel</span><span class="p">[</span><span class="n">iel</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dNdx</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">dNdx</span><span class="p">))</span><span class="o">*</span><span class="n">detJ</span><span class="o">*</span><span class="n">weights</span><span class="p">[</span><span class="n">ip</span><span class="p">]</span> <span class="c1"># [nnodel,1]*[1,nnodel] / weights are missing, they are 1</span>
 
@@ -351,8 +351,8 @@ A &amp;= \int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j 
 </div>
 </div>
 <p>Notice how the logic for the element thermal conductivity has changed - and that we need two additional physical parameters <span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(c_p\)</span> .</p>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">model parameters.</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">model parameters.</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rho</span>         <span class="o">=</span> <span class="mi">1</span>
 <span class="n">cp</span>          <span class="o">=</span> <span class="mi">1</span>
 
@@ -361,7 +361,7 @@ A &amp;= \int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j 
 </pre></div>
 </div>
 </div>
-<p>Make sure that the new logical for :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>Kel`is also used in the post-processing step when computing heat fluxes.</p>
+<p>Make sure that the new logical for <code class="code docutils literal notranslate"><span class="pre">Kel</span></code> is also used in the post-processing step when computing heat fluxes.</p>
 <p>Results of transient diffusion problem.</p>
 <video width=100% autoplay muted controls loop>
 <source src="../_static/video/T.mp4" type="video/mp4">
