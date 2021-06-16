@@ -6,6 +6,7 @@ from scipy.sparse import csr_matrix
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from shapes_tri import shapes_tri
+from int_points_triangle import int_points_triangle
 import triangle as tr
 import meshio 
 from numpy.random import default_rng
@@ -22,7 +23,7 @@ dt = 5e-4
 nt = 50
 
 # model parameters
-g_coeff     = 600 #kinetic constant
+g_coeff     = 60 #kinetic constant
 a_coeff     = 0.05 #growth A
 b_coeff     = 1    #growth B
 d_coeff     = 20   #diffusivity B
@@ -49,12 +50,12 @@ def make_box(x, y, w, h, attribute):
                      (i+2, i+3),
                      (i+3, i+0)])
     
-    regions.append([x+0.01*w, y+0.01*h, attribute,0.001])
+    regions.append([x+0.01*w, y+0.01*h, attribute,0.04])
 
 # generate input    
 make_box(x0, y0, lx, ly, 1)
 A = dict(vertices=vertices, segments=segments, regions=regions)
-B = tr.triangulate(A, 'pq33Aa')
+B = tr.triangulate(A, 'o2pq33Aa')
 
 # extract mesh information
 GCOORD = B.get("vertices")
@@ -66,7 +67,7 @@ nel    = EL2NOD.shape[0]
 nnod   = GCOORD.shape[0]
 sdof   = nnod*2                 # two dof per node
 Phases = np.reshape(Phases,nel)
-print(nnod)
+print(nnod, nel)
 # setup degrees of freedom - two per node
 EL2DOF = np.zeros((nel,2*nnodel), dtype=int)
 EL2DOF[:,0::2] = 2*EL2NOD
@@ -87,9 +88,11 @@ writer.__enter__() # have to add this: import hdf5 and open file ...
 writer.write_points_cells(points, cells)
 
 # Gauss integration points for triangles
-nip   = 3
-gauss = np.array([[ 1/6, 2/3, 1/6], [1/6, 1/6, 2/3]]).T.copy()
-weights = np.array([1/6, 1/6, 1/6])
+nip   = 6
+gauss, weights = int_points_triangle(nip)
+
+#gauss = np.array([[ 1/6, 2/3, 1/6], [1/6, 1/6, 2/3]]).T.copy()
+#weights = np.array([1/6, 1/6, 1/6])
 
 # time loop
 
@@ -112,7 +115,7 @@ for t in range(0,nt):
             # 1. update shape functions
             xi      = gauss[ip,0]
             eta     = gauss[ip,1]
-            N, dNds = shapes_tri(xi, eta)
+            N, dNds = shapes_tri(xi, eta, nnodel)
             
             # 2. set up Jacobian, inverse of Jacobian, and determinant
             Jac     = np.matmul(dNds,ECOORD) #[2,nnodel]*[nnodel,2]
@@ -157,15 +160,15 @@ for t in range(0,nt):
             FA_el = np.zeros(nnodel)
             FB_el = np.zeros(nnodel)
             
-            for ip in range(0,1):        
+            for ip in range(0,nip):        
                 # 1. update shape functions
-                xi      = 1/3 #gauss[ip,0]
-                eta     = 1/3 # gauss[ip,1]
-                N, dNds = shapes_tri(xi, eta)
+                xi      = gauss[ip,0]
+                eta     = gauss[ip,1]
+                N, dNds = shapes_tri(xi, eta, nnodel)
                                
                 # 2. integrate force terms
-                FA_el     = FA_el + dt*g_coeff*N*(a_coeff+np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*0.5#weights[ip] 
-                FB_el     = FB_el + dt*g_coeff*N*(b_coeff-np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*0.5#weights[ip] 
+                FA_el     = FA_el + (dt*g_coeff*N*a_coeff+dt*g_coeff*N*np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*weights[ip] 
+                FB_el     = FB_el + (dt*g_coeff*N*b_coeff-dt*g_coeff*N*np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*weights[ip] 
       
             # We don't have boundary conditions, as everything is zero flux      
             Tmp[2*EL2NOD[iel,:]]   += FA_el
