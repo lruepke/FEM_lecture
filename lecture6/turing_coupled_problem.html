@@ -1,0 +1,400 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Coupled diffusion problems &mdash; Finite Element Modeling in Geodynamics  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/tabs.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="References" href="../refs.html" />
+    <link rel="prev" title="Transient heat diffusion" href="transient_problems.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Finite Element Modeling in Geodynamics
+          
+
+          
+            
+            <img src="../_static/htf_picto2.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Course information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general-info/course-details.html">Course details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../general-info/installation.html">Installation guide</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 1</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/fdm_intro.html">Introduction: The Finite Differences Method (FDM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/example_1.html">Example 1: Cooling dike</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/example_2.html">Example 2: Cooling dike - implicit version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/example_3.html">Example 3: Periodic variations in seafloor temperature</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 2</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/mwr_intro.html">Introduction: Method of Weighted Residuals (MWR)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/mwr_examples.html">MWR solutions of the steady advection-diffusion equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture2/excercises.html">Excercises</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 3</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html">Introduction: Finite Element Method (FEM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html#fem-implementation">FEM implementation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 4</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html">2-D FEM - elliptic problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture4/fem_in_2d.html#implementation">Implementation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 5</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lecture5/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture5/FEM_triangles.html">Triangles: unstructured meshes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture5/FEM_triangles.html#excercise">Excercise</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Lecture 6</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transient_problems.html">Transient heat diffusion</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Coupled diffusion problems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#governing-equations">Governing equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fem-discretization">FEM discretization</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../refs.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">Getting help</span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="mailto:lruepke@geomar.de"><i class="fa fa-envelope fa-fw"></i> Prof. Lars Ruepke</a></li>
+            
+                <li class="toctree-l1"><a href="mailto:zguo@geomar.de"><i class="fa fa-envelope fa-fw"></i> Dr. Zhikui Guo</a></li>
+            
+                <li class="toctree-l1"><a href="https://lruepke.github.io/FEM_lecture/"><i class="fa fa-home fa-fw"></i> Public site</a></li>
+            
+                <li class="toctree-l1"><a href="https://lms.uni-kiel.de/url/RepositoryEntry/3664576582"><i class="fa fa-home fa-fw"></i> University site</a></li>
+            
+        </ul>
+    
+
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Finite Element Modeling in Geodynamics</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Coupled diffusion problems</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/lruepke/HTF_lecture/blob/main//source/lecture6/turing_coupled_problem.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="coupled-diffusion-problems">
+<h1>Coupled diffusion problems<a class="headerlink" href="#coupled-diffusion-problems" title="Permalink to this headline">¶</a></h1>
+<p>So far we have looked at problems that included a single unknown (e.g. temperature) at each node. Sometimes it is necessary to solve for multiple unknowns per node simultaneously. This could just be multiple displacement or velocity components (as in mechanics), or this could be necessary when equations strongly coupled.</p>
+<p>One example, where a system of coupled equations needs to be solved are so-called Turing pattern <span id="id1">[<a class="reference internal" href="../refs.html#id36" title="A. M. Turing. The chemical basis of morphogenesis. Philosophical Transactions of the Royal Society of London Series B-Biological Sciences, 237(641):37-72, 1952. URL: &lt;Go to ISI&gt;://WOS:A1952YF90500001, doi:10.1098/rstb.1952.0012.">Turing, 1952</a>]</span>, which appear to emerge in many biological and chemical systems quasi spontaneoulsly from near homogeneous starting conditions. A modern look at it can be found in the paper by <span id="id2">[<a class="reference internal" href="../refs.html#id37" title="Philip K. Maini, Thomas E. Woolley, Ruth E. Baker, Eamonn A. Gaffney, and S. Seirin Lee. Turing's model for biological pattern formation and the robustness problem. Interface Focus, 2(4):487-496, 2012. URL: https://doi.org/10.1098/rsfs.2011.0113, doi:10.1098/rsfs.2011.0113.">Maini et al., 2012</a>]</span>. Here we follow the implementation and problem description given in the FEM book by Guy Simpson <span id="id3">[<a class="reference internal" href="../refs.html#id31" title="Guy Simpson. Practical Finite Element Modeling in Earth Science Using Matlab. John Wiley &amp; Sons, Ltd, 2017. ISBN 9781119248644. URL: https://onlinelibrary.wiley.com/doi/abs/10.1002/9781119248644.part1, arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781119248644.part1, doi:https://doi.org/10.1002/9781119248644.part1.">Simpson, 2017</a>]</span>.</p>
+<div class="section" id="governing-equations">
+<h2>Governing equations<a class="headerlink" href="#governing-equations" title="Permalink to this headline">¶</a></h2>
+<p>We will explore the evolution of two chemical compunds, <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, which affect each other. One is an ‘activator’ and one is an ‘inhibitor’. Both compounds are also produced by a background rate and the their concentrations control each other. This can be expressed by a set of coupled equations.</p>
+<div class="math notranslate nohighlight" id="equation-eq-turing-eqs">
+<span class="eqno">(134)<a class="headerlink" href="#equation-eq-turing-eqs" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
+\frac{\partial A}{\partial t} &amp;= \nabla A + \gamma (a - A +A^2 B)\\
+\frac{\partial B}{\partial t} &amp;= d\nabla B + \gamma (b - A^2 B)
+\end{split}
+\end{align}\end{split}\]</div>
+<p>We can see that the equations are coupled through the source terms that contain the concentrations of both species.</p>
+</div>
+<div class="section" id="fem-discretization">
+<h2>FEM discretization<a class="headerlink" href="#fem-discretization" title="Permalink to this headline">¶</a></h2>
+<p>Using the same FD time discretization and using an implicit scheme, we can write these equations in FEM matrix form (just like we did for temperature in the previous example):</p>
+<div class="math notranslate nohighlight" id="equation-eq-turing-eqs-fem">
+<span class="eqno">(135)<a class="headerlink" href="#equation-eq-turing-eqs-fem" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
+(M(1+\Delta t\gamma) + \Delta tA_A)A^{n+1} = MA^n + \Delta tF_A^{n+1}\\
+(M + \Delta tA_B)B^{n+1} = MB^n + \Delta tF_B^{n+1}
+\end{split}
+\end{align}\end{split}\]</div>
+<p>with the matrices defined as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-turing-eqs-fem-matrix">
+<span class="eqno">(136)<a class="headerlink" href="#equation-eq-turing-eqs-fem-matrix" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
+M &amp;= \int_\Omega N_i N_j  d\Omega \ \ \ \ \ \ \ i,j=1,2,...,n\\
+A_A &amp;= \int_\Omega \left ( \frac{\partial N_i}{\partial x}\frac{\partial N_j }{\partial x} + \frac{\partial N_i}{\partial y}\frac{\partial N_j }{\partial y} d\Omega \right ) d\Omega\ \ \ \ \ \ \ i,j=1,2,...,n\\
+A_B &amp;= \int_\Omega d \left ( \frac{\partial N_i}{\partial x}\frac{\partial N_j }{\partial x} + \frac{\partial N_i}{\partial y}\frac{\partial N_j }{\partial y} d\Omega \right ) d\Omega\ \ \ \ \ \ \ i,j=1,2,...,n\\
+F_A &amp;= \int_\Omega \gamma N_i \left (a + (N_jA_j)^2N_jB_j      \right )  d\Omega \ \ \ \ \ \ \ i,j=1,2,...,n\\
+F_B &amp;= \int_\Omega \gamma N_i \left (b - (N_jA_j)^2N_jB_j      \right )  d\Omega \ \ \ \ \ \ \ i,j=1,2,...,n\\
+\end{split}
+\end{align}\end{split}\]</div>
+<p>We can combine the matrices on the left-hand side and get the stifness matrices <span class="math notranslate nohighlight">\(K_A\)</span> and <span class="math notranslate nohighlight">\(K_B\)</span>.</p>
+<div class="math notranslate nohighlight" id="equation-eq-turing-eqs-fem-matrix-2">
+<span class="eqno">(137)<a class="headerlink" href="#equation-eq-turing-eqs-fem-matrix-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+\begin{split}
+K_A A^{n+1} = M A^n + \Delta t F_A^{n+1}\\
+K_B B^{n+1} = M B^n + \Delta t F_B^{n+1}
+\end{split}
+\end{align}\end{split}\]</div>
+<p>One way of solving such a coupled problem is to have two unknowns per node (two so-called degrees of freedom). In our case, the complete element stiffness matrix would look like this:</p>
+<div class="math notranslate nohighlight" id="equation-eq-turing-eqs-fem-matrix-3">
+<span class="eqno">(138)<a class="headerlink" href="#equation-eq-turing-eqs-fem-matrix-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+{K_A}_{11} &amp; 0 &amp; {K_A}_{12} &amp; 0 &amp; {K_A}_{13} &amp; 0 \\
+0 &amp; {K_B}_{11} &amp; 0 &amp; {K_B}_{12} &amp; 0 &amp; {K_B}_{13} \\
+{K_A}_{21} &amp; 0 &amp; {K_A}_{22} &amp; 0 &amp; {K_A}_{23} &amp; 0 \\
+0 &amp; {K_B}_{21} &amp; 0 &amp; {K_B}_{22} &amp; 0 &amp; {K_B}_{23} \\
+{K_A}_{31} &amp; 0 &amp; {K_A}_{32} &amp; 0 &amp; {K_A}_{33} &amp; 0 \\
+0 &amp; {K_B}_{31} &amp; 0 &amp; {K_B}_{32} &amp; 0 &amp; {K_B}_{33}
+\end{bmatrix}
+\begin{bmatrix}
+A_1^{n+1}\\
+B_1^{n+1}\\
+A_2^{n+1}\\
+B_2^{n+1}\\
+A_3^{n+1}\\
+B_3^{n+1}\\
+\end{bmatrix}
+= Rhs\end{split}\]</div>
+<p>The unknown concentrations of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> or both showing up in the solution vector. What we also note is that the coupling is not that strong, as there are no cross-terms. The equation for <span class="math notranslate nohighlight">\(A_1^{n+1}\)</span>, the first row in <a class="reference internal" href="#equation-eq-turing-eqs-fem-matrix-3">equation (138)</a> has zeros in the columns that operate on B. The coupling comes in through the source terms that appear on the Rhs (<a class="reference internal" href="#equation-eq-turing-eqs">equation (134)</a>).</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../refs.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="transient_problems.html" class="btn btn-neutral float-left" title="Transient heat diffusion" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Lars Ruepke and Zhikui Guo.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+      
+        <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+          <span class="rst-current-version" data-toggle="rst-current-version">
+            <span class="fa fa-book"> Finite Element Modeling in Geodynamics</span>
+            v: latest
+            <span class="fa fa-caret-down"></span>
+          </span>
+          <div class="rst-other-versions">
+            <dl>
+              
+                
+                <dd><a href="https://lruepke.github.io/FEM_lecture/downloads/LectureNote.pdf">latest</a></dd>
+                
+                <dd><a href="#/LectureNote.pdf">2.0</a></dd>
+                
+              
+          </div>
+        </div>
+      
+    
+
+</body>
+</html>
