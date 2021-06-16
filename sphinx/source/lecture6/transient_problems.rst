@@ -138,7 +138,7 @@ Notice how the logic for the element thermal conductivity has changed - and that
     Kel    = np.ones(nel)*k1
     Kel[np.where(Phases==100)] = k2
 
-Make sure that the new logical for :math:`Kel`is also used in the post-processing step when computing heat fluxes.
+Make sure that the new logical for :code:`Kel` is also used in the post-processing step when computing heat fluxes.
 
 .. only:: html
 
