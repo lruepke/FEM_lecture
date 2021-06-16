@@ -19,7 +19,7 @@ ly          = 5
 
 # time control
 dt = 5e-4
-nt = 5
+nt = 50
 
 # model parameters
 g_coeff     = 600 #kinetic constant
