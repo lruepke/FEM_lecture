@@ -19,7 +19,7 @@ ly          = 5
 
 # time control
 dt = 5e-4
-nt = 50
+nt = 5
 
 # model parameters
 g_coeff     = 600 #kinetic constant
@@ -49,7 +49,7 @@ def make_box(x, y, w, h, attribute):
                      (i+2, i+3),
                      (i+3, i+0)])
     
-    regions.append([x+0.01*w, y+0.01*h, attribute,0.005])
+    regions.append([x+0.01*w, y+0.01*h, attribute,0.001])
 
 # generate input    
 make_box(x0, y0, lx, ly, 1)
@@ -66,7 +66,7 @@ nel    = EL2NOD.shape[0]
 nnod   = GCOORD.shape[0]
 sdof   = nnod*2                 # two dof per node
 Phases = np.reshape(Phases,nel)
-
+print(nnod)
 # setup degrees of freedom - two per node
 EL2DOF = np.zeros((nel,2*nnodel), dtype=int)
 EL2DOF[:,0::2] = 2*EL2NOD
@@ -147,7 +147,7 @@ for t in range(0,nt):
     error = 10
     tol   = 0.001
     Conc_tmp = np.ones(sdof)*10
-    iter_max = 10
+    iter_max = 20
 
     while error > tol:
         Tmp = Rhs_all.copy()
@@ -157,15 +157,15 @@ for t in range(0,nt):
             FA_el = np.zeros(nnodel)
             FB_el = np.zeros(nnodel)
             
-            for ip in range(0,nip):        
+            for ip in range(0,1):        
                 # 1. update shape functions
-                xi      = gauss[ip,0]
-                eta     = gauss[ip,1]
+                xi      = 1/3 #gauss[ip,0]
+                eta     = 1/3 # gauss[ip,1]
                 N, dNds = shapes_tri(xi, eta)
                                
                 # 2. integrate force terms
-                FA_el     = FA_el + dt*g_coeff*N*(a_coeff+np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*weights[ip] 
-                FB_el     = FB_el + dt*g_coeff*N*(b_coeff-np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*weights[ip] 
+                FA_el     = FA_el + dt*g_coeff*N*(a_coeff+np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*0.5#weights[ip] 
+                FB_el     = FB_el + dt*g_coeff*N*(b_coeff-np.dot(N,np.take(A, EL2NOD[iel,:], axis=0 ))**2*np.dot(N,np.take(B, EL2NOD[iel,:], axis=0 )))*detJ*0.5#weights[ip] 
       
             # We don't have boundary conditions, as everything is zero flux      
             Tmp[2*EL2NOD[iel,:]]   += FA_el
@@ -178,8 +178,9 @@ for t in range(0,nt):
         A     = Conc[0:sdof:2]
         B     = Conc[1:sdof:2]
         
+        print(error, iter)
         if iter == iter_max:
-            print(error)
+
             break
 
       
