@@ -189,7 +189,7 @@ Notice how the node numbering is different to the equation numbering! Each node 
 
 .. code-block:: python 
     :linenos:
-    :emphasize-lines: 10-13,30-31,34-35, 38,39,42,43
+    :emphasize-lines: 9-10,32,33,36,37, 40-44
     :name: lst:2d-fem-turing_2
     :caption: Non-linear iterations and solution
 
