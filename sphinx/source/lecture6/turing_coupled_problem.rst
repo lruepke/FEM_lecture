@@ -251,6 +251,23 @@ Excercise
 
 Try to puzzle a working code together and make sure that you understand the equation numbering and the way the iterations are done. If you get bored, stuck, or impatient: here is a link to the working code :download:`double_diff.py <python/double_diff.py>`.
 
+
+
+.. only:: html
+
+    Results of transient Turing problem.
+ 
+    .. raw:: html
+ 
+       <video width=100% autoplay muted controls loop>
+       <source src="../_static/video/Turing.mp4" type="video/mp4">
+          Your browser does not support HTML video.
+       </video>
+
+
+
+
+
 Is FEM a good idea for solving this problem?
 ---------------------------------------------
 Ok, we got it to work but the solution seems super slow. We iterate to get a consistent right-hand side and solve the equations on an unstructured mesh although we are not resolving any complex geometries. 
@@ -261,9 +278,11 @@ A much more effective way to solve the equations is to use explicit methods that
 
 To illustrate this point, we look at a Turing problem that is described `here <https://blogs.mathworks.com/graphics/2015/03/16/how-the-tiger-got-its-stripes/>` and `here <http://www.karlsims.com/rd.html>`. Read those linked documents - they provide a really nice introduction to Turing pattern!
 
-Alright, back to explicit FDM, let's how badly FEM on unstructured meshes "loses" against FDM on a structured mesh. Have a look at the notebook and complete it!
+Alright, back to explicit FDM, let's see how badly FEM on unstructured meshes "loses" against FDM on a structured mesh. Have a look at the notebook and complete it! Try also other variations of "kill" and "feed" parameters.
 
 .. toctree::
     :maxdepth: 2
 
     jupyter/turing_fdm.ipynb
+
+
