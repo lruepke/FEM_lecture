@@ -50,7 +50,7 @@ def make_box(x, y, w, h, attribute):
                      (i+2, i+3),
                      (i+3, i+0)])
     
-    regions.append([x+0.01*w, y+0.01*h, attribute,0.01])
+    regions.append([x+0.01*w, y+0.01*h, attribute,0.005])
 
 # generate input    
 make_box(x0, y0, lx, ly, 1)
@@ -89,10 +89,9 @@ writer.write_points_cells(points, cells)
 
 # Gauss integration points for triangles
 nip   = 3
-gauss, weights = int_points_triangle(nip)
-
-#gauss = np.array([[ 1/6, 2/3, 1/6], [1/6, 1/6, 2/3]]).T.copy()
-#weights = np.array([1/6, 1/6, 1/6])
+#gauss, weights = int_points_triangle(nip)
+gauss = np.array([[ 1/6, 2/3, 1/6], [1/6, 1/6, 2/3]]).T.copy()
+weights = np.array([1/6, 1/6, 1/6])
 
 # time loop
 
@@ -115,7 +114,7 @@ for t in range(0,nt):
             # 1. update shape functions
             xi      = gauss[ip,0]
             eta     = gauss[ip,1]
-            N, dNds = shapes_tri(xi, eta, nnodel)
+            N, dNds = shapes_tri(xi, eta)
             
             # 2. set up Jacobian, inverse of Jacobian, and determinant
             Jac     = np.matmul(dNds,ECOORD) #[2,nnodel]*[nnodel,2]
@@ -165,7 +164,7 @@ for t in range(0,nt):
                 # 1. update shape functions
                 xi      = gauss[ip,0]
                 eta     = gauss[ip,1]
-                N, dNds = shapes_tri(xi, eta, nnodel)
+                N, dNds = shapes_tri(xi, eta)
                 
                 # 2. set up Jacobian, inverse of Jacobian, and determinant
                 Jac     = np.matmul(dNds,ECOORD) #[2,nnodel]*[nnodel,2]
