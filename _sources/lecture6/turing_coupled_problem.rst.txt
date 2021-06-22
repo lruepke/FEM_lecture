@@ -276,7 +276,7 @@ A closer look at the equations also reveals that we are solving a problem that i
 
 A much more effective way to solve the equations is to use explicit methods that are time-step limited (remember the FDM lectures?) but are also very efficient as they do not involve solving a system of equations. 
 
-To illustrate this point, we look at a Turing problem that is described `here <https://blogs.mathworks.com/graphics/2015/03/16/how-the-tiger-got-its-stripes/>` and `here <http://www.karlsims.com/rd.html>`. Read those linked documents - they provide a really nice introduction to Turing pattern!
+To illustrate this point, we look at a Turing problem that is described `here <https://blogs.mathworks.com/graphics/2015/03/16/how-the-tiger-got-its-stripes/>`_ and `here <http://www.karlsims.com/rd.html>`_ . Read those linked documents - they provide a really nice introduction to Turing pattern!
 
 Alright, back to explicit FDM, let's see how badly FEM on unstructured meshes "loses" against FDM on a structured mesh. Have a look at the notebook and complete it! Try also other variations of "kill" and "feed" parameters.
 
