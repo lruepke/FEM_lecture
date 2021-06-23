@@ -112,7 +112,6 @@ The model parameters are:
 Key pieces of the code are:
 
 .. code-block:: python 
-    :linenos:
     :emphasize-lines: 10-13,30-31,34-35, 38,39,42,43
     :name: lst:2d-fem-turing_3
     :caption: Initial conditions
@@ -133,7 +132,6 @@ Key pieces of the code are:
 This is how the initial conditions are set using random noise. Notice also how we define a variable :code:`sdof` that refers to the number of equations, while :code:`nnod` refers to the number of nodes in the mesh.
 
 .. code-block:: python 
-    :linenos:
     :emphasize-lines: 10-13,30-31,34-35, 38,39,42,43
     :name: lst:2d-fem-turing_1
     :caption: Matrix assembly
@@ -188,7 +186,6 @@ This is how the initial conditions are set using random noise. Notice also how w
 Notice how the node numbering is different to the equation numbering! Each node has two degrees of freedom, the concentration of :math:`A` and :math:`B`. All concentrations of :math:`A` are stored at :code:`2*EL2NOD[iel,:]` for the element, iel, and the concentrations of :math:`B` at :code:`2*EL2NOD[iel,:]+1`. This is a typical way of numbering the equations and we will see the same pattern when solving for viscous flow (when each node has two velocities).
 
 .. code-block:: python 
-    :linenos:
     :emphasize-lines: 9-10,32,33,36,37, 40-44
     :name: lst:2d-fem-turing_2
     :caption: Non-linear iterations and solution
