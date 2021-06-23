@@ -99,8 +99,8 @@ We take our transient triangle solver from the previous excercise as a starting 
 
 The model parameters are:
     * x,y have length 5
-    * diffusivity for :math:`B`is :math:`d=20`
-    * diffusivity for :math:`A`is :math:`1`
+    * diffusivity for :math:`B` is :math:`d=20`
+    * diffusivity for :math:`A` is :math:`1`
     * we use a triangle size of 0.005
     * and the other constants are:
         * :math:`\gamma=600`
