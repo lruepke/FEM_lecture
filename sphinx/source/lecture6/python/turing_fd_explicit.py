@@ -42,7 +42,7 @@ y = np.linspace(0, 127, nx)
 xv, yv = np.meshgrid(x, y)
 # time stepping
 dt      = .25
-tottime = 1000
+tottime = 5000
 t       = 0
 
 # run model
@@ -64,6 +64,4 @@ ax = fig.add_axes([left, bottom, width, height])
 
 cp = plt.contourf(x,y, B, cmap='gist_yarg')
 plt.colorbar(cp)
-ax.xaxis.grid(True, zorder=0)
-ax.yaxis.grid(True, zorder=0)
 plt.show()
