@@ -1,12 +1,12 @@
 FEM and advection problems
 ==========================
 
-In one of the introductory chapters, we had looked into transport problems and how to solve them using FDM. Today we will take this a bit further. To to understand why certain solutions did not work and why we finite elements have their own problems for advection. For this purpose we will again use the standard steady-state advection diffusion equation:
+In one of the introductory chapters, we had looked into transport problems and how to solve them using FDM. Today we will take this a bit further in order to understand why certain solutions did not work and why finite elements have their own problems for advection. For this purpose, we will again use the standard 1-D steady-state advection diffusion equation:
 
 .. math::
     :label: eq:fem_adv_diff
 
-    c \frac{\partial }{\partial x}T - \frac{\partial}{\partial x}k \frac{\partial T}{\partial x},
+    c \frac{\partial }{\partial x}T - \frac{\partial}{\partial x}k \frac{\partial T}{\partial x} = 0,
 
 where :math:`c` is velocity, :math:`T` temperature, and :math:`k` thermal conductivity. 
 
@@ -51,7 +51,7 @@ Let's do the same thing for the upwind case:
     \end{align}
 
 
-Again asymetric. Let's quickly program them!
+Again asymetric. Let's quickly program those two solutions!
 
 
 .. toctree::
@@ -60,11 +60,11 @@ Again asymetric. Let's quickly program them!
     jupyter/fdm_adv_diff.ipynb
 
 
-Explore the solution for different pairs of Peclet numbers and c/k ratios. What is the main difference between the upwind and FTCS solution? What kind of numerical diffusion is happening? What's the sign of the numerical diffusion?
+Explore the solution for different pairs of Peclet numbers and c/k ratios. What is the main difference between the upwind and FTCS solution? What kind of numerical diffusion is happening? What's the sign of the numerical diffusion? Is negative diffusion physically possible, or a source of trouble?
 
 1D Finite Element Solutions
 --------------------------------
-Let’s see how a simple finite element solution would look like. This would be the stiffness matrix if a single element using linear shape functions:
+Let’s see how a simple finite element solution looks like. This would be the stiffness matrix for a single element using linear shape functions:
 
 .. math::
     :label: eq:fem_1d_single_element_adv
@@ -80,9 +80,9 @@ Let’s see how a simple finite element solution would look like. This would be 
     T_2
     \end{bmatrix}=0
     
-Again, we get a :math:`2x2` stiffness matrix for every element.The node numbering is again local; node number 1 is the first node of an element k and has the global node number k, while node number 2 is the second node of the element and has the global node number k+1!
+Notice how the sign changed on the diffusion term after partial integration. Again, we get a :math:`2x2` stiffness matrix for every element. The node numbering is again local; node number 1 is the first node of an element k and has the global node number k, while node number 2 is the second node of the element and has the global node number k+1!
 
-We can do the integration using symbolic math. As shape function we use our standard 1D linear interpolation functions; just changed to use :math:`\bar{x}` as our variable describing distance along the element to make the integration easier.
+We can do the integration using symbolic math. We use again our standard 1D linear interpolation functions; just changed to use :math:`\bar{x}` as our variable describing distance along the element to make the integration easier.
 
 .. math::
     :label: eq:fem_1d_shape_elem_adv
@@ -157,4 +157,4 @@ which we can compare to the FTCS solution:
     -\left(\frac{c}{2\Delta x} + \frac{k}{\Delta x^2} \right) & \frac{2k}{\Delta x^2} &  - \left( - \frac{c}{2 \Delta x} + \frac{k}{\Delta x^2} \right) \end{bmatrix} \begin{bmatrix} T_{i-1} \\ T_{i} \\ T_{i+1} \end{bmatrix}  &= 0 
 
  
-The two solutions are the same - safe for a constant factor :math:`\Delta x`, which drops out because I also shows up on the RHS (if we had one)! This implies that FE solutions also have an intrinsinc negative diffusion component, which makes them unstable. A popular way to stabilize them is to use the Streamline Upwind Petrov Galerkin (SUPG) method, which modifies the weighting functions so that a little bit of numerical diffusion is added in the direction of flow.
+The two solutions are the same - safe for a constant factor :math:`\Delta x`, which drops out because it also shows up on the RHS (if we had one)! This implies that FE solutions also have an intrinsinc negative diffusion component, which makes them unstable. A popular way to stabilize them is to use the Streamline Upwind Petrov Galerkin (SUPG) method, which modifies the weighting functions so that a little bit of numerical diffusion is added in the direction of flow.
