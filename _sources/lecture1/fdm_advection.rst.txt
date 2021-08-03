@@ -17,7 +17,7 @@ or written in one-dimension:
 
 These equations describe the non-diffusive transport of a concentration :math:`C` with the flow field :math:`\vec{u}`, like, for example, in solute transport. If the solute also diffused, there would also be a diffusion term on the right-hand side. 
 
-While these equations look quite "friendly" and a bit simpler than the diffusion equations we have looked at so far, they can actually be a challenge to solve (well). Let's explore a fre possible FDM schemes!
+While these equations look quite "friendly" and a bit simpler than the diffusion equations we have looked at so far, they can actually be a challenge to solve (well). Let's explore a two possible FDM schemes!
 
 
 FDM advection schemes
@@ -44,7 +44,7 @@ Another option is to use what is called an upwind scheme, in which the gradient 
     \frac{C_i^{n+1}-C_i^n}{\Delta t}= -u_{x,i}  \begin{pmatrix} \frac{C_{i}^{n}-C_{i-1}^n}{\Delta x} \text{ , if $u_x \geq 0$} \\ \frac{C_{i+1}^{n}-C_{i}^n}{\Delta x} \text{ , if $u_x < 0$} \end{pmatrix} 
 
 
-There are many more schemes including one much better ones (see e.g. Marc Spiegelmann's script on numerical methods  `<https://earth.usc.edu/~becker/teaching/557/reading/spiegelman_mmm.pdf>`_). We here look into these two basic types because we will come back to them when looking into finite elements for advection problems.
+There are many more schemes including much better ones (see e.g. Marc Spiegelmann's script on numerical methods  `<https://earth.usc.edu/~becker/teaching/557/reading/spiegelman_mmm.pdf>`_). We here look into these two basic types because we will come back to them when looking into finite elements for advection problems.
 
 Excercise
 ^^^^^^^^^^

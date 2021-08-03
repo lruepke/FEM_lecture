@@ -279,7 +279,7 @@
 <div class="math notranslate nohighlight" id="equation-eq-advection-eqn-1d">
 <span class="eqno">(51)<a class="headerlink" href="#equation-eq-advection-eqn-1d" title="Permalink to this equation">¶</a></span>\[\frac{\partial C}{\partial t} = -u_x \frac{\partial C}{\partial x}\]</div>
 <p>These equations describe the non-diffusive transport of a concentration <span class="math notranslate nohighlight">\(C\)</span> with the flow field <span class="math notranslate nohighlight">\(\vec{u}\)</span>, like, for example, in solute transport. If the solute also diffused, there would also be a diffusion term on the right-hand side.</p>
-<p>While these equations look quite “friendly” and a bit simpler than the diffusion equations we have looked at so far, they can actually be a challenge to solve (well). Let’s explore a fre possible FDM schemes!</p>
+<p>While these equations look quite “friendly” and a bit simpler than the diffusion equations we have looked at so far, they can actually be a challenge to solve (well). Let’s explore a two possible FDM schemes!</p>
 <div class="section" id="fdm-advection-schemes">
 <h2>FDM advection schemes<a class="headerlink" href="#fdm-advection-schemes" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="forward-in-time-central-in-space-ftcs">
@@ -293,7 +293,7 @@
 <p>Another option is to use what is called an upwind scheme, in which the gradient on the right-hand side is evaluated according to the direction of flow:</p>
 <div class="math notranslate nohighlight" id="equation-eq-advection-upwind">
 <span class="eqno">(53)<a class="headerlink" href="#equation-eq-advection-upwind" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{C_i^{n+1}-C_i^n}{\Delta t}= -u_{x,i}  \begin{pmatrix} \frac{C_{i}^{n}-C_{i-1}^n}{\Delta x} \text{ , if $u_x \geq 0$} \\ \frac{C_{i+1}^{n}-C_{i}^n}{\Delta x} \text{ , if $u_x &lt; 0$} \end{pmatrix}\end{split}\]</div>
-<p>There are many more schemes including one much better ones (see e.g. Marc Spiegelmann’s script on numerical methods  <a class="reference external" href="https://earth.usc.edu/~becker/teaching/557/reading/spiegelman_mmm.pdf">https://earth.usc.edu/~becker/teaching/557/reading/spiegelman_mmm.pdf</a>). We here look into these two basic types because we will come back to them when looking into finite elements for advection problems.</p>
+<p>There are many more schemes including much better ones (see e.g. Marc Spiegelmann’s script on numerical methods  <a class="reference external" href="https://earth.usc.edu/~becker/teaching/557/reading/spiegelman_mmm.pdf">https://earth.usc.edu/~becker/teaching/557/reading/spiegelman_mmm.pdf</a>). We here look into these two basic types because we will come back to them when looking into finite elements for advection problems.</p>
 </div>
 <div class="section" id="excercise">
 <h3>Excercise<a class="headerlink" href="#excercise" title="Permalink to this headline">¶</a></h3>
