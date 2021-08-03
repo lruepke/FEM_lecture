@@ -134,8 +134,9 @@
 <p class="caption"><span class="caption-text">Lecture 3</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../lecture3/overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html">Introduction: Finite Element Method (FEM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html">Introduction Finite Element Method (FEM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html#fem-implementation">FEM implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_advection.html">FEM and advection problems</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 4</span></p>
 <ul>
@@ -273,11 +274,11 @@
 <h1>Transport problems with FDM<a class="headerlink" href="#transport-problems-with-fdm" title="Permalink to this headline">¶</a></h1>
 <p>Before progressing towards finite elements, we will look into transport problems using FDM. Advection problems are described by so-called hyperbolic partial differential equations. The general form of advection/transport equations looks like this:</p>
 <div class="math notranslate nohighlight" id="equation-eq-advection-eqn">
-<span class="eqno">(50)<a class="headerlink" href="#equation-eq-advection-eqn" title="Permalink to this equation">¶</a></span>\[\frac{\partial C}{\partial t} = -\vec{u}\cdot\nabla T\]</div>
+<span class="eqno">(50)<a class="headerlink" href="#equation-eq-advection-eqn" title="Permalink to this equation">¶</a></span>\[\frac{\partial C}{\partial t} = -\vec{u}\cdot\nabla C\]</div>
 <p>or written in one-dimension:</p>
 <div class="math notranslate nohighlight" id="equation-eq-advection-eqn-1d">
-<span class="eqno">(51)<a class="headerlink" href="#equation-eq-advection-eqn-1d" title="Permalink to this equation">¶</a></span>\[\frac{\partial C}{\partial t} = -u_x \frac{\partial T}{\partial x}\]</div>
-<p>These equations describe the non-diffusive transport of a concentration $C$ with the flow field $vec{u}$, like, for example, in solute transport. If the solute also diffused, there would also be a diffusion term on the right-hand side.</p>
+<span class="eqno">(51)<a class="headerlink" href="#equation-eq-advection-eqn-1d" title="Permalink to this equation">¶</a></span>\[\frac{\partial C}{\partial t} = -u_x \frac{\partial C}{\partial x}\]</div>
+<p>These equations describe the non-diffusive transport of a concentration <span class="math notranslate nohighlight">\(C\)</span> with the flow field <span class="math notranslate nohighlight">\(\vec{u}\)</span>, like, for example, in solute transport. If the solute also diffused, there would also be a diffusion term on the right-hand side.</p>
 <p>While these equations look quite “friendly” and a bit simpler than the diffusion equations we have looked at so far, they can actually be a challenge to solve (well). Let’s explore a fre possible FDM schemes!</p>
 <div class="section" id="fdm-advection-schemes">
 <h2>FDM advection schemes<a class="headerlink" href="#fdm-advection-schemes" title="Permalink to this headline">¶</a></h2>

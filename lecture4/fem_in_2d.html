@@ -123,8 +123,9 @@
 <p class="caption"><span class="caption-text">Lecture 3</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../lecture3/overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html">Introduction: Finite Element Method (FEM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html">Introduction Finite Element Method (FEM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_intro.html#fem-implementation">FEM implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture3/fem_advection.html">FEM and advection problems</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 4</span></p>
 <ul class="current">
@@ -295,13 +296,13 @@
 <h2>Governing equation - strong form<a class="headerlink" href="#governing-equation-strong-form" title="Permalink to this headline">¶</a></h2>
 <p>The strong form looks like this, we have just added the second dimension.</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-2d-strong">
-<span class="eqno">(106)<a class="headerlink" href="#equation-eq-fem-2d-strong" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T_{ex}}{\partial y} =0.\]</div>
+<span class="eqno">(115)<a class="headerlink" href="#equation-eq-fem-2d-strong" title="Permalink to this equation">¶</a></span>\[\frac{\partial}{\partial x}k\frac{\partial T_{ex}}{\partial x} + \frac{\partial}{\partial y}k\frac{\partial T_{ex}}{\partial y} =0.\]</div>
 </div>
 <div class="section" id="d-shape-functions">
 <h2>2-D shape functions<a class="headerlink" href="#d-shape-functions" title="Permalink to this headline">¶</a></h2>
 <p>We now use 2-D shape functions in our approximate solution:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-aprox-funcion-2d">
-<span class="eqno">(107)<a class="headerlink" href="#equation-eq-fem-aprox-funcion-2d" title="Permalink to this equation">¶</a></span>\[T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j(x,y) T_j = N_j T_j,\]</div>
+<span class="eqno">(116)<a class="headerlink" href="#equation-eq-fem-aprox-funcion-2d" title="Permalink to this equation">¶</a></span>\[T_{ex} \cong \tilde{T}= \sum_{j=1}^{n} N_j(x,y) T_j = N_j T_j,\]</div>
 <p>where the shape functions <span class="math notranslate nohighlight">\(N_j(x,y)\)</span> are now function of both spatial dimensions. An example of a 2-D FEM mesh and associated shape functions are shown in <a class="reference internal" href="#fig-shapefunc-2d-linear"><span class="std std-numref">Fig. 5</span></a>. Note that the structured quad mesh and the bi-linear shape functions are just one possibility of using the FEM in 2-D. There are many other possibility, like unstructured triangle meshes and higher order shape functions.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -338,16 +339,16 @@
 </div>
 <p>Note that the 2-D shape functions still sum to <span class="math notranslate nohighlight">\(1\)</span> everywhere:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-aprox-funcion-2d-2">
-<span class="eqno">(108)<a class="headerlink" href="#equation-eq-fem-aprox-funcion-2d-2" title="Permalink to this equation">¶</a></span>\[\sum_{j=1}^{n} N_j(x,y)  = 1.\]</div>
+<span class="eqno">(117)<a class="headerlink" href="#equation-eq-fem-aprox-funcion-2d-2" title="Permalink to this equation">¶</a></span>\[\sum_{j=1}^{n} N_j(x,y)  = 1.\]</div>
 </div>
 <div class="section" id="weak-form">
 <h2>Weak form<a class="headerlink" href="#weak-form" title="Permalink to this headline">¶</a></h2>
-<p>We proceed by substituting <a class="reference internal" href="#equation-eq-fem-aprox-funcion-2d">equation (107)</a> into <a class="reference internal" href="#equation-eq-fem-2d-strong">equation (106)</a> and by using the Galerkin method we get:</p>
+<p>We proceed by substituting <a class="reference internal" href="#equation-eq-fem-aprox-funcion-2d">equation (116)</a> into <a class="reference internal" href="#equation-eq-fem-2d-strong">equation (115)</a> and by using the Galerkin method we get:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-2d-weak">
-<span class="eqno">(109)<a class="headerlink" href="#equation-eq-fem-2d-weak" title="Permalink to this equation">¶</a></span>\[\int_\Omega N_i \frac{\partial}{\partial x}k\frac{\partial N_j T_j }{\partial x} + N_i \frac{\partial}{\partial y}k\frac{\partial N_j T_j }{\partial y} d\Omega=0\ \ \ \ \ \ \ i=1,2,...,n\]</div>
+<span class="eqno">(118)<a class="headerlink" href="#equation-eq-fem-2d-weak" title="Permalink to this equation">¶</a></span>\[\int_\Omega N_i \frac{\partial}{\partial x}k\frac{\partial N_j T_j }{\partial x} + N_i \frac{\partial}{\partial y}k\frac{\partial N_j T_j }{\partial y} d\Omega=0\ \ \ \ \ \ \ i=1,2,...,n\]</div>
 <p>We do the integration by parts and obtain:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-2d-weak-2">
-<span class="eqno">(110)<a class="headerlink" href="#equation-eq-fem-2d-weak-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(119)<a class="headerlink" href="#equation-eq-fem-2d-weak-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 -\int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j T_j }{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j T_j }{\partial y} d\Omega \right ) &amp;+ \oint_{\Gamma} \left ( N_ik\frac{\partial N_j T_j }{\partial x}  +  N_ik\frac{\partial N_j T_j }{\partial y} \right ) d\Gamma    =0\ \ \ \ \ \ \ i=1,2,...,n\\
 \Rightarrow \\
@@ -357,7 +358,7 @@
 <p>Note how the signs flipped during integration by parts and by substituting <span class="math notranslate nohighlight">\(\vec{q}=-k\nabla T\)</span>. The line integral has a clear physical meaning now, it’s the heat flow in and out of the modeling domain.</p>
 <p>We go on and split the modeling domain into finite elements and the first integral turns into a sum over those elements. The line integral is again obmitted for the moment.</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-2d-weak-3">
-<span class="eqno">(111)<a class="headerlink" href="#equation-eq-fem-2d-weak-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(120)<a class="headerlink" href="#equation-eq-fem-2d-weak-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 +\int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y} T_j \right ) d\Omega   &amp;=0\ \ \ \ \ \ \ i=1,2,...,n\\
 \Rightarrow \\
@@ -410,10 +411,10 @@ Every element has an element number and a certain number of nodes. We will initi
 <h2>Numerical integration<a class="headerlink" href="#numerical-integration" title="Permalink to this headline">¶</a></h2>
 <p>The next step is to learn how we can integrate the element stiffness matrix. We have seen that the general finite element form, called weak form, of the heat diffusion equation can be written as (with boundary terms omitted):</p>
 <div class="math notranslate nohighlight" id="equation-eq-fem-2d-weak-num-int">
-<span class="eqno">(112)<a class="headerlink" href="#equation-eq-fem-2d-weak-num-int" title="Permalink to this equation">¶</a></span>\[\int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y} T_j \right ) d\Omega   = \sum_{Elements} \int_{\Omega_{e}} \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y}  \right ) T_j d\Omega_{e} =0\ \ \ \ \ \ \ i=1,2,...,n\]</div>
-<p>The main problem with solving <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (112)</a> is that the integral may be very difficult to evaluate. In finite elements we can use elements of very different geometries to mesh complex objects, which makes the 2-D integrals very hard to solve. We will therefore use numerical integration techniques like Gauss-Legendre quadrature. The problem is (or good thing  as we will see later) that basically all quadrature rules (for quads) apply to rectangular domains that are 2x2 in size and have a local coordinate system <span class="math notranslate nohighlight">\((−1 \leq (\xi,\eta) \leq 1)\)</span>. The integration of a function over a 2d domain can than be expressed as:</p>
+<span class="eqno">(121)<a class="headerlink" href="#equation-eq-fem-2d-weak-num-int" title="Permalink to this equation">¶</a></span>\[\int_\Omega \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y} T_j \right ) d\Omega   = \sum_{Elements} \int_{\Omega_{e}} \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y}  \right ) T_j d\Omega_{e} =0\ \ \ \ \ \ \ i=1,2,...,n\]</div>
+<p>The main problem with solving <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (121)</a> is that the integral may be very difficult to evaluate. In finite elements we can use elements of very different geometries to mesh complex objects, which makes the 2-D integrals very hard to solve. We will therefore use numerical integration techniques like Gauss-Legendre quadrature. The problem is (or good thing  as we will see later) that basically all quadrature rules (for quads) apply to rectangular domains that are 2x2 in size and have a local coordinate system <span class="math notranslate nohighlight">\((−1 \leq (\xi,\eta) \leq 1)\)</span>. The integration of a function over a 2d domain can than be expressed as:</p>
 <div class="math notranslate nohighlight" id="equation-eq-num-int-1">
-<span class="eqno">(113)<a class="headerlink" href="#equation-eq-num-int-1" title="Permalink to this equation">¶</a></span>\[\int_{\hat{\Omega}} F(\xi,\eta) d\xi d\eta = \int_{-1}^{1}\int_{-1}^{1}F(\xi,\eta)d\xi d\eta = \sum_{I=1}^{M} \sum_{J=1}^{N} F(\xi_I,\eta_J)W_I W_J = \sum_{ip}F(\xi_{ip},\eta_{ip})W_{ip},\]</div>
+<span class="eqno">(122)<a class="headerlink" href="#equation-eq-num-int-1" title="Permalink to this equation">¶</a></span>\[\int_{\hat{\Omega}} F(\xi,\eta) d\xi d\eta = \int_{-1}^{1}\int_{-1}^{1}F(\xi,\eta)d\xi d\eta = \sum_{I=1}^{M} \sum_{J=1}^{N} F(\xi_I,\eta_J)W_I W_J = \sum_{ip}F(\xi_{ip},\eta_{ip})W_{ip},\]</div>
 <p>where M and N denote the number of Gauss points, <span class="math notranslate nohighlight">\((\xi,\eta)\)</span> and <span class="math notranslate nohighlight">\(W_J\)</span> denote the corresponding Gauss weights. The selection of the number of Gauss points is based on the formula <span class="math notranslate nohighlight">\(N=int[(p+1)/2]+1\)</span>, where p the polynomial degree to which the integrand is approximated. We will use linear shape functions so that we have 2 Gauss points (in every direction). In this case the local coordinates are <span class="math notranslate nohighlight">\(\pm0.5773502692\)</span> and the weights are all <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <div class="section" id="gauss-points">
 <h3>Gauss points<a class="headerlink" href="#gauss-points" title="Permalink to this headline">¶</a></h3>
@@ -476,9 +477,9 @@ Every element has an element number and a certain number of nodes. We will initi
 </div>
 <div class="section" id="isoparametric-elements">
 <h3>Isoparametric elements<a class="headerlink" href="#isoparametric-elements" title="Permalink to this headline">¶</a></h3>
-<p>So far so good, but how do we solve the integral in <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (112)</a> using local coordinates? We will have to do a coordinate transformation for the purpose of numerical integration that relates the element <span class="math notranslate nohighlight">\(\Omega_e\)</span> to the master element area <span class="math notranslate nohighlight">\(\hat{\Omega}\)</span> - or, equivalently, <span class="math notranslate nohighlight">\((x,y)\)</span> to <span class="math notranslate nohighlight">\((ξ,η)\)</span>. This can be done by using interpolation functions in terms of local coordinates. We will use so-called <em>isoparametric</em> elements in which we use the same number of interpolation functions for coordinate mapping and primary variable interpolation. This implies for our four node element that the local variables vary bi-linearly over the element.</p>
+<p>So far so good, but how do we solve the integral in <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (121)</a> using local coordinates? We will have to do a coordinate transformation for the purpose of numerical integration that relates the element <span class="math notranslate nohighlight">\(\Omega_e\)</span> to the master element area <span class="math notranslate nohighlight">\(\hat{\Omega}\)</span> - or, equivalently, <span class="math notranslate nohighlight">\((x,y)\)</span> to <span class="math notranslate nohighlight">\((ξ,η)\)</span>. This can be done by using interpolation functions in terms of local coordinates. We will use so-called <em>isoparametric</em> elements in which we use the same number of interpolation functions for coordinate mapping and primary variable interpolation. This implies for our four node element that the local variables vary bi-linearly over the element.</p>
 <div class="math notranslate nohighlight" id="equation-eq-num-int-isoparam">
-<span class="eqno">(114)<a class="headerlink" href="#equation-eq-num-int-isoparam" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(123)<a class="headerlink" href="#equation-eq-num-int-isoparam" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 x=&amp;\sum_{j=1}^n \Phi_j(\xi,\eta)x_j \\
 y=&amp;\sum_{j=1}^n \Phi_j(\xi,\eta)y_j, \\
@@ -486,10 +487,10 @@ y=&amp;\sum_{j=1}^n \Phi_j(\xi,\eta)y_j, \\
 \end{align}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(x_j\)</span> are the nodal coordinates. Our primary variable (temperature) interpolation functions are still in global coordinates:</p>
 <div class="math notranslate nohighlight" id="equation-eq-num-int-isoparam-pv">
-<span class="eqno">(115)<a class="headerlink" href="#equation-eq-num-int-isoparam-pv" title="Permalink to this equation">¶</a></span>\[T(x,y) = \sum_{j=1}^N N_j(x,y)T_j\]</div>
-<p>We can express the shape functions N in terms of local coordinates using <a class="reference internal" href="#equation-eq-num-int-isoparam">equation (114)</a> and the chain rule of differentiation:</p>
+<span class="eqno">(124)<a class="headerlink" href="#equation-eq-num-int-isoparam-pv" title="Permalink to this equation">¶</a></span>\[T(x,y) = \sum_{j=1}^N N_j(x,y)T_j\]</div>
+<p>We can express the shape functions N in terms of local coordinates using <a class="reference internal" href="#equation-eq-num-int-isoparam">equation (123)</a> and the chain rule of differentiation:</p>
 <div class="math notranslate nohighlight" id="equation-eq-num-int-isoparam-2">
-<span class="eqno">(116)<a class="headerlink" href="#equation-eq-num-int-isoparam-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(125)<a class="headerlink" href="#equation-eq-num-int-isoparam-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 \frac{\partial N}{\partial \xi} =&amp; \frac{\partial N}{\partial x} \frac{\partial x}{\partial \xi} + \frac{\partial N}{\partial y} \frac{\partial y}{\partial \xi} \\
 \frac{\partial N}{\partial \eta} =&amp; \frac{\partial N}{\partial x} \frac{\partial x}{\partial \eta} + \frac{\partial N}{\partial y} \frac{\partial y}{\partial \eta} \\
@@ -497,7 +498,7 @@ y=&amp;\sum_{j=1}^n \Phi_j(\xi,\eta)y_j, \\
 \end{align}\end{split}\]</div>
 <p>Or in matrix form:</p>
 <div class="math notranslate nohighlight" id="equation-eq-num-int-isoparam-3">
-<span class="eqno">(117)<a class="headerlink" href="#equation-eq-num-int-isoparam-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+<span class="eqno">(126)<a class="headerlink" href="#equation-eq-num-int-isoparam-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
 \frac{\partial N}{\partial \xi} \\
 \frac{\partial N}{\partial \eta}
 \end{bmatrix} =
@@ -512,9 +513,9 @@ y=&amp;\sum_{j=1}^n \Phi_j(\xi,\eta)y_j, \\
 </div>
 <div class="section" id="jacobian-matrix">
 <h3>Jacobian matrix<a class="headerlink" href="#jacobian-matrix" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="#equation-eq-num-int-isoparam-3">equation (117)</a> gives the relationship between the derivatives of <span class="math notranslate nohighlight">\(N\)</span> with respect to the global and local coordinates. The matrix in <a class="reference internal" href="#equation-eq-num-int-isoparam-3">equation (117)</a> is called the Jacobian matrix, J, of the coordinate transformation. Unfortunately this relationship is in the wrong direction. If we have a look at our starting equation <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (112)</a>, we realize that we need to relate the derivative with respect to global coordinates to the derivative with respect to local coordinates (which is the opposite direction). Fortunately this can be done quite easily:</p>
+<p><a class="reference internal" href="#equation-eq-num-int-isoparam-3">equation (126)</a> gives the relationship between the derivatives of <span class="math notranslate nohighlight">\(N\)</span> with respect to the global and local coordinates. The matrix in <a class="reference internal" href="#equation-eq-num-int-isoparam-3">equation (126)</a> is called the Jacobian matrix, J, of the coordinate transformation. Unfortunately this relationship is in the wrong direction. If we have a look at our starting equation <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (121)</a>, we realize that we need to relate the derivative with respect to global coordinates to the derivative with respect to local coordinates (which is the opposite direction). Fortunately this can be done quite easily:</p>
 <div class="math notranslate nohighlight" id="equation-eq-num-int-isoparam-4">
-<span class="eqno">(118)<a class="headerlink" href="#equation-eq-num-int-isoparam-4" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+<span class="eqno">(127)<a class="headerlink" href="#equation-eq-num-int-isoparam-4" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
 \frac{\partial N}{\partial x} \\
 \frac{\partial N}{\partial y}
 \end{bmatrix} =
@@ -525,9 +526,9 @@ J^{-1}
 \frac{\partial N}{\partial \xi} \\
 \frac{\partial N}{\partial \eta},
 \end{bmatrix}\end{split}\]</div>
-<p>Using <a class="reference internal" href="#equation-eq-num-int-isoparam">equation (114)</a> we can spell out the different components oft the Jacobian matrix:</p>
+<p>Using <a class="reference internal" href="#equation-eq-num-int-isoparam">equation (123)</a> we can spell out the different components oft the Jacobian matrix:</p>
 <div class="math notranslate nohighlight" id="equation-eq-num-int-jacobian">
-<span class="eqno">(119)<a class="headerlink" href="#equation-eq-num-int-jacobian" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+<span class="eqno">(128)<a class="headerlink" href="#equation-eq-num-int-jacobian" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
 J
 \end{bmatrix} =
 \begin{bmatrix}
@@ -540,12 +541,12 @@ J
 \end{bmatrix}\end{split}\]</div>
 <p>Finally the element area dA=dxdy of the original element in global coordinates is transformed to:</p>
 <div class="math notranslate nohighlight" id="equation-eq-num-int-jacobian-1">
-<span class="eqno">(120)<a class="headerlink" href="#equation-eq-num-int-jacobian-1" title="Permalink to this equation">¶</a></span>\[d\Omega_e = dxdy = det(J)d\xi d\eta\]</div>
-<p>We have now all the information we need to solve the integral in <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (112)</a> numerically:</p>
+<span class="eqno">(129)<a class="headerlink" href="#equation-eq-num-int-jacobian-1" title="Permalink to this equation">¶</a></span>\[d\Omega_e = dxdy = det(J)d\xi d\eta\]</div>
+<p>We have now all the information we need to solve the integral in <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (121)</a> numerically:</p>
 <div class="math notranslate nohighlight" id="equation-eq-num-int-jacobian-2">
-<span class="eqno">(121)<a class="headerlink" href="#equation-eq-num-int-jacobian-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\int_{\Omega_{e}} \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y}  \right ) d\Omega_{e} T_j \approx \\ \left [ \sum_{ip} \left ( \frac{N_i(\xi_{ip},\eta_{ip})}{\partial x} k \frac{N_j(\xi_{ip},\eta_{ip})}{\partial x} + \frac{N_i(\xi_{ip},\eta_{ip})}{\partial y} k \frac{N_j(\xi_{ip},\eta_{ip})}{\partial y}
+<span class="eqno">(130)<a class="headerlink" href="#equation-eq-num-int-jacobian-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\int_{\Omega_{e}} \left ( \frac{\partial N_i}{\partial x}k\frac{\partial N_j}{\partial x} + \frac{\partial N_i}{\partial y}k\frac{\partial N_j}{\partial y}  \right ) d\Omega_{e} T_j \approx \\ \left [ \sum_{ip} \left ( \frac{N_i(\xi_{ip},\eta_{ip})}{\partial x} k \frac{N_j(\xi_{ip},\eta_{ip})}{\partial x} + \frac{N_i(\xi_{ip},\eta_{ip})}{\partial y} k \frac{N_j(\xi_{ip},\eta_{ip})}{\partial y}
 \right ) W_{ip} det(J) \right ] T_j\end{split}\]</div>
-<p>It should be noted that the transformation of a quadrilateral element of a mesh to a master element <span class="math notranslate nohighlight">\(\hat{\Omega}\)</span> is solely for the purpose of numerically evaluating the integrals in <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (112)</a> . No transformation of the physical domain or elements is involved in the finite element analysis.</p>
+<p>It should be noted that the transformation of a quadrilateral element of a mesh to a master element <span class="math notranslate nohighlight">\(\hat{\Omega}\)</span> is solely for the purpose of numerically evaluating the integrals in <a class="reference internal" href="#equation-eq-fem-2d-weak-num-int">equation (121)</a> . No transformation of the physical domain or elements is involved in the finite element analysis.</p>
 </div>
 </div>
 <div class="section" id="excercises">
@@ -582,7 +583,7 @@ conda install tabulate
 <h3>Shape functions<a class="headerlink" href="#shape-functions" title="Permalink to this headline">¶</a></h3>
 <p>The second excercise is about spelling out the shape functions and their derivatives. Remember that the shape functions are defined in local coordinates. For bi-linear quads, they have this functional form:</p>
 <div class="math notranslate nohighlight" id="equation-eq-shape-functions">
-<span class="eqno">(122)<a class="headerlink" href="#equation-eq-shape-functions" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(131)<a class="headerlink" href="#equation-eq-shape-functions" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 \tilde{T}(x,y) = \sum_{j=1}^{n} N_jT_J = N_jT_J = NT \\
 NT &amp;= \begin{bmatrix} N_1 &amp; N_2 &amp; N_3 &amp; N_4 \end{bmatrix} \begin{bmatrix} T_1 \\ T_2 \\ T_3 \\ T_4 \end{bmatrix}\\
@@ -772,12 +773,12 @@ N_4 &amp; = 0.25(1-\xi)(1+\eta) \\
 </pre></div>
 </div>
 </div>
-<p>The key components of the code are an element loop (which corresponds to the sum over the integrals in <a class="reference internal" href="#equation-eq-fem-2d-weak-3">equation (111)</a> and an integration loop (which corresponds to the loop over integration points in <a class="reference internal" href="#equation-eq-fem-2d-weak-3">equation (111)</a>). Most of the work is done inside the integration loop:</p>
+<p>The key components of the code are an element loop (which corresponds to the sum over the integrals in <a class="reference internal" href="#equation-eq-fem-2d-weak-3">equation (120)</a> and an integration loop (which corresponds to the loop over integration points in <a class="reference internal" href="#equation-eq-fem-2d-weak-3">equation (120)</a>). Most of the work is done inside the integration loop:</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>shape functions are calculated at the local coordinates of the integration point</p></li>
-<li><p>The Jacobian matrix, its determinant, and the inverse Jacobian are is calculated according to <a class="reference internal" href="#equation-eq-num-int-isoparam-4">equation (118)</a></p></li>
-<li><p>Global derivatives of shape functions at local coordinates are calculated according to <a class="reference internal" href="#equation-eq-num-int-jacobian">equation (119)</a></p></li>
+<li><p>The Jacobian matrix, its determinant, and the inverse Jacobian are is calculated according to <a class="reference internal" href="#equation-eq-num-int-isoparam-4">equation (127)</a></p></li>
+<li><p>Global derivatives of shape functions at local coordinates are calculated according to <a class="reference internal" href="#equation-eq-num-int-jacobian">equation (128)</a></p></li>
 <li><p>The element stiffness matrix and the element force vector are integrated.</p></li>
 </ol>
 <p>After the integration</p>
@@ -790,9 +791,9 @@ N_4 &amp; = 0.25(1-\xi)(1+\eta) \\
 </div>
 <div class="section" id="jacobian">
 <h2>Jacobian:<a class="headerlink" href="#jacobian" title="Permalink to this headline">¶</a></h2>
-<p>The calculation of the Jacobian matrix is implemented via  <a class="reference internal" href="#equation-eq-num-int-isoparam-4">equation (118)</a>  as a matrix-vector multiplication:</p>
+<p>The calculation of the Jacobian matrix is implemented via  <a class="reference internal" href="#equation-eq-num-int-isoparam-4">equation (127)</a>  as a matrix-vector multiplication:</p>
 <div class="math notranslate nohighlight" id="equation-eq-jacobian-code">
-<span class="eqno">(123)<a class="headerlink" href="#equation-eq-jacobian-code" title="Permalink to this equation">¶</a></span>\[\begin{split}J =
+<span class="eqno">(132)<a class="headerlink" href="#equation-eq-jacobian-code" title="Permalink to this equation">¶</a></span>\[\begin{split}J =
 \begin{bmatrix}
 \frac{\partial N_1}{\partial \xi} &amp; \frac{\partial N_2}{\partial \xi} &amp; \frac{\partial N_3}{\partial \xi} &amp; \frac{\partial N_4}{\partial \xi} \\
 \frac{\partial N_1}{\partial \eta} &amp; \frac{\partial N_2}{\partial \eta} &amp; \frac{\partial N_3}{\partial \eta} &amp; \frac{\partial N_4}{\partial \eta}
@@ -817,9 +818,9 @@ x_4 &amp; y_4 \\
 </div>
 <div class="section" id="global-derivatives-of-shape-functions">
 <h2>Global derivatives of shape functions<a class="headerlink" href="#global-derivatives-of-shape-functions" title="Permalink to this headline">¶</a></h2>
-<p>The global derivatives are calculated according to <a class="reference internal" href="#equation-eq-num-int-jacobian">equation (119)</a>, which in matrix form is:</p>
+<p>The global derivatives are calculated according to <a class="reference internal" href="#equation-eq-num-int-jacobian">equation (128)</a>, which in matrix form is:</p>
 <div class="math notranslate nohighlight" id="equation-eq-dndx-code">
-<span class="eqno">(124)<a class="headerlink" href="#equation-eq-dndx-code" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+<span class="eqno">(133)<a class="headerlink" href="#equation-eq-dndx-code" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
 \frac{\partial N_1}{\partial x} &amp; \frac{\partial N_2}{\partial x} &amp; \frac{\partial N_3}{\partial x} &amp; \frac{\partial N_4}{\partial x} \\
 \frac{\partial N_1}{\partial y} &amp; \frac{\partial N_2}{\partial y} &amp; \frac{\partial N_3}{\partial y} &amp; \frac{\partial N_4}{\partial y}
 \end{bmatrix}
@@ -838,9 +839,9 @@ J^{-1}
 </div>
 <div class="section" id="element-stiffness-matrix">
 <h2>Element stiffness matrix<a class="headerlink" href="#element-stiffness-matrix" title="Permalink to this headline">¶</a></h2>
-<p>The final step is to put the <a class="reference internal" href="#equation-eq-num-int-jacobian-2">equation (121)</a> into finite element form. Also this now quite easy:</p>
+<p>The final step is to put the <a class="reference internal" href="#equation-eq-num-int-jacobian-2">equation (130)</a> into finite element form. Also this now quite easy:</p>
 <div class="math notranslate nohighlight" id="equation-eq-ael-code">
-<span class="eqno">(125)<a class="headerlink" href="#equation-eq-ael-code" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+<span class="eqno">(134)<a class="headerlink" href="#equation-eq-ael-code" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
 \begin{bmatrix}
 \frac{\partial N_1}{\partial x} &amp; \frac{\partial N_1}{\partial y} \\
 \frac{\partial N_2}{\partial x} &amp; \frac{\partial N_2}{\partial y} \\

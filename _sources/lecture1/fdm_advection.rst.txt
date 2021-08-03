@@ -6,16 +6,16 @@ Before progressing towards finite elements, we will look into transport problems
 .. math::
     :label: eq:advection_eqn
     
-    \frac{\partial C}{\partial t} = -\vec{u}\cdot\nabla T
+    \frac{\partial C}{\partial t} = -\vec{u}\cdot\nabla C
 
 or written in one-dimension:
 
 .. math::
     :label: eq:advection_eqn_1d
     
-    \frac{\partial C}{\partial t} = -u_x \frac{\partial T}{\partial x}
+    \frac{\partial C}{\partial t} = -u_x \frac{\partial C}{\partial x}
 
-These equations describe the non-diffusive transport of a concentration $C$ with the flow field $\vec{u}$, like, for example, in solute transport. If the solute also diffused, there would also be a diffusion term on the right-hand side. 
+These equations describe the non-diffusive transport of a concentration :math:`C` with the flow field :math:`\vec{u}`, like, for example, in solute transport. If the solute also diffused, there would also be a diffusion term on the right-hand side. 
 
 While these equations look quite "friendly" and a bit simpler than the diffusion equations we have looked at so far, they can actually be a challenge to solve (well). Let's explore a fre possible FDM schemes!
 
