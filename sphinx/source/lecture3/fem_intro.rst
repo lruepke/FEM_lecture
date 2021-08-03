@@ -1,4 +1,4 @@
-Introduction: Finite Element Method (FEM)
+Introduction Finite Element Method (FEM)
 =========================================
 
 We will again use the 1-D steady state heat diffusion equation as an example and solve it using FEM. Formally speaking the steady-state diffusion equation is an **elliptic** PDE. Elliptic equations describe a large variety of steady state problems in earth sciences including diffusion, plate flexure, and incompressible flows.
