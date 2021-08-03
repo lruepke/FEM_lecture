@@ -50,6 +50,7 @@ The majority of this course will be spent in front of a computer working on exer
     lecture1/example_1
     lecture1/example_2
     lecture1/example_3
+    lecture1/fdm_advection
 
 .. toctree::
     :maxdepth: 2

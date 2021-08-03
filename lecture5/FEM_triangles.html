@@ -111,6 +111,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_1.html">Example 1: Cooling dike</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_2.html">Example 2: Cooling dike - implicit version</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_3.html">Example 3: Periodic variations in seafloor temperature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/fdm_advection.html">Transport problems with FDM</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 2</span></p>
 <ul>
@@ -286,7 +287,7 @@
 </div>
 <p>Here we look at a linear triangle with three nodes. The relation between global and local coordinates is therefore:</p>
 <div class="math notranslate nohighlight" id="equation-eq-triangle-1">
-<span class="eqno">(122)<a class="headerlink" href="#equation-eq-triangle-1" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(126)<a class="headerlink" href="#equation-eq-triangle-1" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 x &amp;= x_1 + (x_2-x_1)\xi + (x_3-x_1)\eta \\
 y &amp;= y_1 + (y_2-y_1)\xi + (y_3-y_1)\eta \\
@@ -294,10 +295,10 @@ y &amp;= y_1 + (y_2-y_1)\xi + (y_3-y_1)\eta \\
 \end{align}\end{split}\]</div>
 <p>Temperature, or any other variable, will also vary linearly with the local coordinates and we can write</p>
 <div class="math notranslate nohighlight" id="equation-eq-triangle-2">
-<span class="eqno">(123)<a class="headerlink" href="#equation-eq-triangle-2" title="Permalink to this equation">¶</a></span>\[T(\xi,\eta) = a_1 +a_2\xi + a_3\eta\]</div>
+<span class="eqno">(127)<a class="headerlink" href="#equation-eq-triangle-2" title="Permalink to this equation">¶</a></span>\[T(\xi,\eta) = a_1 +a_2\xi + a_3\eta\]</div>
 <p>We can spell this out for the three nodes:</p>
 <div class="math notranslate nohighlight" id="equation-eq-triangle-3">
-<span class="eqno">(124)<a class="headerlink" href="#equation-eq-triangle-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(128)<a class="headerlink" href="#equation-eq-triangle-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 T_1 &amp;= T(0,0) = a_1 \\
 T_2 &amp;= T(1,0) = a_1 + a_2 \\
@@ -306,16 +307,16 @@ T_3 &amp;= T(0,1) = a_1 + a_3
 \end{align}\end{split}\]</div>
 <p>And express the contants <span class="math notranslate nohighlight">\(a\)</span> in terms of the nodal temperatures (or whatever our unknown is).</p>
 <div class="math notranslate nohighlight" id="equation-eq-triangle-4">
-<span class="eqno">(125)<a class="headerlink" href="#equation-eq-triangle-4" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(129)<a class="headerlink" href="#equation-eq-triangle-4" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 a_1 = T_1 \\
 a_2 = T_2 - T_1 \\
 a_3 = T_3 - T_1
 \end{split}
 \end{align}\end{split}\]</div>
-<p>This we put back into the definition of the approximate solution <a class="reference internal" href="#equation-eq-triangle-2">equation (123)</a> and get:</p>
+<p>This we put back into the definition of the approximate solution <a class="reference internal" href="#equation-eq-triangle-2">equation (127)</a> and get:</p>
 <div class="math notranslate nohighlight" id="equation-eq-triangle-5">
-<span class="eqno">(126)<a class="headerlink" href="#equation-eq-triangle-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(130)<a class="headerlink" href="#equation-eq-triangle-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
 \begin{split}
 T(\xi,\eta) &amp;= T_1 +(T_2 - T_1)\xi + (T_3-T_1)\eta\\
 \Rightarrow \\
@@ -487,7 +488,7 @@ T(\xi,\eta) &amp;= N_1 T_1 + N_2 T_2 + N_3 T_3 \\
 <p>Complete this and add the lines to the main code!</p>
 <div class="admonition-boundary-conditions admonition">
 <p class="admonition-title">Boundary conditions</p>
-<p>Did you notice that we are not specifying boundary conditions for lateral boundaries? Still the code seems to work. Have a look at <a class="reference internal" href="../lecture4/fem_in_2d.html#equation-eq-fem-2d-weak-2">equation (106)</a> and think about which implicit assumption we are making about the line integral.</p>
+<p>Did you notice that we are not specifying boundary conditions for lateral boundaries? Still the code seems to work. Have a look at <a class="reference internal" href="../lecture4/fem_in_2d.html#equation-eq-fem-2d-weak-2">equation (110)</a> and think about which implicit assumption we are making about the line integral.</p>
 </div>
 </div>
 <div class="section" id="step-4-post-processing-and-plotting">

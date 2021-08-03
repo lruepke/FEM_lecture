@@ -111,6 +111,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_1.html">Example 1: Cooling dike</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_2.html">Example 2: Cooling dike - implicit version</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lecture1/example_3.html">Example 3: Periodic variations in seafloor temperature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lecture1/fdm_advection.html">Transport problems with FDM</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Lecture 2</span></p>
 <ul class="current">
@@ -272,19 +273,19 @@
 <p>Suppose we have a linear differential operator <span class="math notranslate nohighlight">\(D\)</span> acting on a function <span class="math notranslate nohighlight">\(u\)</span>
 to produce a function <span class="math notranslate nohighlight">\(p\)</span>.</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-basic">
-<span class="eqno">(50)<a class="headerlink" href="#equation-eq-mwr-basic" title="Permalink to this equation">¶</a></span>\[D(u(x))=p(x).\]</div>
+<span class="eqno">(54)<a class="headerlink" href="#equation-eq-mwr-basic" title="Permalink to this equation">¶</a></span>\[D(u(x))=p(x).\]</div>
 <p>We wish to approximate <span class="math notranslate nohighlight">\(u\)</span> by a functions <span class="math notranslate nohighlight">\(\tilde{u}\)</span>, which is a linear
 combination of basis functions chosen from a linearly independent set. That
 is,</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-basic-2">
-<span class="eqno">(51)<a class="headerlink" href="#equation-eq-mwr-basic-2" title="Permalink to this equation">¶</a></span>\[u\cong \tilde{u}=\sum_{i=1}^na_i\varphi _i\]</div>
+<span class="eqno">(55)<a class="headerlink" href="#equation-eq-mwr-basic-2" title="Permalink to this equation">¶</a></span>\[u\cong \tilde{u}=\sum_{i=1}^na_i\varphi _i\]</div>
 <p>where <span class="math notranslate nohighlight">\(a\)</span> are the coefficients of the <span class="math notranslate nohighlight">\(n\)</span> basis functions <span class="math notranslate nohighlight">\(\varphi\)</span>. Now, when substituted into the differential operator, <span class="math notranslate nohighlight">\(D\)</span>, the result of the operations is not, in general, <span class="math notranslate nohighlight">\(p(x)\)</span>. Hence an error or residual will exist:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-basic-3">
-<span class="eqno">(52)<a class="headerlink" href="#equation-eq-mwr-basic-3" title="Permalink to this equation">¶</a></span>\[E(x)=R(x)=D(\tilde{u}(x))-p(x)\neq 0.\]</div>
+<span class="eqno">(56)<a class="headerlink" href="#equation-eq-mwr-basic-3" title="Permalink to this equation">¶</a></span>\[E(x)=R(x)=D(\tilde{u}(x))-p(x)\neq 0.\]</div>
 <p>The notion in the MWR is to force the residual to zero in some average sense
 over the domain. That is</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-basic-4">
-<span class="eqno">(53)<a class="headerlink" href="#equation-eq-mwr-basic-4" title="Permalink to this equation">¶</a></span>\[\int_XR(x)W_idx=0\ \ \ \ \ \ \ i=1,2,...,n  \label{MWR}\]</div>
+<span class="eqno">(57)<a class="headerlink" href="#equation-eq-mwr-basic-4" title="Permalink to this equation">¶</a></span>\[\int_XR(x)W_idx=0\ \ \ \ \ \ \ i=1,2,...,n  \label{MWR}\]</div>
 <p>where the nuber of <em>weight functions</em> <span class="math notranslate nohighlight">\(W_i\)</span> is exactly equal the number
 of unknow constants <span class="math notranslate nohighlight">\(a_i\)</span> in <span class="math notranslate nohighlight">\(\tilde{u}\)</span>. The result is a set of <span class="math notranslate nohighlight">\(\ n\)</span>
 algebraic equations for the unknown constants <span class="math notranslate nohighlight">\(a_i\)</span>.There are several MWR sub-methods, which differ in their choices of the weighting functions <span class="math notranslate nohighlight">\(W\)</span>. Here are some popular examples:</p>
@@ -301,7 +302,7 @@ algebraic equations for the unknown constants <span class="math notranslate nohi
 <h2>Collocation Method<a class="headerlink" href="#collocation-method" title="Permalink to this headline">¶</a></h2>
 <p>In this method, the weighting functions are taken from the family of Dirac <span class="math notranslate nohighlight">\(\delta\)</span> functions in the domain. That is, <span class="math notranslate nohighlight">\(W_i(x)=\delta (x-x_i)\)</span>. The Dirac <span class="math notranslate nohighlight">\(\delta\)</span> function has the property that</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-collocation">
-<span class="eqno">(54)<a class="headerlink" href="#equation-eq-mwr-collocation" title="Permalink to this equation">¶</a></span>\[\begin{split}\delta (x-x_i)=\left\{
+<span class="eqno">(58)<a class="headerlink" href="#equation-eq-mwr-collocation" title="Permalink to this equation">¶</a></span>\[\begin{split}\delta (x-x_i)=\left\{
 \begin{array}{ccc}
 1 &amp;  &amp; x=x_i \\
 0 &amp;  &amp; \text{otherwise}
@@ -309,9 +310,9 @@ algebraic equations for the unknown constants <span class="math notranslate nohi
 \right. .\end{split}\]</div>
 <p>Hence the integration of the weighted residual statement results in the
 forcing of the residual to zero at specific points in the domain. That is,
-integration of <a class="reference internal" href="#equation-eq-mwr-basic-4">equation (53)</a> with <span class="math notranslate nohighlight">\(W_i(x)=\delta (x-x_i)\)</span> results in</p>
+integration of <a class="reference internal" href="#equation-eq-mwr-basic-4">equation (57)</a> with <span class="math notranslate nohighlight">\(W_i(x)=\delta (x-x_i)\)</span> results in</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-collocation-2">
-<span class="eqno">(55)<a class="headerlink" href="#equation-eq-mwr-collocation-2" title="Permalink to this equation">¶</a></span>\[R(x_i)=0\]</div>
+<span class="eqno">(59)<a class="headerlink" href="#equation-eq-mwr-collocation-2" title="Permalink to this equation">¶</a></span>\[R(x_i)=0\]</div>
 </div>
 <div class="section" id="sub-domain-method">
 <h2>Sub-domain Method<a class="headerlink" href="#sub-domain-method" title="Permalink to this headline">¶</a></h2>
@@ -324,7 +325,7 @@ functions are set to unity, and the integral over the entire domain is
 broken into a number of subdomains sufficient to evaluate all unknown
 parameters. That is</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-subdomain-1">
-<span class="eqno">(56)<a class="headerlink" href="#equation-eq-mwr-subdomain-1" title="Permalink to this equation">¶</a></span>\[\int_{X}R(x)W_{i}dx=\sum_{i}\left( \int_{X_{i}}R(x)dx\right) =0\ \ \ \ \ \ \
+<span class="eqno">(60)<a class="headerlink" href="#equation-eq-mwr-subdomain-1" title="Permalink to this equation">¶</a></span>\[\int_{X}R(x)W_{i}dx=\sum_{i}\left( \int_{X_{i}}R(x)dx\right) =0\ \ \ \ \ \ \
 i=1,2,...,n\]</div>
 </div>
 <div class="section" id="least-squares-method">
@@ -332,33 +333,33 @@ i=1,2,...,n\]</div>
 <p>If the continuous summation of all the squared residuals is minimized, the
 rationale behind the name can be seen. In other words, a minimum of</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-lsq-1">
-<span class="eqno">(57)<a class="headerlink" href="#equation-eq-mwr-lsq-1" title="Permalink to this equation">¶</a></span>\[S=\int_XR(x)R(x)dx=\int_XR^2(x)dx.\]</div>
+<span class="eqno">(61)<a class="headerlink" href="#equation-eq-mwr-lsq-1" title="Permalink to this equation">¶</a></span>\[S=\int_XR(x)R(x)dx=\int_XR^2(x)dx.\]</div>
 <p>In order to achieve a minimum of this scalar function, the derivatives of <span class="math notranslate nohighlight">\(S\)</span> with respect to all the unknown parameters must be zero. That is,</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-lsq-2">
-<span class="eqno">(58)<a class="headerlink" href="#equation-eq-mwr-lsq-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{\partial S}{\partial a_i} &amp;=&amp;0 \\
+<span class="eqno">(62)<a class="headerlink" href="#equation-eq-mwr-lsq-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{\partial S}{\partial a_i} &amp;=&amp;0 \\
 &amp;=&amp;2\int_XR(x)\frac{\partial R}{\partial a_i}dx\end{split}\]</div>
-<p>Comparing with <a class="reference internal" href="#equation-eq-mwr-basic-4">equation (53)</a>, the weight functions are seen to be</p>
+<p>Comparing with <a class="reference internal" href="#equation-eq-mwr-basic-4">equation (57)</a>, the weight functions are seen to be</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-lsq-3">
-<span class="eqno">(59)<a class="headerlink" href="#equation-eq-mwr-lsq-3" title="Permalink to this equation">¶</a></span>\[W_i=2\frac{\partial R}{\partial a_i}\]</div>
+<span class="eqno">(63)<a class="headerlink" href="#equation-eq-mwr-lsq-3" title="Permalink to this equation">¶</a></span>\[W_i=2\frac{\partial R}{\partial a_i}\]</div>
 <p>However, the <span class="math notranslate nohighlight">\(2\)</span> can be dropped, since it cancels out in the equation.
 Therefore the weight functions for the Least Squares Method are just the
 derivatives of the residual with respect to the unknown constants:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-lsq-4">
-<span class="eqno">(60)<a class="headerlink" href="#equation-eq-mwr-lsq-4" title="Permalink to this equation">¶</a></span>\[W_i=\frac{\partial R}{\partial a_i}\]</div>
+<span class="eqno">(64)<a class="headerlink" href="#equation-eq-mwr-lsq-4" title="Permalink to this equation">¶</a></span>\[W_i=\frac{\partial R}{\partial a_i}\]</div>
 </div>
 <div class="section" id="galerkin-method">
 <h2>Galerkin Method<a class="headerlink" href="#galerkin-method" title="Permalink to this headline">¶</a></h2>
 <p>This method may be viewed as a modification of the Least Squares Method.
 Rather than using the derivative of the <em>residual</em> with respect to the
 unknown <span class="math notranslate nohighlight">\(a_i\)</span>, the derivative of the approximating function is used. That
-is, if the function is approximated as in <a class="reference internal" href="#equation-eq-mwr-basic-2">equation (51)</a>, then the weight
+is, if the function is approximated as in <a class="reference internal" href="#equation-eq-mwr-basic-2">equation (55)</a>, then the weight
 functions are</p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-galerkin-1">
-<span class="eqno">(61)<a class="headerlink" href="#equation-eq-mwr-galerkin-1" title="Permalink to this equation">¶</a></span>\[W_i=\frac{\partial \tilde{u}}{\partial a_i}\]</div>
+<span class="eqno">(65)<a class="headerlink" href="#equation-eq-mwr-galerkin-1" title="Permalink to this equation">¶</a></span>\[W_i=\frac{\partial \tilde{u}}{\partial a_i}\]</div>
 <p>Note that these are then identical to the original basis functions appearing
-in <a class="reference internal" href="#equation-eq-mwr-basic-2">equation (51)</a></p>
+in <a class="reference internal" href="#equation-eq-mwr-basic-2">equation (55)</a></p>
 <div class="math notranslate nohighlight" id="equation-eq-mwr-galerkin-2">
-<span class="eqno">(62)<a class="headerlink" href="#equation-eq-mwr-galerkin-2" title="Permalink to this equation">¶</a></span>\[W_i=\frac{\partial \tilde{u}}{\partial a_i}=\varphi _i(x)\]</div>
+<span class="eqno">(66)<a class="headerlink" href="#equation-eq-mwr-galerkin-2" title="Permalink to this equation">¶</a></span>\[W_i=\frac{\partial \tilde{u}}{\partial a_i}=\varphi _i(x)\]</div>
 </div>
 </div>
 
