@@ -126,7 +126,7 @@ If we assemble it into the global stiffness matrix assuming two elements, we get
     -\frac{c}{2} + \frac{k}{\Delta x}  & \frac{c}{2} -\frac{k}{\Delta x} & 0 \\
     -\frac{c}{2} -\frac{k}{\Delta x} & \frac{2k}{\Delta x} & \frac{c}{2} -\frac{k}{\Delta x} \\
     0 & -\frac{c}{2} -\frac{k}{\Delta x} & \frac{c}{2} + \frac{k}{\Delta x} \\
-    \end{bmatrix} + 
+    \end{bmatrix} 
     \begin{bmatrix}
     T_{1}\\
     T_2\\
@@ -141,12 +141,12 @@ And if we spell this out for the internal node :math:`2`, we get:
 
     \begin{bmatrix}
     -\frac{c}{2} -\frac{k}{\Delta x} & \frac{2k}{\Delta x} & \frac{c}{2} -\frac{k}{\Delta x}
-    \end{bmatrix} + 
+    \end{bmatrix} 
     \begin{bmatrix}
     T_{1}\\
     T_2\\
     T_{3}\\
-    \end{bmatrix}=0
+    \end{bmatrix}=0,
 
 which we can compare to the FTCS solution:
 
@@ -157,4 +157,4 @@ which we can compare to the FTCS solution:
     -\left(\frac{c}{2\Delta x} + \frac{k}{\Delta x^2} \right) & \frac{2k}{\Delta x^2} &  - \left( - \frac{c}{2 \Delta x} + \frac{k}{\Delta x^2} \right) \end{bmatrix} \begin{bmatrix} T_{i-1} \\ T_{i} \\ T_{i+1} \end{bmatrix}  &= 0 
 
  
-The two solutions are the same - safe for a constant factor dx, which drops out because I also shows up on the RHS (if we had one)! This implies that FE solutions also have an intrinsinc negative diffusion component, which makes them unstable. A popular way to stabilize them is to use the Streamline Upwind Petrov Galerkin (SUPG) method, which modifies the weighting functions so that a little bit of numerical diffusion is added in the direction of flow.
+The two solutions are the same - safe for a constant factor :math:`\Delta x`, which drops out because I also shows up on the RHS (if we had one)! This implies that FE solutions also have an intrinsinc negative diffusion component, which makes them unstable. A popular way to stabilize them is to use the Streamline Upwind Petrov Galerkin (SUPG) method, which modifies the weighting functions so that a little bit of numerical diffusion is added in the direction of flow.
